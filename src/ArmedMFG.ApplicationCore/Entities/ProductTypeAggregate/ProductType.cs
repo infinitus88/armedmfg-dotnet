@@ -28,10 +28,30 @@ public class ProductType : BaseEntity, IAggregateRoot
         Description = description;
         PictureUri = pictureUri;
     }
-    
-    public void AddPriceRecord(int productTypeId, DateTime fromDate, decimal price)
+
+    public ProductType(int productCategoryId,
+        string name,
+        string description,
+        string pictureUri,
+        decimal price)
     {
-        _productPriceHistory.Add(new ProductPriceHistory(productTypeId, fromDate, price));
+        ProductCategoryId = productCategoryId;
+        Name = name;
+        Description = description;
+        PictureUri = pictureUri; 
+        
+        AddPriceRecord(DateTime.Now, price);
+    }
+    
+    public void AddPriceRecord(DateTime fromDate, decimal price)
+    {
+        _productPriceHistory.Add(new ProductPriceHistory(Id, fromDate, price));
+    }
+
+    public decimal GetCurrentPrice()
+    {
+        // TODO Return latest price
+        return _productPriceHistory.FirstOrDefault().Price;
     }
 
     public void UpdateDetails(ProductTypeDetails details)
