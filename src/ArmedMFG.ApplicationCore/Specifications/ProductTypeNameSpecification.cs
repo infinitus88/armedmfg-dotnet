@@ -1,5 +1,5 @@
 ﻿using Ardalis.Specification;
-using ArmedMFG.BlazorShared.Models;
+using ArmedMFG.ApplicationCore.Entities.ProductTypeAggregate;
 
 namespace ArmedMFG.ApplicationCore.Specifications;
 
