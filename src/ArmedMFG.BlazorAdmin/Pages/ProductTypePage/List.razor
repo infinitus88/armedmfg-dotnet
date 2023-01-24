@@ -1,13 +1,13 @@
-﻿@page "/admin/catalog-items"
+﻿@page "/admin/product-types"
 @attribute [Authorize(Roles = ArmedMFG.BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS)]
 @inherits ArmedMFG.BlazorAdmin.Helpers.BlazorComponent
-@namespace ArmedMFG.BlazorAdmin.Pages.CatalogItemPage
+@namespace ArmedMFG.BlazorAdmin.Pages.ProductTypePage
 
 <PageTitle>ArmedMFG Admin</PageTitle>
 
-<h1>Manage Product Catalog</h1>
+<h1>Manage Product Type</h1>
 
-@if (catalogItems == null)
+@if (productTypes == null)
 {
     <Spinner></Spinner>
 }
@@ -24,28 +24,26 @@ else
         <thead>
             <tr>
                 <th></th>
-                <th>Item Type</th>
-                <th>Brand</th>
+                <th>Category</th>
                 <th>Id</th>
                 <th>Name</th>
-                <th>@nameof(CatalogItem.Description)</th>
-                <th>@nameof(CatalogItem.Price)</th>
+                <th>@nameof(ProductType.Description)</th>
+                <th>@nameof(ProductType.CurrentPrice)</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody class="cursor-pointer">
-            @foreach (var item in catalogItems)
+            @foreach (var item in productTypes)
             {
                 <tr @onclick="@(() => DetailsClick(item.Id))">
                     <td>
                         <img class="img-thumbnail" src="@($"{item.PictureUri}")">
                     </td>
-                    <td>@item.CatalogType</td>
-                    <td>@item.CatalogBrand</td>
+                    <td>@item.ProductCategory</td>
                     <td>@item.Id</td>
                     <td>@item.Name</td>
                     <td>@item.Description</td>
-                    <td>@item.Price</td>
+                    <td>@item.CurrentPrice</td>
                     <td>
                         <button @onclick="@(() => EditClick(item.Id))" @onclick:stopPropagation="true" class="btn btn-primary">
                             Edit
@@ -59,9 +57,4 @@ else
             }
         </tbody>
     </table>
-
-    <Details Brands="@catalogBrands" Types="@catalogTypes" OnEditClick="EditClick" @ref="DetailsComponent"></Details>
-    <Edit Brands="@catalogBrands" Types="@catalogTypes" OnSaveClick="ReloadCatalogItems" @ref="EditComponent"></Edit>
-    <Create Brands="@catalogBrands" Types="@catalogTypes" OnSaveClick="ReloadCatalogItems" @ref="CreateComponent"></Create>
-    <Delete Brands="@catalogBrands" Types="@catalogTypes" OnSaveClick="ReloadCatalogItems" @ref="DeleteComponent"></Delete>
 }

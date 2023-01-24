@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Blazored.LocalStorage;
 using ArmedMFG.BlazorShared.Interfaces;
 using ArmedMFG.BlazorShared.Models;
+using Blazored.LocalStorage;
 using Microsoft.Extensions.Logging;
 
 namespace ArmedMFG.BlazorAdmin.Services;
 
-public class CachedCatalogLookupDataServiceDecorator<TLookupData, TResponse>
-    : ICatalogLookupDataService<TLookupData>
+public class CachedProductsLookupDataServiceDecorator<TLookupData, TResponse>
+    : IProductsLookupDataService<TLookupData>
     where TLookupData : LookupData
     where TResponse : ILookupDataResponse<TLookupData>
 {
     private readonly ILocalStorageService _localStorageService;
-    private readonly CatalogLookupDataService<TLookupData, TResponse> _catalogTypeService;
-    private ILogger<CachedCatalogLookupDataServiceDecorator<TLookupData, TResponse>> _logger;
+    private readonly ProductsLookupDataService<TLookupData, TResponse> _categoryService;
+    private ILogger<CachedProductsLookupDataServiceDecorator<TLookupData, TResponse>> _logger;
 
-    public CachedCatalogLookupDataServiceDecorator(ILocalStorageService localStorageService,
-        CatalogLookupDataService<TLookupData, TResponse> catalogTypeService,
-        ILogger<CachedCatalogLookupDataServiceDecorator<TLookupData, TResponse>> logger)
+    public CachedProductsLookupDataServiceDecorator(ILocalStorageService localStorageService,
+        ProductsLookupDataService<TLookupData, TResponse> categoryService,
+        ILogger<CachedProductsLookupDataServiceDecorator<TLookupData, TResponse>> logger)
     {
         _localStorageService = localStorageService;
-        _catalogTypeService = catalogTypeService;
+        _categoryService = categoryService;
         _logger = logger;
     }
 
@@ -33,7 +33,7 @@ public class CachedCatalogLookupDataServiceDecorator<TLookupData, TResponse>
         if (cacheEntry != null)
         {
             _logger.LogInformation($"Loading {key} from local storage.");
-            if (cacheEntry.DateCreated.AddMinutes(1) > DateTime.UtcNow)
+            if (cacheEntry.DateCreated.AddMinutes(1) > DateTime.Now)
             {
                 return cacheEntry.Value;
             }
@@ -44,9 +44,9 @@ public class CachedCatalogLookupDataServiceDecorator<TLookupData, TResponse>
             }
         }
 
-        var types = await _catalogTypeService.List();
-        var entry = new CacheEntry<List<TLookupData>>(types);
+        var categories = await _categoryService.List();
+        var entry = new CacheEntry<List<TLookupData>>(categories);
         await _localStorageService.SetItemAsync(key, entry);
-        return types;
+        return categories;
     }
 }

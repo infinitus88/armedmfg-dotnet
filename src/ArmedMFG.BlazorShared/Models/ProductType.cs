@@ -18,6 +18,11 @@ public class ProductType
     [Required(ErrorMessage = "The Description field is required")]
     public string Description { get; set; } 
     
+    [RegularExpression(@"^\d+(\.\d{0,2})*$", ErrorMessage = "The field CurrentPrice must be a positive number with maximum two decimals.")]
+    [Range(1000.00, 100000000.00)]
+    [DataType(DataType.Currency)]
+    public decimal CurrentPrice { get; set; }
+    
     public string PictureUri { get; set; }
     public string PictureBase64 { get; set; }
     public string PictureName { get; set; }

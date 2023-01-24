@@ -52,7 +52,7 @@ public class ProductsContextSeed
                 await productsContext.MaterialCategories.AddRangeAsync(
                     GetPreconfiguredMaterialCategories());
             }
-
+            
             if (!await productsContext.MaterialTypes.AnyAsync())
             {
                 await productsContext.MaterialTypes.AddRangeAsync(

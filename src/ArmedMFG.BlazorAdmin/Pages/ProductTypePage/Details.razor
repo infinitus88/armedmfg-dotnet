@@ -1,0 +1,132 @@
+﻿@inject ILogger<Details> Logger
+@inject IJSRuntime JSRuntime
+@inject IProductTypeService ProductTypeService
+
+@inherits ArmedMFG.BlazorAdmin.Helpers.BlazorComponent
+
+@namespace ArmedMFG.BlazorAdmin.Pages.ProductTypePage
+
+<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Details @_item.Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                @if (_item == null)
+                {
+                    <Spinner></Spinner>
+                }
+                else
+                {
+                    <div class="container">
+                        <div class="row">
+                            @if (HasPicture)
+                            {
+                                <img class="col-md-6 esh-picture" src="@($"{_item.PictureUri}")">
+                            }
+
+
+                            <dl class="col-md-@(HasPicture?"6":"12") dl-horizontal">
+                                <dt>
+                                    Name
+                                </dt>
+
+                                <dd>
+                                    @_item.Name
+                                </dd>
+
+                                <dt>
+                                    Description
+                                </dt>
+
+                                <dd>
+                                    @_item.Description
+                                </dd>
+
+                                <dt>
+                                    Category
+                                </dt>
+
+                                <dd>
+                                    @_item.ProductCategory
+                                </dd>
+                                <dt>
+                                    Price
+                                </dt>
+
+                                <dd>
+                                    @_item.CurrentPrice
+                                </dd>
+
+                            </dl>
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Close</button>
+                <button class="btn btn-primary" @onclick="EditClick">
+                    Edit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (_showDetailsModal)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    [Parameter]
+    public IEnumerable<ProductCategory> Categories { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnEditClick { get; set; }
+
+    private bool HasPicture => !string.IsNullOrEmpty(_item.PictureUri);
+    private string _modalDisplay = "none;";
+    private string _modalClass = "";
+    private bool _showDetailsModal = false;
+    private ProductType _item = new ProductType();
+
+    public async Task EditClick()
+    {
+        await OnEditClick.InvokeAsync(_item.Id);
+        await Close();
+    }
+
+    public async Task Open(int id)
+    {
+
+        Logger.LogInformation("Now loading... /ProductType/Details/{Id}", id);
+
+        await new Css(JSRuntime).HideBodyOverflow();
+
+        _item = await ProductTypeService.GetById(id);
+
+        _modalDisplay = "block;";
+        _modalClass = "Show";
+        _showDetailsModal = true;
+
+        StateHasChanged();
+    }
+
+    public async Task Close()
+    {
+        await new Css(JSRuntime).ShowBodyOverflow();
+
+        _modalDisplay = "none";
+        _modalClass = "";
+        _showDetailsModal = false;
+    }
+
+}

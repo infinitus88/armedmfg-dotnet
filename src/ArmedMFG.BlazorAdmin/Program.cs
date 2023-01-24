@@ -20,7 +20,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 var configSection = builder.Configuration.GetRequiredSection(BaseUrlConfiguration.CONFIG_NAME);
 builder.Services.Configure<BaseUrlConfiguration>(configSection);
 
-builder.Services.AddScoped(sp => new HttpClient() { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddScoped(_ => new HttpClient() { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 builder.Services.AddScoped<ToastService>();
 builder.Services.AddScoped<HttpService>();
@@ -44,6 +44,8 @@ static async Task ClearLocalStorageCache(IServiceCollection services)
     var sp = services.BuildServiceProvider();
     var localStorageService = sp.GetRequiredService<ILocalStorageService>();
 
-    await localStorageService.RemoveItemAsync(typeof(CatalogBrand).Name);
-    await localStorageService.RemoveItemAsync(typeof(CatalogType).Name);
+    await localStorageService.RemoveItemAsync(nameof(CatalogBrand));
+    await localStorageService.RemoveItemAsync(nameof(CatalogType));
+
+    await localStorageService.RemoveItemAsync(nameof(ProductCategory));
 }
