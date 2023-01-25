@@ -22,6 +22,12 @@ public static class ServicesConfiguration
         services.AddScoped<IProductTypeService, CachedProductTypeServiceDecorator>();
         services.AddScoped<ProductTypeService>();
 
+        services.AddScoped<IProductsLookupDataService<MaterialCategory>,
+                CachedProductsLookupDataServiceDecorator<MaterialCategory, MaterialCategoryResponse>>();
+        services.AddScoped<ProductsLookupDataService<MaterialCategory, MaterialCategoryResponse>>();
+        services.AddScoped<IMaterialTypeService, CachedMaterialTypeServiceDecorator>();
+        services.AddScoped<MaterialTypeService>();
+        
         return services;
     }
 }

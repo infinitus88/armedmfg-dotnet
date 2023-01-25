@@ -94,9 +94,9 @@ builder.Services.AddSwaggerGen(c =>
     c.SchemaFilter<CustomSchemaFilters>();
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+        Description = @"JWT Authorization header using the Bearer scheme. 
                       Enter 'Bearer' [space] and then your token in the text input below.
-                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+                      Example: 'Bearer 12345abcdef'",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
@@ -134,8 +134,12 @@ using (var scope = app.Services.CreateScope())
     var scopedProvider = scope.ServiceProvider;
     try
     {
-        var catalogContext = scopedProvider.GetRequiredService<CatalogContext>();
-        await CatalogContextSeed.SeedAsync(catalogContext, app.Logger);
+        var productsContext = scopedProvider.GetRequiredService<ProductsContext>();
+        await ProductsContextSeed.SeedAsync(productsContext, app.Logger);
+        
+        // var catalogContext = scopedProvider.GetRequiredService<CatalogContext>();
+        await CatalogContextSeed.SeedAsync(productsContext, app.Logger);
+
 
         var userManager = scopedProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();

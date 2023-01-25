@@ -19,13 +19,13 @@ public class GetByIdProductTypeEndpoint : IEndpoint<IResult, GetByIdProductTypeR
     
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapGet("api/product-type/{productTypeId}",
+        app.MapGet("api/product-types/{productTypeId}",
                 async (int productTypeId, IRepository<ProductType> productTypeRepository) =>
                 {
                     return await HandleAsync(new GetByIdProductTypeRequest(productTypeId), productTypeRepository);
                 })
             .Produces<GetByIdProductTypeResponse>()
-            .WithTags("ProductTypeEnpoints");
+            .WithTags("ProductTypeEndpoints");
     }
     
     public async Task<IResult> HandleAsync(GetByIdProductTypeRequest request, IRepository<ProductType> productTypeRepository)

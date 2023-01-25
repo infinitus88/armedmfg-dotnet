@@ -11,9 +11,9 @@ public class ProductTypeService : IProductTypeService
 {
     private readonly IProductsLookupDataService<ProductCategory> _categoryService;
     private readonly HttpService _httpService;
-    private readonly ILogger<CatalogItemService> _logger;
+    private readonly ILogger<ProductTypeService> _logger;
 
-    public ProductTypeService(IProductsLookupDataService<ProductCategory> categoryService, HttpService httpService, ILogger<CatalogItemService> logger)
+    public ProductTypeService(IProductsLookupDataService<ProductCategory> categoryService, HttpService httpService, ILogger<ProductTypeService> logger)
     {
         _categoryService = categoryService;
         _httpService = httpService;

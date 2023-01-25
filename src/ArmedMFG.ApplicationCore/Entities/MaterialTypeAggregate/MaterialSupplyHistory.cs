@@ -10,7 +10,7 @@ public class MaterialSupplyHistory : BaseEntity, IAggregateRoot
     public MaterialType? MaterialType { get; private set; }
     public DateTime DeliveredDate { get; private set; }
     public decimal UnitPrice { get; private set; }
-    public float Amount { get; private set; }
+    public decimal Amount { get; private set; }
 
     public MaterialSupplyHistory(int materialTypeId, DateTime deliveredDate, decimal unitPrice)
     {

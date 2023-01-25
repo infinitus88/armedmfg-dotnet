@@ -23,7 +23,7 @@ public class ListPagedMaterialTypeEndpoint : IEndpoint<IResult, ListPagedMateria
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapGet("api/material_types",
+        app.MapGet("api/material-types",
                 async (int? pageSize, int? pageIndex, int? materialCategoryId, IRepository<MaterialType> materialTypeRepository) =>
                 {
                     return await HandleAsync(new ListPagedMaterialTypeRequest(pageSize, pageIndex, materialCategoryId), materialTypeRepository);

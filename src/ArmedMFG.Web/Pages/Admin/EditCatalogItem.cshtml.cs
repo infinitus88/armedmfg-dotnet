@@ -33,6 +33,6 @@ public class EditCatalogItemModel : PageModel
             await _catalogItemViewModelService.UpdateCatalogItem(CatalogModel);
         }
 
-        return RedirectToPage("/Admin/Index");
+        return RedirectToPage("/Admin/product-types");
     }
 }

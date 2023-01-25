@@ -9,40 +9,40 @@ namespace ArmedMFG.Infrastructure.Data;
 
 public class CatalogContextSeed
 {
-    public static async Task SeedAsync(CatalogContext catalogContext,
+    public static async Task SeedAsync(ProductsContext productsContext,
         ILogger logger,
         int retry = 0)
     {
         var retryForAvailability = retry;
         try
         {
-            if (catalogContext.Database.IsSqlServer())
+            if (productsContext.Database.IsSqlServer())
             {
-                catalogContext.Database.Migrate();
+                productsContext.Database.Migrate();
             }
 
-            if (!await catalogContext.CatalogBrands.AnyAsync())
+            if (!await productsContext.CatalogBrands.AnyAsync())
             {
-                await catalogContext.CatalogBrands.AddRangeAsync(
+                await productsContext.CatalogBrands.AddRangeAsync(
                     GetPreconfiguredCatalogBrands());
 
-                await catalogContext.SaveChangesAsync();
+                await productsContext.SaveChangesAsync();
             }
 
-            if (!await catalogContext.CatalogTypes.AnyAsync())
+            if (!await productsContext.CatalogTypes.AnyAsync())
             {
-                await catalogContext.CatalogTypes.AddRangeAsync(
+                await productsContext.CatalogTypes.AddRangeAsync(
                     GetPreconfiguredCatalogTypes());
 
-                await catalogContext.SaveChangesAsync();
+                await productsContext.SaveChangesAsync();
             }
 
-            if (!await catalogContext.CatalogItems.AnyAsync())
+            if (!await productsContext.CatalogItems.AnyAsync())
             {
-                await catalogContext.CatalogItems.AddRangeAsync(
+                await productsContext.CatalogItems.AddRangeAsync(
                     GetPreconfiguredItems());
 
-                await catalogContext.SaveChangesAsync();
+                await productsContext.SaveChangesAsync();
             }
         }
         catch (Exception ex)
@@ -52,7 +52,7 @@ public class CatalogContextSeed
             retryForAvailability++;
             
             logger.LogError(ex.Message);
-            await SeedAsync(catalogContext, logger, retryForAvailability);
+            await SeedAsync(productsContext, logger, retryForAvailability);
             throw;
         }
     }

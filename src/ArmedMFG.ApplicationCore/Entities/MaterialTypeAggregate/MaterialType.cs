@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Ardalis.GuardClauses;
 using ArmedMFG.ApplicationCore.Entities.ProductTypeAggregate;
 using ArmedMFG.ApplicationCore.Interfaces;
@@ -25,10 +26,28 @@ public class MaterialType : BaseEntity, IAggregateRoot
         Name = name;
         Description = description;
     }
-    
-    public void AddSupplyDelivery(int productTypeId, DateTime deliveredDate, decimal price)
+
+    public MaterialType(int materialCategoryId,
+        string name,
+        string description,
+        decimal amount)
     {
-        _materialSupplyHistory.Add(new MaterialSupplyHistory(productTypeId, deliveredDate, price));
+        MaterialCategoryId = materialCategoryId;
+        Name = name;
+        Description = description;
+            
+        AddSupplyDelivery(DateTime.Now, amount);
+    }
+    
+    public void AddSupplyDelivery(DateTime deliveredDate, decimal amount)
+    {
+        _materialSupplyHistory.Add(new MaterialSupplyHistory(Id, deliveredDate, amount));
+    }
+
+    public decimal GetCurrentAmount()
+    {
+        // TODO Return real current amount
+        return _materialSupplyHistory.FirstOrDefault().Amount;
     }
 
     public void UpdateDetails(MaterialTypeDetails details)

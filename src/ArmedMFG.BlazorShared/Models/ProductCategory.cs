@@ -2,7 +2,7 @@
 
 namespace ArmedMFG.BlazorShared.Models;
 
-[Endpoint(Name = "product-category")]
+[Endpoint(Name = "product-categories")]
 public class ProductCategory : LookupData
 {
     public int DepartmentId { get; set; }

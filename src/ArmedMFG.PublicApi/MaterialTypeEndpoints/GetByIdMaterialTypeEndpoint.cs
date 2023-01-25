@@ -20,7 +20,7 @@ public class GetByIdMaterialTypeEndpoint : IEndpoint<IResult, GetByIdMaterialTyp
     
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapGet("api/material-type/{materialTypeId}",
+        app.MapGet("api/material-types/{materialTypeId}",
                 async (int materialTypeId, IRepository<MaterialType> materialTypeRepository) =>
                 {
                     return await HandleAsync(new GetByIdMaterialTypeRequest(materialTypeId), materialTypeRepository);
@@ -43,6 +43,7 @@ public class GetByIdMaterialTypeEndpoint : IEndpoint<IResult, GetByIdMaterialTyp
             MaterialCategoryId = materialType.MaterialCategoryId,
             Description = materialType.Description,
             Name = materialType.Name,
+            CurrentAmount = materialType.GetCurrentAmount()
         };
 
         return Results.Ok(response);

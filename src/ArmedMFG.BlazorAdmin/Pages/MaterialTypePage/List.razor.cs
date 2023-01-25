@@ -4,18 +4,18 @@ using ArmedMFG.BlazorAdmin.Helpers;
 using ArmedMFG.BlazorShared.Interfaces;
 using ArmedMFG.BlazorShared.Models;
 
-namespace ArmedMFG.BlazorAdmin.Pages.ProductTypePage;
+namespace ArmedMFG.BlazorAdmin.Pages.MaterialTypePage;
 
 public partial class List : BlazorComponent
 {
     [Microsoft.AspNetCore.Components.Inject]
-    public IProductTypeService ProductTypeService { get; set; }
+    public IMaterialTypeService MaterialTypeService { get; set; }
 
     [Microsoft.AspNetCore.Components.Inject]
-    public IProductsLookupDataService<ProductCategory> ProductCategoryService { get; set; }
+    public IProductsLookupDataService<MaterialCategory> MaterialCategoryService { get; set; }
 
-    private List<ProductType> productTypes = new List<ProductType>();
-    private List<ProductCategory> productCategories = new List<ProductCategory>();
+    private List<MaterialType> materialTypes = new List<MaterialType>();
+    private List<MaterialCategory> materialCategories = new List<MaterialCategory>();
 
     private Edit EditComponent { get; set; }
     private Delete DeleteComponent { get; set; }
@@ -26,10 +26,10 @@ public partial class List : BlazorComponent
     {
         if (firstRender)
         {
-            productTypes = await ProductTypeService.List();
+            materialTypes = await MaterialTypeService.List();
             
             // TODO Get Categories for specific department
-            productCategories = await ProductCategoryService.List();
+            materialCategories = await MaterialCategoryService.List();
 
             CallRequestRefresh();
         }
@@ -57,15 +57,15 @@ public partial class List : BlazorComponent
         await DeleteComponent.Open(id);
     }
 
-    private async Task ReloadProductTypes()
+    private async Task ReloadMaterialTypes()
     {
-        productTypes = await ProductTypeService.List();
+        materialTypes = await MaterialTypeService.List();
         StateHasChanged();
     }
 
-    // private async Task ReloadProductCategories()
+    // private async Task ReloadMaterialCategories()
     // {
-    //     productCategories = await ProductCategoryService.List();
+    //     materialCategories = await MaterialCategoryService.List();
     //     StateHasChanged();
     // }
 }

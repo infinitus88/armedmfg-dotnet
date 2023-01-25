@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using ArmedMFG.ApplicationCore.Entities;
+using ArmedMFG.ApplicationCore.Entities.BasketAggregate;
 using ArmedMFG.ApplicationCore.Entities.MaterialTypeAggregate;
+using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
 using ArmedMFG.ApplicationCore.Entities.ProductBatch;
 using ArmedMFG.ApplicationCore.Entities.ProductTypeAggregate;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,15 @@ public class ProductsContext : DbContext
 {
 #pragma warning disable CS8618 // Required by Entity Framework
     public ProductsContext(DbContextOptions<ProductsContext> options) : base(options) {}
+    
+    // TODO Remove this entities after testing
+    public DbSet<Basket> Baskets { get; set; }
+    public DbSet<CatalogItem> CatalogItems { get; set; }
+    public DbSet<CatalogBrand> CatalogBrands { get; set; }
+    public DbSet<CatalogType> CatalogTypes { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
+    public DbSet<BasketItem> BasketItems { get; set; } 
 
     public DbSet<ProductBatch> ProductBatches { get; set; }
     public DbSet<ProducedProduct> ProducedProducts { get; set; }

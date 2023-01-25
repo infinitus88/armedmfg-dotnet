@@ -25,7 +25,7 @@ public class ListPagedProductTypeEndpoint : IEndpoint<IResult, ListPagedProductT
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapGet("api/product_types",
+        app.MapGet("api/product-types",
                 async (int? pageSize, int? pageIndex, int? productCategoryId, IRepository<ProductType> productTypeRepository) =>
                 {
                     return await HandleAsync(new ListPagedProductTypeRequest(pageSize, pageIndex, productCategoryId), productTypeRepository);
