@@ -1,4 +1,5 @@
-﻿namespace ArmedMFG.ApplicationCore.Constants;
+﻿// ReSharper disable InconsistentNaming
+namespace ArmedMFG.ApplicationCore.Constants;
 
 public class AuthorizationConstants
 {
