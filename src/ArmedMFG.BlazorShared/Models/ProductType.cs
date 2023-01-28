@@ -8,7 +8,7 @@ namespace ArmedMFG.BlazorShared.Models;
 
 public class ProductType
 {
-    public int Id { get;set; }
+    public int Id { get; set; }
     public int ProductCategoryId { get; set; }
     public string ProductCategory { get; set; } = "NotSet";
     

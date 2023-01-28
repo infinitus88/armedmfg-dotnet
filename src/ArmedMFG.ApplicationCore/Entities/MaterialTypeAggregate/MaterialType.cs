@@ -14,8 +14,8 @@ public class MaterialType : BaseEntity, IAggregateRoot
     public int MaterialCategoryId { get; private set; }
     public MaterialCategory? MaterialCategory { get; private set; }
     
-    private readonly List<MaterialSupplyHistory> _materialSupplyHistory = new List<MaterialSupplyHistory>();
-    public IReadOnlyCollection<MaterialSupplyHistory> MaterialSupplyHistory => _materialSupplyHistory.AsReadOnly();
+    private readonly List<MaterialSupply> _materialSupplies = new List<MaterialSupply>();
+    public IReadOnlyCollection<MaterialSupply> MaterialSupplies => _materialSupplies.AsReadOnly();
 
     
     public MaterialType(int materialCategoryId,
@@ -36,18 +36,18 @@ public class MaterialType : BaseEntity, IAggregateRoot
         Name = name;
         Description = description;
             
-        AddSupplyDelivery(DateTime.Now, amount);
+        // AddSupplyDelivery(DateTime.Now, unitPrice, amount);
     }
     
-    public void AddSupplyDelivery(DateTime deliveredDate, decimal amount)
+    public void AddSupplyDelivery(DateTime deliveredDate, decimal unitPrice, decimal amount)
     {
-        _materialSupplyHistory.Add(new MaterialSupplyHistory(Id, deliveredDate, amount));
+        _materialSupplies.Add(new MaterialSupply(Id, deliveredDate, unitPrice, amount));
     }
 
     public decimal GetCurrentAmount()
     {
         // TODO Return real current amount
-        return _materialSupplyHistory.FirstOrDefault().Amount;
+        return _materialSupplies.FirstOrDefault().Amount;
     }
 
     public void UpdateDetails(MaterialTypeDetails details)

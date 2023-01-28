@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Ardalis.GuardClauses;
-using ArmedMFG.ApplicationCore.Entities.BasketAggregate;
 using ArmedMFG.ApplicationCore.Interfaces;
 
 namespace ArmedMFG.ApplicationCore.Entities.ProductTypeAggregate;
@@ -15,8 +14,8 @@ public class ProductType : BaseEntity, IAggregateRoot
     public int ProductCategoryId { get; private set; }
     public ProductCategory? ProductCategory { get; private set; }
      
-    private readonly List<ProductPriceHistory> _productPriceHistory = new List<ProductPriceHistory>();
-    public IReadOnlyCollection<ProductPriceHistory> ProductPriceHistory => _productPriceHistory.AsReadOnly();
+    private readonly List<ProductPrice> _productPrices = new List<ProductPrice>();
+    public IReadOnlyCollection<ProductPrice> ProductPrices => _productPrices.AsReadOnly();
     
     public ProductType(int productCategoryId,
         string name,
@@ -45,13 +44,13 @@ public class ProductType : BaseEntity, IAggregateRoot
     
     public void AddPriceRecord(DateTime fromDate, decimal price)
     {
-        _productPriceHistory.Add(new ProductPriceHistory(Id, fromDate, price));
+        _productPrices.Add(new ProductPrice(Id, fromDate, price));
     }
 
     public decimal GetCurrentPrice()
     {
         // TODO Return latest price
-        return _productPriceHistory.FirstOrDefault().Price;
+        return _productPrices.FirstOrDefault().Price;
     }
 
     public void UpdateDetails(ProductTypeDetails details)

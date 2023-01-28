@@ -5,12 +5,12 @@ namespace ArmedMFG.ApplicationCore.Services;
 
 public class UriComposer : IUriComposer
 {
-    private readonly CatalogSettings _catalogSettings;
+    private readonly ProductsSettings _productsSettings;
 
-    public UriComposer(CatalogSettings catalogSettings) => _catalogSettings = catalogSettings;
+    public UriComposer(ProductsSettings productsSettings) => _productsSettings = productsSettings;
 
     public string ComposePicUri(string uriTemplate)
     {
-        return uriTemplate.Replace("http://catalogbaseurltobereplaced", _catalogSettings.CatalogBaseUrl);
+        return uriTemplate.Replace("http://catalogbaseurltobereplaced", _productsSettings.ProductsBaseUrl);
     }
 }

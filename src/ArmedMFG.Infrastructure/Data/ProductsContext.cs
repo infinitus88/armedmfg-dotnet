@@ -32,11 +32,11 @@ public class ProductsContext : DbContext
     
     public DbSet<ProductType> ProductTypes { get; set; }
     public DbSet<ProductCategory> ProductCategories { get; set; }
-    public DbSet<ProductPriceHistory> ProductPriceHistory { get; set; }
+    public DbSet<ProductPrice> ProductPrices { get; set; }
     
     public DbSet<MaterialType> MaterialTypes { get; set; }
     public DbSet<MaterialCategory> MaterialCategories { get; set; }
-    public DbSet<MaterialSupplyHistory> MaterialSupplyHistory { get; set; }
+    public DbSet<MaterialSupply> MaterialSupplies { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

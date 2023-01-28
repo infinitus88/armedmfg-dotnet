@@ -35,5 +35,21 @@
     <ProjectReference Include="..\ArmedMFG.Infrastructure\ArmedMFG.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="ProductBatchEndpoints\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="ProductBatchEndpoints\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ProductBatchEndpoints\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="ProductBatchEndpoints\**" />
+  </ItemGroup>
+
 
 </Project>

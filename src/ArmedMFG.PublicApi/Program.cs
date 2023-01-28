@@ -41,8 +41,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
-builder.Services.Configure<CatalogSettings>(builder.Configuration);
-builder.Services.AddSingleton<IUriComposer>(new UriComposer(builder.Configuration.Get<CatalogSettings>()));
+builder.Services.Configure<ProductsSettings>(builder.Configuration);
+builder.Services.AddSingleton<IUriComposer>(new UriComposer(builder.Configuration.Get<ProductsSettings>()));
 builder.Services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 builder.Services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
 

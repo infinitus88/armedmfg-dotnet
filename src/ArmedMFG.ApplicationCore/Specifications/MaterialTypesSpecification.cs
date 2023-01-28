@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using Ardalis.Specification;
-using ArmedMFG.BlazorShared.Models;
+using MaterialType = ArmedMFG.BlazorShared.Models.MaterialType;
 
 namespace ArmedMFG.ApplicationCore.Specifications;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ArmedMFG.ApplicationCore.Entities;
 using ArmedMFG.ApplicationCore.Entities.MaterialTypeAggregate;
@@ -58,6 +59,12 @@ public class ProductsContextSeed
                 await productsContext.MaterialTypes.AddRangeAsync(
                     GetPreconfiguredMaterialTypes());
             }
+
+            if (!await productsContext.ProductPrices.AnyAsync())
+            {
+                await productsContext.ProductPrices.AddRangeAsync(
+                    GetPreconfiguredProductPrices());
+            }
         }
         catch (Exception ex)
         {
@@ -98,18 +105,18 @@ public class ProductsContextSeed
     {
         return new List<ProductType>
         {
-            new(1, "PK 59x10 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/1.png"),
-            new(1, "PK 59x12 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/1.png"),
-            new(1, "PK 59x15 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/1.png"),
-            new(1, "PK 59x16 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/1.png"),
-            new(1, "PK 59x17 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/1.png"),
-            new(1, "PK 59x19 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/1.png"),
-            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/1.png"),
-            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/1.png"),
-            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/1.png"),
-            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/1.png"),
-            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/1.png"),
-            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/1.png"),
+            new(1, "PK 59x10 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(1, "PK 59x12 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(1, "PK 59x15 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(1, "PK 59x16 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(1, "PK 59x17 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(1, "PK 59x19 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
         };
     }
 
@@ -130,6 +137,15 @@ public class ProductsContextSeed
             new(1, "Water", "Usual not distill water"),
             new(2, "Cement", "Cement for concrete products"),
             new(3, "Metal Sticks", "Metal sticks used for concrete products")
+        };
+    }
+
+    static IEnumerable<ProductPrice> GetPreconfiguredProductPrices()
+    {
+        return new List<ProductPrice>
+        {
+            new(1, DateTime.Now, 10000),
+            new(2, DateTime.Now, 100000)
         };
     }
 }

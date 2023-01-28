@@ -4,19 +4,19 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ArmedMFG.Infrastructure.Data.Config;
 
-public class MaterialSupplyHistoryConfiguration : IEntityTypeConfiguration<MaterialSupplyHistory>
+public class MaterialSupplyConfiguration : IEntityTypeConfiguration<MaterialSupply>
 {
-    public void Configure(EntityTypeBuilder<MaterialSupplyHistory> builder)
+    public void Configure(EntityTypeBuilder<MaterialSupply> builder)
     {
-        builder.Property(msh => msh.Id)
-            .UseHiLo("material_supply_history_hilo")
+        builder.Property(ms => ms.Id)
+            .UseHiLo("material_supply_hilo")
             .IsRequired();
         
-        builder.Property(msh => msh.Amount)
+        builder.Property(ms => ms.Amount)
             .IsRequired(true)
             .HasColumnType("decimal(18,2)");    
         
-        builder.Property(msh => msh.UnitPrice)
+        builder.Property(ms => ms.UnitPrice)
             .IsRequired(true)
             .HasColumnType("decimal(18,2)");
     }

@@ -21,7 +21,7 @@ public static class ConfigureCoreServices
         services.AddScoped<IBasketService, BasketService>();
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IBasketQueryService, BasketQueryService>();
-        services.AddSingleton<IUriComposer>(new UriComposer(configuration.Get<CatalogSettings>()));
+        services.AddSingleton<IUriComposer>(new UriComposer(configuration.Get<ProductsSettings>()));
         services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
         services.AddTransient<IEmailSender, EmailSender>();
 

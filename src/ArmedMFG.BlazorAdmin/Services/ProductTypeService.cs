@@ -33,7 +33,7 @@ public class ProductTypeService : IProductTypeService
 
     public async Task<string> Delete(int productTypeId)
     {
-        return (await _httpService.HttpDelete<DeleteCatalogItemResponse>("product-types", productTypeId)).Status;
+        return (await _httpService.HttpDelete<DeleteProductTypeResponse>("product-types", productTypeId)).Status;
     }
 
     public async Task<ProductType> GetById(int id)

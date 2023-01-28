@@ -9,6 +9,7 @@ using ArmedMFG.PublicApi.MaterialCategoryEndpoints;
 using ArmedMFG.PublicApi.MaterialTypeEndpoints;
 using ArmedMFG.PublicApi.ProductCategoryEndpoints;
 using ArmedMFG.PublicApi.ProductTypeEndpoints;
+using ArmedMFG.PublicApi.ProductTypeEndpoints.ProductPriceEndpoints;
 using Microsoft.CodeAnalysis.Options;
 
 namespace ArmedMFG.PublicApi;
@@ -28,6 +29,8 @@ public class MappingProfile : Profile
             .ForMember(dto => dto.CurrentPrice, 
                 options => options.MapFrom(src => src.GetCurrentPrice() == null ? 0 : src.GetCurrentPrice()));
         CreateMap<ProductCategory, ProductCategoryDto>();
+
+        CreateMap<ProductPrice, ProductPriceDto>();
 
         // TODO Remove null checks for GetCurrentAmount()
         CreateMap<MaterialType, MaterialTypeDto>()
