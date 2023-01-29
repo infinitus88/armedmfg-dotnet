@@ -49,6 +49,7 @@ public class UpdateProductBatchEndpoint : IEndpoint<IResult, UpdateProductBatchR
         ProductBatch.ProductBatchDetails details = new(request.ProducedDate);
         existingProductBatch.UpdateDetails(details);
         
+        // TODO Fix not updating of produced products and spent materials
         request.ProducedProducts.ForEach(p =>
             existingProductBatch.UpdateProduct(p.Id,
                 new ProducedProduct.ProducedProductDetails(p.ProductTypeId, p.Quantity)));

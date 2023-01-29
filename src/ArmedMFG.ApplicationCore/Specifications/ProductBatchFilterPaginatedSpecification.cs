@@ -16,7 +16,10 @@ public class ProductBatchFilterPaginatedSpecification : Specification<ProductBat
 
         Query
             .Where(b => (!startDate.HasValue || b.ProducedDate >= startDate)
-                    && (!endDate.HasValue || b.ProducedDate <= endDate))
-            .Skip(skip).Take(take);
+                        && (!endDate.HasValue || b.ProducedDate <= endDate))
+            .Skip(skip).Take(take)
+            .Include(b => b.ProducedProducts)
+            .Include(b => b.SpentMaterials);
+
     }
 }
