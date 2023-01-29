@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using ArmedMFG.ApplicationCore.Entities;
 using ArmedMFG.ApplicationCore.Entities.MaterialTypeAggregate;
+using ArmedMFG.ApplicationCore.Entities.ProductBatch;
 using ArmedMFG.ApplicationCore.Entities.ProductTypeAggregate;
 using ArmedMFG.PublicApi.CatalogBrandEndpoints;
 using ArmedMFG.PublicApi.CatalogItemEndpoints;
 using ArmedMFG.PublicApi.CatalogTypeEndpoints;
 using ArmedMFG.PublicApi.MaterialCategoryEndpoints;
 using ArmedMFG.PublicApi.MaterialTypeEndpoints;
+using ArmedMFG.PublicApi.MaterialTypeEndpoints.MaterialSupplyEndpoints;
+using ArmedMFG.PublicApi.ProductBatchEndpoints;
 using ArmedMFG.PublicApi.ProductCategoryEndpoints;
 using ArmedMFG.PublicApi.ProductTypeEndpoints;
 using ArmedMFG.PublicApi.ProductTypeEndpoints.ProductPriceEndpoints;
@@ -37,5 +40,11 @@ public class MappingProfile : Profile
             .ForMember(dto => dto.CurrentAmount,
                 options => options.MapFrom((src => src.GetCurrentAmount() == null ? 0 : src.GetCurrentAmount())));
         CreateMap<MaterialCategory, MaterialCategoryDto>();
+
+        CreateMap<MaterialSupply, MaterialSupplyDto>();
+
+        CreateMap<ProductBatch, ProductBatchDto>();
+        CreateMap<ProducedProduct, ProducedProductDto>();
+        CreateMap<SpentMaterial, SpentMaterialDto>();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ardalis.GuardClauses;
 using ArmedMFG.ApplicationCore.Interfaces;
 
 namespace ArmedMFG.ApplicationCore.Entities.ProductBatch;
@@ -33,7 +34,7 @@ public class ProductBatch : BaseEntity, IAggregateRoot
     }
     
     public void AddMaterial(int materialTypeId,
-        float amount)
+        decimal amount)
     {
         if (!SpentMaterials.Any(m => m.MaterialTypeId == materialTypeId))
         {
@@ -69,5 +70,32 @@ public class ProductBatch : BaseEntity, IAggregateRoot
     public void RemoveEmptyMaterials()
     {
         _spentMaterials.RemoveAll(r => r.Amount == 0);
+    }
+
+    public void UpdateProduct(int producedProductId, ProducedProduct.ProducedProductDetails details)
+    {
+        _producedProducts.FirstOrDefault(p => p.Id == producedProductId)?.UpdateDetails(details);
+    }
+
+    public void UpdateMaterial(int spentMaterialId, SpentMaterial.SpentMaterialDetails details)
+    {
+        _spentMaterials.FirstOrDefault(sm => sm.Id == spentMaterialId)?.UpdateDetails(details);
+    }
+    
+    public void UpdateDetails(ProductBatchDetails details)
+    {
+        Guard.Against.Default(details.ProducedDate, nameof(details.ProducedDate));
+
+        ProducedDate = details.ProducedDate;
+    }
+    
+    public readonly record struct ProductBatchDetails
+    {
+        public DateTime ProducedDate { get; init; }
+
+        public ProductBatchDetails(DateTime producedDate)
+        {
+            ProducedDate = producedDate;
+        }
     }
 }

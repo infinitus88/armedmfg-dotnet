@@ -28,7 +28,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Pages\Product ProducingPage" />
+	  <Folder Include="Pages\ProductProducingPage" />
 	</ItemGroup>
 
 </Project>

@@ -1,5 +1,4 @@
-﻿using System.Xml;
-using Ardalis.GuardClauses;
+﻿using Ardalis.GuardClauses;
 using ArmedMFG.BlazorShared.Models;
 
 namespace ArmedMFG.ApplicationCore.Entities.ProductBatch;
@@ -39,5 +38,26 @@ public class ProducedProduct : BaseEntity
         Guard.Against.OutOfRange(quantity, nameof(quantity), 0, int.MaxValue);
 
         Quantity = quantity;
+    }
+
+    public void UpdateDetails(ProducedProductDetails details)
+    {
+        Guard.Against.NegativeOrZero(details.ProductTypeId, nameof(details.ProductTypeId));
+        Guard.Against.NegativeOrZero(details.Quantity, nameof(details.Quantity));
+
+        ProductTypeId = details.ProductTypeId;
+        Quantity = details.Quantity;
+    }
+
+    public readonly record struct ProducedProductDetails
+    {
+        public int ProductTypeId { get; init; }
+        public int Quantity { get; init; }
+
+        public ProducedProductDetails( int productTypeId, int quantity)
+        {
+            ProductTypeId = productTypeId;
+            Quantity = quantity;
+        }
     }
 }
