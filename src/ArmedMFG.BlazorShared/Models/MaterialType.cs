@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices.JavaScript;
+using ArmedMFG.BlazorShared.Attributes;
 
 namespace ArmedMFG.BlazorShared.Models;
 
+[Endpoint(Name = "material-types")]
 public class MaterialType
 {
     public int Id { get;set; }

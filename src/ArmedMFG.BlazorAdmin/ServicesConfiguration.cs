@@ -27,6 +27,9 @@ public static class ServicesConfiguration
         services.AddScoped<ProductsLookupDataService<MaterialCategory, MaterialCategoryResponse>>();
         services.AddScoped<IMaterialTypeService, CachedMaterialTypeServiceDecorator>();
         services.AddScoped<MaterialTypeService>();
+
+        services.AddScoped<IProductBatchService, CachedProductBatchServiceDecorator>();
+        services.AddScoped<ProductBatchService>();
         
         return services;
     }
