@@ -46,8 +46,8 @@ public class CreateProductBatchEndpoint : IEndpoint<IResult, CreateProductBatchR
 
         var newBatch = new ProductBatch(request.ProducedDate);
 
-        newBatch.AddProductRange(request.ProducedProducts.Select(_mapper.Map<ProducedProduct>).ToList());
-        newBatch.AddMaterialRange(request.SpentMaterials.Select(_mapper.Map<SpentMaterial>).ToList());
+        newBatch.AddProductRange(request.ProducedProducts.Select(p => new ProducedProduct(p.ProductTypeId, p.Quantity)).ToList());
+        newBatch.AddMaterialRange(request.SpentMaterials.Select(m => new SpentMaterial(m.MaterialTypeId, m.Amount)).ToList());
         newBatch = await productBatchRepository.AddAsync(newBatch);
 
         var dto = new ProductBatchDto
