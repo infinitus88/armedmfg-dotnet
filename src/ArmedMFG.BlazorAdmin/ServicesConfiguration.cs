@@ -9,6 +9,7 @@ public static class ServicesConfiguration
 {
     public static IServiceCollection AddBlazorServices(this IServiceCollection services)
     {
+        // TODO Remove after testing 
         services.AddScoped<ICatalogLookupDataService<CatalogBrand>, CachedCatalogLookupDataServiceDecorator<CatalogBrand, CatalogBrandResponse>>();
         services.AddScoped<CatalogLookupDataService<CatalogBrand, CatalogBrandResponse>>();
         services.AddScoped<ICatalogLookupDataService<CatalogType>, CachedCatalogLookupDataServiceDecorator<CatalogType, CatalogTypeResponse>>();
@@ -16,18 +17,24 @@ public static class ServicesConfiguration
         services.AddScoped<ICatalogItemService, CachedCatalogItemServiceDecorator>();
         services.AddScoped<CatalogItemService>();
 
+        // Product Types
         services.AddScoped<IProductsLookupDataService<ProductCategory>,
                 CachedProductsLookupDataServiceDecorator<ProductCategory, ProductCategoryResponse>>();
         services.AddScoped<ProductsLookupDataService<ProductCategory, ProductCategoryResponse>>();
         services.AddScoped<IProductTypeService, CachedProductTypeServiceDecorator>();
         services.AddScoped<ProductTypeService>();
+        
+        services.AddScoped<IProductPriceService, CachedProductPriceServiceDecorator>();
+        services.AddScoped<ProductPriceService>();
 
+        // Material Types
         services.AddScoped<IProductsLookupDataService<MaterialCategory>,
                 CachedProductsLookupDataServiceDecorator<MaterialCategory, MaterialCategoryResponse>>();
         services.AddScoped<ProductsLookupDataService<MaterialCategory, MaterialCategoryResponse>>();
         services.AddScoped<IMaterialTypeService, CachedMaterialTypeServiceDecorator>();
         services.AddScoped<MaterialTypeService>();
 
+        // Product Batches
         services.AddScoped<IProductBatchService, CachedProductBatchServiceDecorator>();
         services.AddScoped<ProductBatchService>();
         

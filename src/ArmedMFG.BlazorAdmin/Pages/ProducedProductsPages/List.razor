@@ -24,8 +24,8 @@ else
         <tr>
             <th>Id</th>
             <th>Produded Date</th>
-            <th>Spent Materials</th>
             <th>Produced Products</th>
+            <th>Spent Materials</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -35,8 +35,18 @@ else
             <tr @onclick="@(() => DetailsClick(item.Id))">
                 <td>@item.Id</td>
                 <td>@item.ProducedDate</td>
-                <td>@item.ProducedProducts.First().ProductType</td>
-                <td>@item.SpentMaterials.First().MaterialType</td>
+                <td>
+                    @foreach (var producedProduct in item.ProducedProducts)
+                    {
+                        <div>@producedProduct.ProductType - @producedProduct.Quantity</div><br>
+                    }
+                </td>
+                <td>
+                    @foreach (var spentMaterial in item.SpentMaterials)
+                    {
+                        <div>@spentMaterial.MaterialType - @spentMaterial.Amount</div><br>
+                    }
+                </td>
                 <td>
                     <button @onclick="@(() => EditClick(item.Id))" @onclick:stopPropagation="true" class="btn btn-primary">
                         Edit
@@ -53,6 +63,6 @@ else
     
     @* <Details Categories="@materialCategories" OnEditClick="EditClick" @ref="DetailsComponent"></Details> *@
     @* <Edit Categories="@materialCategories" OnSaveClick="ReloadProductBatchs" @ref="EditComponent"></Edit> *@
-    @* <Create Categories ="@materialCategories" OnSaveClick="ReloadProductBatchs" @ref="CreateComponent"></Create> *@
+    <Create MaterialTypes ="@materialTypes" ProductTypes="@productTypes"  OnSaveClick="ReloadProductBatches" @ref="CreateComponent"></Create>
     @* <Delete Categories ="@materialCategories" OnSaveClick="ReloadProductBatchs" @ref="DeleteComponent"></Delete> *@
 }

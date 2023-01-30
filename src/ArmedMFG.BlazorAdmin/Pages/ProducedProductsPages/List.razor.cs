@@ -13,14 +13,23 @@ public partial class List : BlazorComponent
 
     // [Microsoft.AspNetCore.Components.Inject]
     // public IProductsLookupDataService<MaterialCategory> MaterialCategoryService { get; set; }
+    
+    [Microsoft.AspNetCore.Components.Inject]
+    public IProductTypeService ProductTypeService { get; set; }
+    
+    [Microsoft.AspNetCore.Components.Inject]
+    public IMaterialTypeService MaterialTypeService { get; set; }
 
     private List<ProductBatch> productBatches = new List<ProductBatch>();
+
+    private List<ProductType> productTypes = new List<ProductType>();
+    private List<MaterialType> materialTypes = new List<MaterialType>();
     // private List<MaterialCategory> materialCategories = new List<MaterialCategory>();
 
     // private Edit EditComponent { get; set; }
     // private Delete DeleteComponent { get; set; }
     // private Details DetailsComponent { get; set; }
-    // private Create CreateComponent { get; set; }
+    private Create CreateComponent { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -28,7 +37,9 @@ public partial class List : BlazorComponent
         {
             productBatches = await ProductBatchService.List();
             
-            // TODO Get Categories for specific department
+            // TODO Get types for specific department
+            productTypes = await ProductTypeService.List();
+            materialTypes = await MaterialTypeService.List();
             // materialCategories = await MaterialCategoryService.List();
 
             CallRequestRefresh();
@@ -44,7 +55,7 @@ public partial class List : BlazorComponent
 
     private async Task CreateClick()
     {
-        // await CreateComponent.Open();
+        await CreateComponent.Open();
     }
 
     private async Task EditClick(int id)
@@ -57,7 +68,7 @@ public partial class List : BlazorComponent
         // await DeleteComponent.Open(id);
     }
 
-    private async Task ReloadProductBatchs()
+    private async Task ReloadProductBatches()
     {
         productBatches = await ProductBatchService.List();
         StateHasChanged();

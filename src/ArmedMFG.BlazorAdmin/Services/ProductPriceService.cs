@@ -4,19 +4,21 @@ using System.Threading.Tasks;
 using ArmedMFG.BlazorShared.Interfaces;
 using ArmedMFG.BlazorShared.Models;
 using Microsoft.Extensions.Logging;
+using Syncfusion.Blazor.Spinner.Internal;
 
 namespace ArmedMFG.BlazorAdmin.Services;
 
 public class ProductPriceService : IProductPriceService
 {
-    // private readonly IProductsLookupDataService<ProductType> _productTypeService;
+    private readonly IProductTypeService _productTypeService;
     private readonly HttpService _httpService;
     private readonly ILogger<ProductPrice> _logger;
 
-    public ProductPriceService(HttpService httpService, ILogger<ProductPrice> logger)
+    public ProductPriceService(HttpService httpService, ILogger<ProductPrice> logger, IProductTypeService productTypeService)
     {
         _httpService = httpService;
         _logger = logger;
+        _productTypeService = productTypeService;
     }
 
 
@@ -38,30 +40,33 @@ public class ProductPriceService : IProductPriceService
 
     public async Task<ProductPrice> GetById(int id)
     {
-        // var productTypeListTask = _productTypeService.List();
+        var productTypeListTask = _productTypeService.List();
         var productPriceGetTask = _httpService.HttpGet<EditProductPriceResult>($"product-types/prices/{id}");
-        // await Task.WhenAll(productTypeListTask,productPriceGetTask);
-        await Task.WhenAll(productPriceGetTask);
-        // var productTypes = productTypeListTask.Result;
+        await Task.WhenAll(productTypeListTask,productPriceGetTask);
+        
+        var productTypes = productTypeListTask.Result;
         var productPrice = productPriceGetTask.Result.ProductPrice;
-        // productPrice.ProductType = productTypes.FirstOrDefault(t => t.Id == productPrice.ProductTypeId)?.Name;
+        
+        productPrice.ProductType = productTypes.FirstOrDefault(t => t.Id == productPrice.ProductTypeId)?.Name;
+        
         return productPrice;
     }
 
-    public async Task<List<ProductPrice>> ListPaged(int pageSize, int productTypeId)
+    public async Task<List<ProductPrice>> ListPaged(int pageSize, int? productTypeId)
     {
         _logger.LogInformation("Fetching product prices from API.");
 
-        // var productTypeListTask = _productTypeService.List();
+        var productTypeListTask = _productTypeService.List();
         var productPriceListTask = _httpService.HttpGet<PagedProductPriceResponse>($"product-types/prices?PageSize=10&ProductTypeId={productTypeId}");
-        await Task.WhenAll(productPriceListTask);
-        // var productTypes = productTypeListTask.Result;
+        await Task.WhenAll(productTypeListTask, productPriceListTask);
+        
+        var productTypes = productTypeListTask.Result;
         var productPrices = productPriceListTask.Result.ProductPrices;
 
-        // foreach (var productPrice in productPrices)
-        // {
-        //     productPrice.ProductType = productTypes.FirstOrDefault(t => t.Id == productPrice.ProductTypeId)?.Name;
-        // }
+        foreach (var productPrice in productPrices)
+        {
+            productPrice.ProductType = productTypes.FirstOrDefault(t => t.Id == productPrice.ProductTypeId)?.Name;
+        }
 
         return productPrices;
     }
@@ -70,17 +75,17 @@ public class ProductPriceService : IProductPriceService
     {
         _logger.LogInformation("Fetching product prices from API.");
 
-        // var productTypeListTask = _productTypeService.List();
+        var productTypeListTask = _productTypeService.List();
         var productPriceListTask = _httpService.HttpGet<PagedProductPriceResponse>($"product-types/prices");
-        // await Task.WhenAll(productTypeListTask, productPriceListTask);
-        await Task.WhenAll(productPriceListTask);
-        // var productTypes = productTypeListTask.Result;
+        await Task.WhenAll(productTypeListTask, productPriceListTask);
+        
+        var productTypes = productTypeListTask.Result;
         var productPrices = productPriceListTask.Result.ProductPrices;
 
-        // foreach (var productPrice in productPrices)
-        // {
-        //     productPrice.ProductType = productTypes.FirstOrDefault(t => t.Id == productPrice.ProductTypeId)?.Name;
-        // }
+        foreach (var productPrice in productPrices)
+        {
+            productPrice.ProductType = productTypes.FirstOrDefault(t => t.Id == productPrice.ProductTypeId)?.Name;
+        }
 
         return productPrices;
     }

@@ -27,4 +27,9 @@
 			<DependentUpon>Edit.cs</DependentUpon>
 		</Compile>
 	</ItemGroup>
+
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="Pages\ProductTypePage\ProductPricePage\Create.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\ProductTypePage\ProductPricePage\List.razor" />
+	</ItemGroup>
 </Project>

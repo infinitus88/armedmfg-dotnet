@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
+    <Content Remove="Pages\Admin\EditCatalogItem.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -79,5 +80,8 @@
     <Content Update="Views\_ViewStart.cshtml">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Pages\Admin\EditCatalogItem.cshtml.cs" />
   </ItemGroup>
 </Project>

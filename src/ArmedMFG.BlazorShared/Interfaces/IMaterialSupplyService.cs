@@ -10,6 +10,6 @@ public interface IMaterialSupplyService
     Task<MaterialSupply> Edit(MaterialSupply materialSupply);
     Task<string> Delete(int id);
     Task<MaterialSupply> GetById(int id);
-    Task<List<MaterialSupply>> ListPaged(int pageSize);
+    Task<List<MaterialSupply>> ListPaged(int pageSize, int? materialTypeId);
     Task<List<MaterialSupply>> List();
 }

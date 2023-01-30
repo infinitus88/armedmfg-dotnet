@@ -10,6 +10,6 @@ public interface IProductPriceService
     Task<ProductPrice> Edit(ProductPrice productPrice);
     Task<string> Delete(int id);
     Task<ProductPrice> GetById(int id);
-    Task<List<ProductPrice>> ListPaged(int pageSize, int productTypeId);
+    Task<List<ProductPrice>> ListPaged(int pageSize, int? productTypeId);
     Task<List<ProductPrice>> List();
 }

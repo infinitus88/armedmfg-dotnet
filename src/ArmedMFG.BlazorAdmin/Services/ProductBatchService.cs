@@ -25,7 +25,7 @@ public class ProductBatchService : IProductBatchService
     
     public async Task<ProductBatch> Create(CreateProductBatchRequest productBatch)
     {
-        var response = await _httpService.HttpPost<CreateProductBatchResponse>("product-batch", productBatch);
+        var response = await _httpService.HttpPost<CreateProductBatchResponse>("product-batches", productBatch);
         return response?.ProductBatch;
     }
 
@@ -36,14 +36,14 @@ public class ProductBatchService : IProductBatchService
 
     public async Task<string> Delete(int id)
     {
-        return (await _httpService.HttpDelete<DeleteProductBatchResponse>("product-batch", id)).Status;
+        return (await _httpService.HttpDelete<DeleteProductBatchResponse>("product-batches", id)).Status;
     }
 
     public async Task<ProductBatch> GetById(int id)
     {
         var productTypeListTask = _productTypeService.List();
         var materialTypeListTask = _materialTypeService.List();
-        var productBatchGetTask = _httpService.HttpGet<EditProductBatchResult>($"product-batch/{id}");
+        var productBatchGetTask = _httpService.HttpGet<EditProductBatchResult>($"product-batches/{id}");
         await Task.WhenAll(productTypeListTask, materialTypeListTask, productBatchGetTask);
         var productTypes = productTypeListTask.Result;
         var materialTypes = materialTypeListTask.Result;
@@ -70,8 +70,17 @@ public class ProductBatchService : IProductBatchService
 
         foreach (var productBatch in productBatches)
         {
-            productBatch.ProducedProducts.ForEach(p => p.ProductType = productTypes.FirstOrDefault(t => t.Id == p.ProductTypeId)?.Name);
-            productBatch.SpentMaterials.ForEach(m => m.MaterialType = materialTypes.FirstOrDefault(t => t.Id == m.MaterialTypeId)?.Name);
+            foreach (var producedProduct in productBatch.ProducedProducts)
+            {
+                producedProduct.ProductType =
+                    productTypes.FirstOrDefault(t => t.Id == producedProduct.ProductTypeId)?.Name;
+            }
+
+            foreach (var spentMaterial in productBatch.SpentMaterials)
+            {
+                spentMaterial.MaterialType =
+                    materialTypes.FirstOrDefault(m => m.Id == spentMaterial.MaterialTypeId)?.Name;
+            }
         }
 
         return productBatches;
@@ -92,8 +101,17 @@ public class ProductBatchService : IProductBatchService
 
         foreach (var productBatch in productBatches)
         {
-            productBatch.ProducedProducts.ForEach(p => p.ProductType = productTypes.FirstOrDefault(t => t.Id == p.ProductTypeId)?.Name);
-            productBatch.SpentMaterials.ForEach(m => m.MaterialType = materialTypes.FirstOrDefault(t => t.Id == m.MaterialTypeId)?.Name);
+            foreach (var producedProduct in productBatch.ProducedProducts)
+            {
+                producedProduct.ProductType =
+                    productTypes.FirstOrDefault(t => t.Id == producedProduct.ProductTypeId)?.Name;
+            }
+
+            foreach (var spentMaterial in productBatch.SpentMaterials)
+            {
+                spentMaterial.MaterialType =
+                    materialTypes.FirstOrDefault(m => m.Id == spentMaterial.MaterialTypeId)?.Name;
+            }
         }
 
         return productBatches;

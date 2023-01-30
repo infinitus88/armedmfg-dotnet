@@ -1,0 +1,219 @@
+﻿@inject ILogger<Create> Logger
+@inject IJSRuntime JSRuntime
+@inject IProductBatchService ProductBatchService
+
+@inherits ArmedMFG.BlazorAdmin.Helpers.BlazorComponent
+
+@namespace ArmedMFG.BlazorAdmin.Pages.ProducedProductsPages
+
+<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <EditForm Model="_productBatch" OnValidSubmit="@CreateClick">
+                <DataAnnotationsValidator />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if (_productBatch == null)
+                    {
+                        <Spinner></Spinner>
+                    }
+                    else
+                    {
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Produced Date</label>
+                                        <div class="col-md-12">
+                                            <InputDate class="form-control" @bind-Value="_productBatch.ProducedDate" />
+                                            <ValidationMessage For="(() => _productBatch.ProducedDate)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Product Type</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="cursor-pointer">
+                                    @foreach (var producedProduct in _producedProducts)
+                                    {   
+                                        <tr>
+                                            <td>@ProductTypes.First(t => t.Id == producedProduct.ProductTypeId).Name</td>
+                                            <td>@producedProduct.Quantity</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <InputSelect @bind-Value="_producedProduct.ProductTypeId" class="form-control">
+                                            @foreach (var type in ProductTypes)
+                                            {
+                                                <option value="@type.Id">@type.Name</option>
+                                            }
+                                        </InputSelect>
+                                        <ValidationMessage For="(() => _producedProduct.ProductTypeId)" />
+                                    </div>
+                                    <div class="form-group">
+                                        <InputNumber @bind-Value="_producedProduct.Quantity" class="form-control" />
+                                        <ValidationMessage For="(() => _producedProduct.Quantity)" />
+                                    </div>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" @onclick="AddProducedProductClick">Add</button>
+                                </form>
+                                
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Material Type</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="cursor-pointer">
+                                    @foreach (var spentMaterial in _spentMaterials)
+                                    {   
+                                        <tr>
+                                            <td>@MaterialTypes.First(t => t.Id == spentMaterial.MaterialTypeId).Name</td>
+                                            <td>@spentMaterial.Amount</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <InputSelect @bind-Value="_spentMaterial.MaterialTypeId" class="form-control">
+                                            @foreach (var type in MaterialTypes)
+                                            {
+                                                <option value="@type.Id">@type.Name</option>
+                                            }
+                                        </InputSelect>
+                                        <ValidationMessage For="(() => _spentMaterial.MaterialTypeId)" />
+                                    </div>
+                                    <div class="form-group">
+                                        <InputNumber @bind-Value="_spentMaterial.Amount" class="form-control" />
+                                        <ValidationMessage For="(() => _spentMaterial.Amount)" />
+                                    </div>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" @onclick="AddSpentMaterialClick">Add</button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        Create
+                    </button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+
+
+@if (_showCreateModal)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+        [Parameter]
+        public IEnumerable<MaterialType> MaterialTypes { get; set; }
+    
+        [Parameter]
+        public IEnumerable<ProductType> ProductTypes { get; set; }
+
+        [Parameter]
+        public EventCallback<string> OnSaveClick { get; set; }
+    
+    private string _badFileMessage = string.Empty;
+    private string _modalDisplay = "none;";
+    private string _modalClass = "";
+    private bool _showCreateModal = false;
+    private CreateProductBatchRequest _productBatch = new CreateProductBatchRequest();
+    private List<CreateProducedProductRequest> _producedProducts = new List<CreateProducedProductRequest>();
+    private List<CreateSpentMaterialRequest> _spentMaterials = new List<CreateSpentMaterialRequest>();
+    private CreateProducedProductRequest _producedProduct = new CreateProducedProductRequest();
+    private CreateSpentMaterialRequest _spentMaterial = new CreateSpentMaterialRequest();
+
+    private async Task CreateClick()
+    {
+        _productBatch.ProducedProducts = _producedProducts.ToList();
+        _productBatch.SpentMaterials = _spentMaterials;
+        var result = await ProductBatchService.Create(_productBatch);
+        if (result != null)
+        {
+            await OnSaveClick.InvokeAsync(null);
+            await Close();
+        }
+    }
+
+    private void AddProducedProductClick()
+    {
+        _producedProducts.Add(_producedProduct);
+        _producedProduct = new CreateProducedProductRequest()
+        {
+            ProductTypeId = ProductTypes.First().Id,
+            Quantity = 50 
+        };
+    }
+
+    private void AddSpentMaterialClick()
+    {
+        _spentMaterials.Add(_spentMaterial);
+        _spentMaterial = new CreateSpentMaterialRequest()
+        {
+            MaterialTypeId = MaterialTypes.First().Id,
+            Amount = 50
+        };
+    }
+
+    public async Task Open()
+    {
+    
+        Logger.LogInformation("Now loading... /ProductBatch/Create");
+
+        await new Css(JSRuntime).HideBodyOverflow();
+
+        _productBatch = new CreateProductBatchRequest
+        {
+            ProducedDate = DateTime.Now,
+            
+        };
+
+        _producedProduct = new CreateProducedProductRequest()
+        {
+            ProductTypeId = ProductTypes.First().Id,
+            Quantity = 50
+        };
+
+        _spentMaterial = new CreateSpentMaterialRequest()
+        {
+            MaterialTypeId = MaterialTypes.First().Id,
+            Amount = 50
+        };
+
+        _modalDisplay = "block;";
+        _modalClass = "Show";
+        _showCreateModal = true;
+
+        StateHasChanged();
+    }
+
+    private async Task Close()
+    {
+        await new Css(JSRuntime).ShowBodyOverflow();
+        _modalDisplay = "none";
+        _modalClass = "";
+        _showCreateModal = false;
+    }
+}
