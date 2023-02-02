@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Ardalis.GuardClauses;
-using ArmedMFG.ApplicationCore.Entities.ClientAggregate;
+using ArmedMFG.ApplicationCore.Entities.CustomerOrganizationAggregate;
 using ArmedMFG.ApplicationCore.Interfaces;
 
 namespace ArmedMFG.ApplicationCore.Entities.OrderAggregate;
@@ -13,7 +12,7 @@ public class Order : BaseEntity, IAggregateRoot
     public DateTime RequiredDate { get; private set; }
     public DateTime ShippedDate { get; private set; }
     public int ClientId { get; private set; }
-    public Client? Client { get; private set; }
+    public Customer? Customer { get; private set; }
     public Status Status { get; private set; }
     public string Description { get; private set; }
 

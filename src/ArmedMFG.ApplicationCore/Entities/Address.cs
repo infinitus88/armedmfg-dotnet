@@ -15,4 +15,9 @@ public class Address // ValueObject
         District = district;
         Street = street;
     }
+
+    public override string ToString()
+    {
+        return Region + ", " + District;
+    }
 }

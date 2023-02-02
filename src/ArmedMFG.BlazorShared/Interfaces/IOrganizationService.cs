@@ -6,10 +6,10 @@ namespace ArmedMFG.BlazorShared.Interfaces;
 
 public interface IOrganizationService
 {
-    Task<Organization> Create(CreateOrganizationRequest organization);
-    Task<Organization> Edit(Organization organization);
+    Task<CustomerOrganization> Create(CreateCustomerOrganizationRequest customerOrganization);
+    Task<CustomerOrganization> Edit(CustomerOrganization customerOrganization);
     Task<string> Delete(int id);
-    Task<Organization> GetById(int id);
-    Task<List<Organization>> ListPaged(int pageSize);
-    Task<List<Organization>> List();
+    Task<CustomerOrganization> GetById(int id);
+    Task<List<CustomerOrganization>> ListPaged(int pageSize);
+    Task<List<CustomerOrganization>> List();
 }

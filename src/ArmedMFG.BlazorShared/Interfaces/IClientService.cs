@@ -6,10 +6,10 @@ namespace ArmedMFG.BlazorShared.Interfaces;
 
 public interface IClientService
 {
-    Task<Client> Create(CreateClientRequest client);
-    Task<Client> Edit(Client client);
+    Task<Customer> Create(CreateCustomerRequest customer);
+    Task<Customer> Edit(Customer customer);
     Task<string> Delete(int id);
-    Task<Client> GetById(int id);
-    Task<List<Client>> ListPaged(int pageSize);
-    Task<List<Client>> List();
+    Task<Customer> GetById(int id);
+    Task<List<Customer>> ListPaged(int pageSize);
+    Task<List<Customer>> List();
 }
