@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using ArmedMFG.ApplicationCore.Entities;
 using ArmedMFG.ApplicationCore.Entities.BasketAggregate;
+using ArmedMFG.ApplicationCore.Entities.CustomerOrganizationAggregate;
 using ArmedMFG.ApplicationCore.Entities.MaterialTypeAggregate;
 using ArmedMFG.ApplicationCore.Entities.OrderCatalogAggregate;
 using ArmedMFG.ApplicationCore.Entities.ProductBatch;
@@ -23,7 +24,7 @@ public class ProductsContext : DbContext
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<BasketItem> BasketItems { get; set; } 
-
+    //
     public DbSet<ProductBatch> ProductBatches { get; set; }
     public DbSet<ProducedProduct> ProducedProducts { get; set; }
     public DbSet<SpentMaterial> SpentMaterials { get; set; }
@@ -37,6 +38,9 @@ public class ProductsContext : DbContext
     public DbSet<MaterialType> MaterialTypes { get; set; }
     public DbSet<MaterialCategory> MaterialCategories { get; set; }
     public DbSet<MaterialSupply> MaterialSupplies { get; set; }
+    
+    public DbSet<Customer> Customers { get; set; }
+    public DbSet<CustomerOrganization> CustomerOrganizations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

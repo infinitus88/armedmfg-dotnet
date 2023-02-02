@@ -11,12 +11,15 @@ public class UpdateCustomerOrganizationRequest : BaseRequest
     [Required(ErrorMessage = "The name field is required")]
     public string Name { get; set; }
     
-    public string PhoneNumber { get;set; }
+    public string TaxpayerIdNum { get; set; }
+    
+    public string PhoneNumber { get; set; }
+    
+    public string Email { get; set; }
     
     [Required(ErrorMessage = "The main branch address is required")]
     public UpdateAddressRequest MainBranchAddress { get; set; }
     
-    public string Email { get; set; }
     
     public string Description { get; set; }
 }

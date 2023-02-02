@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using ArmedMFG.ApplicationCore.Entities;
 using ArmedMFG.ApplicationCore.Entities.CustomerOrganizationAggregate;
+using ArmedMFG.ApplicationCore.Exceptions;
 using ArmedMFG.ApplicationCore.Interfaces;
 using ArmedMFG.PublicApi.CustomerEndpoints;
 using AutoMapper;
@@ -40,10 +42,13 @@ public class UpdateCustomerOrganizationEndpoint : IEndpoint<IResult, UpdateCusto
 
         var existingOrganization = await organizationRepository.GetByIdAsync(request.Id);
 
-        var address = new Address(request.MainBranchAddress.Region, request.MainBranchAddress.District,
-            request.MainBranchAddress.Street);
+        if (existingOrganization is null)
+        {
+            throw new NotFoundException($"The customer organization with Id : {request.Id} was not found");
+        }
+        existingOrganization.SetAddress(request.MainBranchAddress.Region, request.MainBranchAddress.District, request.MainBranchAddress.Street);
 
-        CustomerOrganization.OrganizationDetails details = new(request.Name, request.PhoneNumber, request.Email, address, request.Description);
+        CustomerOrganization.OrganizationDetails details = new(request.Name, request.TaxpayerIdNum, request.PhoneNumber, request.Email, request.Description);
         existingOrganization.UpdateDetails(details);
 
         await organizationRepository.UpdateAsync(existingOrganization);
@@ -52,9 +57,11 @@ public class UpdateCustomerOrganizationEndpoint : IEndpoint<IResult, UpdateCusto
         {
             Id = existingOrganization.Id,
             Name = existingOrganization.Name,
+            TaxpayerIdNum = existingOrganization.TaxpayerIdNum,
             PhoneNumber = existingOrganization.PhoneNumber,
-            MainBranchAddress = existingOrganization.MainBranchAddress.ToString(),
             Email = existingOrganization.Email,
+            MainBranchAddress = existingOrganization.MainBranchAddress.ToString(),
+            Description = existingOrganization.Description
         };
         response.Organization = dto;
         return Results.Ok(response);

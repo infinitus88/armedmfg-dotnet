@@ -43,8 +43,7 @@ public class CreateCustomerEndpoint : IEndpoint<IResult, CreateCustomerRequest, 
         // var productPriceNameSpecification = new ProductPrice
         
 
-        var newCustomer = new Customer(request.FullName, request.PhoneNumber, request.FindOutThrough);
-        newCustomer = await customerRepository.AddAsync(newCustomer);
+        var newCustomer = new Customer(request.FullName, request.PhoneNumber, request.Email, request.FindOutThrough);
         
         if (request.OrganizationId.HasValue)
         {
@@ -57,6 +56,8 @@ public class CreateCustomerEndpoint : IEndpoint<IResult, CreateCustomerRequest, 
             
             newCustomer.SetOrganization(existingOrganization.Id);
         }
+        
+        newCustomer = await customerRepository.AddAsync(newCustomer);
 
         var dto = new CustomerDto
         {
@@ -64,6 +65,7 @@ public class CreateCustomerEndpoint : IEndpoint<IResult, CreateCustomerRequest, 
             FullName = newCustomer.FullName,
             PhoneNumber = newCustomer.PhoneNumber,
             Email = newCustomer.Email,
+            FindOutThrough = newCustomer.FindOutThrough,
             OrganizationId = newCustomer.OrganizationId
         };
         response.Customer = dto;

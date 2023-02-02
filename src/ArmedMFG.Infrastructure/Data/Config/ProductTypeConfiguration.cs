@@ -27,3 +27,4 @@ public class ProductTypeConfiguration : IEntityTypeConfiguration<ProductType>
             .HasForeignKey(pt => pt.ProductCategoryId);
     }
 }
+

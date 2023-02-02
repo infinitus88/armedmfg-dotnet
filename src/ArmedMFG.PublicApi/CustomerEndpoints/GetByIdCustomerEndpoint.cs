@@ -42,6 +42,7 @@ public class GetByIdCustomerEndpoint : IEndpoint<IResult, GetByIdCustomerRequest
             FullName = customer.FullName,
             PhoneNumber = customer.PhoneNumber,
             Email = customer.Email,
+            FindOutThrough = customer.FindOutThrough,
             OrganizationId = customer.OrganizationId
         };
 

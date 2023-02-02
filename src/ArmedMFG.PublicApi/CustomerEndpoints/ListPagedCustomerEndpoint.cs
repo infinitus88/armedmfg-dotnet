@@ -24,9 +24,9 @@ public class ListPagedCustomerEndpoint : IEndpoint<IResult, ListPagedCustomerReq
     public void AddRoute(IEndpointRouteBuilder app)
     {
         app.MapGet("api/customers",
-                async (int? pageSize, int? pageIndex, int? materialTypeId, IRepository<Customer> customerRepository) =>
+                async (int? pageSize, int? pageIndex, int? organizationId, IRepository<Customer> customerRepository) =>
                 {
-                    return await HandleAsync(new ListPagedCustomerRequest(pageSize, pageIndex, materialTypeId), customerRepository);
+                    return await HandleAsync(new ListPagedCustomerRequest(pageSize, pageIndex, organizationId), customerRepository);
                 })
             .Produces<ListPagedCustomerResponse>()
             .WithTags("CustomerEndpoints");

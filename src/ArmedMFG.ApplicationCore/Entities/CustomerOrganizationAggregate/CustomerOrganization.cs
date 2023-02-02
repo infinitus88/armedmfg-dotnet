@@ -5,53 +5,58 @@ namespace ArmedMFG.ApplicationCore.Entities.CustomerOrganizationAggregate;
 
 public class CustomerOrganization : BaseEntity, IAggregateRoot
 {
-    public string Name { get; set; }
-    public string? TIN { get; set; }
-    public Address? MainBranchAddress { get; set; }
-    public string? Email { get; set; }
-    public string? PhoneNumber { get; set; }
-    public string? Description { get; set; }
+    public string Name { get; private set; }
+    public string? TaxpayerIdNum { get; private set; }
+    public Address? MainBranchAddress { get; private set; }
+    public string? Email { get; private set; }
+    public string? PhoneNumber { get; private set; }
+    public string? Description { get; private set; }
 
 
-    public CustomerOrganization(string name, string tin, Address mainBranchAddress, string phoneNumber, string description)
+    public CustomerOrganization(string name, string taxpayerIdNum, string phoneNumber, string email, string description)
     {
         Name = name;
-        TIN = tin;
-        MainBranchAddress = mainBranchAddress;
         PhoneNumber = phoneNumber;
+        Email = email;
+        TaxpayerIdNum = taxpayerIdNum;
         Description = description;
+    }
+
+    public void SetAddress(string region, string district, string street)
+    {
+        MainBranchAddress = new Address(region, district, street);
     }
 
     public void UpdateDetails(OrganizationDetails details)
     {
         Guard.Against.NullOrEmpty(details.Name, nameof(details.Name));
-        Guard.Against.NullOrEmpty(details.TIN, nameof(details.TIN));
+        Guard.Against.NullOrEmpty(details.TaxpayerIdNum, nameof(details.TaxpayerIdNum));
         Guard.Against.NullOrEmpty(details.PhoneNumber, nameof(details.PhoneNumber));
+        Guard.Against.NullOrEmpty(details.Email, nameof(details.Email));
         Guard.Against.NullOrEmpty(details.Description, nameof(details.Description));
-        Guard.Against.Null(details.MainBranchAddress, nameof(details.MainBranchAddress));
 
         Name = details.Name;
-        TIN = details.TIN;
+        TaxpayerIdNum = details.TaxpayerIdNum;
         PhoneNumber = details.PhoneNumber;
-        MainBranchAddress = details.MainBranchAddress;
+        Email = details.Email;
         Description = details.Description;
     }
 
     public readonly record struct OrganizationDetails
     {
-        public OrganizationDetails(string? name, string? tin, string? phoneNumber, Address? mainBranchAddress, string? description)
+        public OrganizationDetails(string? name, string? taxpayerIdNum, string? phoneNumber, string? email, string? description)
         {
             Name = name;
-            TIN = tin;
+            TaxpayerIdNum = taxpayerIdNum;
             PhoneNumber = phoneNumber;
-            MainBranchAddress = mainBranchAddress;
+            Email = email;
             Description = description;
         }
 
         public string? Name { get; }
-        public string? TIN { get; }
+        public string? TaxpayerIdNum { get; }
         public string? PhoneNumber { get; }
-        public Address? MainBranchAddress { get; }
+        public string? Email { get; }
         public string? Description { get; }
     }
 }

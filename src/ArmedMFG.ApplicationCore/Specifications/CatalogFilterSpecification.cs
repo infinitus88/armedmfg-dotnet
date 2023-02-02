@@ -1,6 +1,5 @@
 ﻿using Ardalis.Specification;
-using ArmedMFG.ApplicationCore.Entities.ProductBatch;
-using CatalogItem = ArmedMFG.ApplicationCore.Entities.CatalogItem;
+using ArmedMFG.ApplicationCore.Entities;
 
 namespace ArmedMFG.ApplicationCore.Specifications;
 

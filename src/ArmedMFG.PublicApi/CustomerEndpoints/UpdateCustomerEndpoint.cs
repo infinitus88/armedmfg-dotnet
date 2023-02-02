@@ -49,7 +49,8 @@ public class UpdateCustomerEndpoint : IEndpoint<IResult, UpdateCustomerRequest, 
             FullName = existingCustomer.FullName,
             PhoneNumber = existingCustomer.PhoneNumber,
             Email = existingCustomer.Email,
-            OrganizationId = existingCustomer.OrganizationId
+            OrganizationId = existingCustomer.OrganizationId,
+            FindOutThrough = existingCustomer.FindOutThrough
         };
         response.Customer = dto;
         return Results.Ok(response);
