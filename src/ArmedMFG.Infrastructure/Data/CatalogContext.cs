@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using ArmedMFG.ApplicationCore.Entities.BasketAggregate;
-using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
+using ArmedMFG.ApplicationCore.Entities.OrderCatalogAggregate;
 using CatalogBrand = ArmedMFG.ApplicationCore.Entities.CatalogBrand;
 using CatalogItem = ArmedMFG.ApplicationCore.Entities.CatalogItem;
 using CatalogType = ArmedMFG.ApplicationCore.Entities.CatalogType;

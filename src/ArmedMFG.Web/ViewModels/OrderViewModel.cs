@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
+using ArmedMFG.ApplicationCore.Entities.OrderCatalogAggregate;
 
 namespace ArmedMFG.Web.ViewModels;
 

@@ -2,7 +2,7 @@
 using ArmedMFG.ApplicationCore.Entities;
 using ArmedMFG.ApplicationCore.Entities.BasketAggregate;
 using ArmedMFG.ApplicationCore.Entities.MaterialTypeAggregate;
-using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
+using ArmedMFG.ApplicationCore.Entities.OrderCatalogAggregate;
 using ArmedMFG.ApplicationCore.Entities.ProductBatch;
 using ArmedMFG.ApplicationCore.Entities.ProductTypeAggregate;
 using Microsoft.EntityFrameworkCore;

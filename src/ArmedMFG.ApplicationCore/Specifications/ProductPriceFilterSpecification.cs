@@ -1,4 +1,5 @@
 ﻿using Ardalis.Specification;
+using ArmedMFG.ApplicationCore.Entities.ClientAggregate;
 using ArmedMFG.ApplicationCore.Entities.ProductTypeAggregate;
 
 namespace ArmedMFG.ApplicationCore.Specifications;

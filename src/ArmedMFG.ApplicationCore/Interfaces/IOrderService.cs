@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
+using ArmedMFG.ApplicationCore.Entities.OrderCatalogAggregate;
 
 namespace ArmedMFG.ApplicationCore.Interfaces;
 

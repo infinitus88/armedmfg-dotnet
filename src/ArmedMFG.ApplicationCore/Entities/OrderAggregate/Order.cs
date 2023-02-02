@@ -1,47 +1,89 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Ardalis.GuardClauses;
+using ArmedMFG.ApplicationCore.Entities.ClientAggregate;
 using ArmedMFG.ApplicationCore.Interfaces;
 
 namespace ArmedMFG.ApplicationCore.Entities.OrderAggregate;
 
 public class Order : BaseEntity, IAggregateRoot
 {
-    #pragma warning disable CS8618 // Required by Entity Framework
-    private Order() {}
+    public DateTime OrderedDate { get; private set; }
+    public DateTime RequiredDate { get; private set; }
+    public DateTime ShippedDate { get; private set; }
+    public int ClientId { get; private set; }
+    public Client? Client { get; private set; }
+    public Status Status { get; private set; }
+    public string Description { get; private set; }
 
-    public Order(string buyerId, Address shipToAddress, List<OrderItem> items)
+    private readonly List<PartialPayment> _partialPayments = new List<PartialPayment>();
+    public IReadOnlyCollection<PartialPayment> PartialPayments => _partialPayments.AsReadOnly();
+
+    private readonly List<OrderProduct> _orderProducts = new List<OrderProduct>();
+    public IReadOnlyCollection<OrderProduct> OrderProducts => _orderProducts.AsReadOnly();
+
+    public Order(DateTime orderedDate,
+        int clientId,
+        string description
+        )
     {
-        Guard.Against.NullOrEmpty(buyerId, nameof(buyerId));
-
-        BuyerId = buyerId;
-        ShipToAddress = shipToAddress;
-        _orderItems = items;
+        OrderedDate = orderedDate;
+        ClientId = clientId;
+        Description = description;
     }
 
-    public string BuyerId { get; private set; }
-    public DateTimeOffset OrderDate { get; private set; } = DateTimeOffset.Now;
-    public Address ShipToAddress { get; private set; }
-
-    // DDD Patterns comment
-    // Using a private collection field, better for DDD Aggregate's encapsulation
-    // so OrderItems cannot be added from "outside the AggregateRoot" directly to the collection,
-    // but only through the method Order.AddOrderItem() which includes behavior.
-    private readonly List<OrderItem> _orderItems = new List<OrderItem>();
-
-    // Using List<>.AsReadOnly() 
-    // This will create a read only wrapper around the private list so is protected against "external updates".
-    // It's much cheaper than .ToList() because it will not have to copy all items in a new collection. (Just one heap alloc for the wrapper instance)
-    //https://msdn.microsoft.com/en-us/library/e78dcd75(v=vs.110).aspx 
-    public IReadOnlyCollection<OrderItem> OrderItems => _orderItems.AsReadOnly();
-
-    public decimal Total()
+    public void AddRangePartialPayments(IEnumerable<PartialPayment> partialPayments)
     {
-        var total = 0m;
-        foreach (var item in _orderItems)
+        foreach (var partialPayment in partialPayments)
         {
-            total += item.UnitPrice * item.Units;
+            _partialPayments.Add(partialPayment);
         }
-        return total;
     }
+
+    public void AddRangeProducts(IEnumerable<OrderProduct> orderProducts)
+    {
+        foreach (var orderProduct in orderProducts) 
+        {
+            _orderProducts.Add(orderProduct);
+        } 
+    }
+
+    public void UpdateDetails(OrderDetails details)
+    {
+        Guard.Against.Default(details.OrderedDate, nameof(details.OrderedDate));
+        Guard.Against.Zero(details.ClientId, nameof(details.ClientId));
+
+        OrderedDate = details.OrderedDate;
+        ClientId = details.ClientId;
+    }
+
+    public readonly record struct OrderDetails
+    {
+        public DateTime OrderedDate { get; }
+        public int ClientId { get; }
+
+        public OrderDetails(DateTime orderedDate, int clientId)
+        {
+            OrderedDate = orderedDate;
+            ClientId = clientId;
+        }
+    }
+}
+
+public enum PaymentType : byte
+{
+    Transfer = 1,
+    CashWithVAT = 2,
+    CashWithoutVAT = 2
+}
+
+public enum Status : byte
+{
+    Pending = 1,
+    InQueue = 2,
+    InProcess = 3,
+    Canceled = 4,
+    WaitsForShipping = 5, 
+    Finished = 6,
 }

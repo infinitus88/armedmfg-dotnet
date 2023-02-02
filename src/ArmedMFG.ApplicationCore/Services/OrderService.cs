@@ -3,9 +3,10 @@ using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using ArmedMFG.ApplicationCore.Entities;
 using ArmedMFG.ApplicationCore.Entities.BasketAggregate;
-using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
+using ArmedMFG.ApplicationCore.Entities.OrderCatalogAggregate;
 using ArmedMFG.ApplicationCore.Interfaces;
 using ArmedMFG.ApplicationCore.Specifications;
+using Address = ArmedMFG.ApplicationCore.Entities.OrderCatalogAggregate.Address;
 
 namespace ArmedMFG.ApplicationCore.Services;
 

@@ -1,9 +1,9 @@
 ﻿using Ardalis.GuardClauses;
+using ArmedMFG.ApplicationCore.Entities.OrderCatalogAggregate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
 using ArmedMFG.ApplicationCore.Exceptions;
 using ArmedMFG.ApplicationCore.Interfaces;
 using ArmedMFG.Infrastructure.Identity;

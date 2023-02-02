@@ -7,6 +7,6 @@ public class ProductBatch
 {
     public int Id { get; set; }
     public DateTime ProducedDate { get; set; }
-    public List<ProducedProduct> ProducedProducts { get; set; }
-    public List<SpentMaterial> SpentMaterials { get; set; }
+    public List<ProducedProduct> ProducedProducts { get; set; } = new List<ProducedProduct>();
+    public List<SpentMaterial> SpentMaterials { get; set; } = new List<SpentMaterial>();
 }

@@ -1,4 +1,4 @@
-﻿namespace ArmedMFG.ApplicationCore.Entities.OrderAggregate;
+﻿namespace ArmedMFG.ApplicationCore.Entities.OrderCatalogAggregate;
 
 public class OrderItem : BaseEntity
 {

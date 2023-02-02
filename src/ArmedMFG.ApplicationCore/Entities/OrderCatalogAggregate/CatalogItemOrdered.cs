@@ -1,6 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 
-namespace ArmedMFG.ApplicationCore.Entities.OrderAggregate;
+namespace ArmedMFG.ApplicationCore.Entities.OrderCatalogAggregate;
 
 /// <summary>
 /// Represents a snapshot of the item that was ordered. If catalog item details change, details of

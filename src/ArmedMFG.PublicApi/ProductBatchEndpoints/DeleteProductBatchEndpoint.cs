@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
 using ArmedMFG.ApplicationCore.Entities.ProductBatch;
-using ArmedMFG.ApplicationCore.Entities.ProductTypeAggregate;
 using ArmedMFG.ApplicationCore.Interfaces;
-using ArmedMFG.PublicApi.ProductTypeEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -16,7 +14,7 @@ public class DeleteProductBatchEndpoint : IEndpoint<IResult, DeleteProductBatchR
 {
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapDelete("api/product-batch/{productBatchId}",
+        app.MapDelete("api/product-batches/{productBatchId}",
                 [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] async
                     (int productBatchId, IRepository<ProductBatch> productBatchRepository) =>
                 {

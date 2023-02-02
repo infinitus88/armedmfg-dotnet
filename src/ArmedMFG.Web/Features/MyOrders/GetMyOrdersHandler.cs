@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
+using ArmedMFG.ApplicationCore.Entities.OrderCatalogAggregate;
 using ArmedMFG.ApplicationCore.Interfaces;
 using ArmedMFG.ApplicationCore.Specifications;
 using ArmedMFG.Web.ViewModels;

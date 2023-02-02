@@ -27,7 +27,7 @@ public partial class List : BlazorComponent
     // private List<MaterialCategory> materialCategories = new List<MaterialCategory>();
 
     // private Edit EditComponent { get; set; }
-    // private Delete DeleteComponent { get; set; }
+    private Delete DeleteComponent { get; set; }
     // private Details DetailsComponent { get; set; }
     private Create CreateComponent { get; set; }
 
@@ -65,7 +65,7 @@ public partial class List : BlazorComponent
 
     private async Task DeleteClick(int id)
     {
-        // await DeleteComponent.Open(id);
+        await DeleteComponent.Open(id);
     }
 
     private async Task ReloadProductBatches()

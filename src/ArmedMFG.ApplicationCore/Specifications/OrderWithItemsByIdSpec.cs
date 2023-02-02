@@ -1,5 +1,5 @@
 ﻿using Ardalis.Specification;
-using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
+using ArmedMFG.ApplicationCore.Entities.OrderCatalogAggregate;
 
 namespace ArmedMFG.ApplicationCore.Specifications;
 

@@ -30,29 +30,29 @@ else
         </tr>
         </thead>
         <tbody class="cursor-pointer">
-        @foreach (var item in productBatches)
+        @foreach (var productBatch in productBatches)
         {
-            <tr @onclick="@(() => DetailsClick(item.Id))">
-                <td>@item.Id</td>
-                <td>@item.ProducedDate</td>
+            <tr @onclick="@(() => DetailsClick(productBatch.Id))">
+                <td>@productBatch.Id</td>
+                <td>@productBatch.ProducedDate</td>
                 <td>
-                    @foreach (var producedProduct in item.ProducedProducts)
+                    @foreach (var producedProduct in productBatch.ProducedProducts)
                     {
                         <div>@producedProduct.ProductType - @producedProduct.Quantity</div><br>
                     }
                 </td>
                 <td>
-                    @foreach (var spentMaterial in item.SpentMaterials)
+                    @foreach (var spentMaterial in productBatch.SpentMaterials)
                     {
                         <div>@spentMaterial.MaterialType - @spentMaterial.Amount</div><br>
                     }
                 </td>
                 <td>
-                    <button @onclick="@(() => EditClick(item.Id))" @onclick:stopPropagation="true" class="btn btn-primary">
+                    <button @onclick="@(() => EditClick(productBatch.Id))" @onclick:stopPropagation="true" class="btn btn-primary">
                         Edit
                     </button>
 
-                    <button @onclick="@(() => DeleteClick(item.Id))" @onclick:stopPropagation="true" class="btn btn-danger">
+                    <button @onclick="@(() => DeleteClick(productBatch.Id))" @onclick:stopPropagation="true" class="btn btn-danger">
                         Delete
                     </button>
                 </td>
@@ -64,5 +64,5 @@ else
     @* <Details Categories="@materialCategories" OnEditClick="EditClick" @ref="DetailsComponent"></Details> *@
     @* <Edit Categories="@materialCategories" OnSaveClick="ReloadProductBatchs" @ref="EditComponent"></Edit> *@
     <Create MaterialTypes ="@materialTypes" ProductTypes="@productTypes"  OnSaveClick="ReloadProductBatches" @ref="CreateComponent"></Create>
-    @* <Delete Categories ="@materialCategories" OnSaveClick="ReloadProductBatchs" @ref="DeleteComponent"></Delete> *@
+    <Delete ProductTypes="@productTypes" MaterialTypes="@materialTypes" OnSaveClick="ReloadProductBatches" @ref="DeleteComponent"></Delete>
 }

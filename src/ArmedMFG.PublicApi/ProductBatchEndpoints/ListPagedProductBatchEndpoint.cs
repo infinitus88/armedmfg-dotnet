@@ -47,9 +47,9 @@ public class ListPagedProductBatchEndpoint : IEndpoint<IResult, ListPagedProduct
             endDate: request.EndDate
         );
 
-        var productBatchs = await productBatchRepository.ListAsync(pagedSpec);
+        var productBatches = await productBatchRepository.ListAsync(pagedSpec);
 
-        response.ProductBatches.AddRange(productBatchs.Select(((IMapperBase)_mapper).Map<ProductBatchDto>));
+        response.ProductBatches.AddRange(productBatches.Select(((IMapperBase)_mapper).Map<ProductBatchDto>));
 
         if (request.PageSize > 0)
         {
