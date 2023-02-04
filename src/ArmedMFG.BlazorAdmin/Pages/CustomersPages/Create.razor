@@ -1,0 +1,150 @@
+﻿@inject ILogger<Create> Logger
+@inject IJSRuntime JSRuntime
+@inject ICustomerService CustomerService
+
+@inherits ArmedMFG.BlazorAdmin.Helpers.BlazorComponent
+
+@namespace ArmedMFG.BlazorAdmin.Pages.CustomersPages
+
+<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <EditForm Model="_customer" OnValidSubmit="@CreateClick">
+                <DataAnnotationsValidator />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if (_customer == null)
+                    {
+                        <Spinner></Spinner>
+                    }
+                    else
+                    {
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Full Name</label>
+                                        <div class="col-md-12">
+                                            <InputText class="form-control" @bind-Value="_customer.FullName" />
+                                            <ValidationMessage For="(() => _customer.FullName)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Phone Number</label>
+                                        <div class="col-md-12">
+                                            <InputText class="form-control" @bind-Value="_customer.PhoneNumber" />
+                                            <ValidationMessage For="(() => _customer.PhoneNumber)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Email</label>
+                                        <div class="col-md-12">
+                                            <InputText class="form-control" @bind-Value="_customer.Email" />
+                                            <ValidationMessage For="(() => _customer.Email)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Organization</label>
+                                        <div class="col-md-12">
+                                            <InputSelect @bind-Value="_customer.OrganizationId" class="form-control">
+                                                @foreach (var organization in Organizations)
+                                                {
+                                                    <option value="@organization.Id">@organization.Name</option>
+                                                }
+                                            </InputSelect>
+                                            <ValidationMessage For="(() => _customer.OrganizationId)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Find Out Through</label>
+                                        <div class="col-md-12">
+                                            <InputText class="form-control" @bind-Value="_customer.FindOutThrough" />
+                                            <ValidationMessage For="(() => _customer.FindOutThrough)" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        Create
+                    </button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+
+
+@if (_showCreateModal)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+        [Parameter]
+        public IEnumerable<CustomerOrganization> Organizations { get; set; }
+
+        [Parameter]
+        public EventCallback<string> OnSaveClick { get; set; }
+
+    private string _badFileMessage = string.Empty;
+    private string _modalDisplay = "none;";
+    private string _modalClass = "";
+    private bool _showCreateModal = false;
+    private CreateCustomerRequest _customer = new CreateCustomerRequest();
+
+    private async Task CreateClick()
+    {
+        var result = await CustomerService.Create(_customer);
+        if (result != null)
+        {
+            await OnSaveClick.InvokeAsync(null);
+            await Close();
+        }
+    }
+
+    public async Task Open()
+    {
+    
+        Logger.LogInformation("Now loading... /Customers/Create");
+
+        await new Css(JSRuntime).HideBodyOverflow();
+
+        _customer = new CreateCustomerRequest
+        {
+            OrganizationId = 0,
+        };
+
+        _modalDisplay = "block;";
+        _modalClass = "Show";
+        _showCreateModal = true;
+
+        StateHasChanged();
+    }
+
+    private async Task Close()
+    {
+        await new Css(JSRuntime).ShowBodyOverflow();
+        _modalDisplay = "none";
+        _modalClass = "";
+        _showCreateModal = false;
+    }
+}

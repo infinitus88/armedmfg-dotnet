@@ -46,8 +46,10 @@ public class MaterialType : BaseEntity, IAggregateRoot
 
     public decimal GetCurrentAmount()
     {
+        var totalAmount = _materialSupplies.Where(m => m.MaterialTypeId == Id).Sum(m => m.Amount);
+        
         // TODO Return real current amount
-        return _materialSupplies.FirstOrDefault().Amount;
+        return totalAmount;
     }
 
     public void UpdateDetails(MaterialTypeDetails details)

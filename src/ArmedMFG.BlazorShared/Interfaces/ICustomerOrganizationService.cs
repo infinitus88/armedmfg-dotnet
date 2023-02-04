@@ -4,7 +4,7 @@ using ArmedMFG.BlazorShared.Models;
 
 namespace ArmedMFG.BlazorShared.Interfaces;
 
-public interface IOrganizationService
+public interface ICustomerOrganizationService
 {
     Task<CustomerOrganization> Create(CreateCustomerOrganizationRequest customerOrganization);
     Task<CustomerOrganization> Edit(CustomerOrganization customerOrganization);

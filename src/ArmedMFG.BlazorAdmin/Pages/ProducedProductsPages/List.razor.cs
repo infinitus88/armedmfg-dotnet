@@ -71,6 +71,8 @@ public partial class List : BlazorComponent
     private async Task ReloadProductBatches()
     {
         productBatches = await ProductBatchService.List();
+        
+        
         StateHasChanged();
     }
 

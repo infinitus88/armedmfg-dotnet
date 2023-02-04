@@ -8,5 +8,5 @@ public class CreateCustomerRequest : BaseRequest
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
     public string FindOutThrough { get; set; }
-    public int? OrganizationId { get; set; }
+    public int OrganizationId { get; set; }
 }

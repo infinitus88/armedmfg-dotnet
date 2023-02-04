@@ -22,7 +22,7 @@ public class Customer : BaseEntity, IAggregateRoot
 
     public void SetOrganization(int organizationId)
     {
-        Guard.Against.Zero(organizationId, nameof(organizationId));
+        Guard.Against.Negative(organizationId, nameof(organizationId));
 
         OrganizationId = organizationId;
     }

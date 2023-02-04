@@ -38,6 +38,13 @@ public static class ServicesConfiguration
         services.AddScoped<IProductBatchService, CachedProductBatchServiceDecorator>();
         services.AddScoped<ProductBatchService>();
         
+        // Customers
+        services.AddScoped<ICustomerOrganizationService, CachedCustomerOrganizationServiceDecorator>();
+        services.AddScoped<CustomerOrganizationService>();
+        services.AddScoped<ICustomerService, CachedCustomerServiceDecorator>();
+        services.AddScoped<CustomerService>();
+        
+        
         return services;
     }
 }

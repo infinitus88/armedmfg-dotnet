@@ -1,0 +1,139 @@
+﻿@inject ILogger<Delete> Logger
+@inject IJSRuntime JSRuntime
+@inject ICustomerOrganizationService OrganizationService
+
+@inherits ArmedMFG.BlazorAdmin.Helpers.BlazorComponent
+
+@namespace ArmedMFG.BlazorAdmin.Pages.CustomerOrganizationsPage
+
+<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Customer</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @if (_organization == null)
+                {
+                    <Spinner></Spinner>
+                }
+                else
+                {
+                    <div class="container">
+                        <div class="row">
+                            <dl class="col-md-12 dl-horizontal">
+                                <dt>
+                                    Name
+                                </dt>
+
+                                <dd>
+                                    @_organization.Name
+                                </dd>
+                                
+                                <dt>
+                                    Taxpayer Id Num
+                                </dt>
+
+                                <dd>
+                                    @_organization.TaxpayerIdNum
+                                </dd>
+                                
+                                <dt>
+                                    Phone Number
+                                </dt>
+
+                                <dd>
+                                    @_organization.PhoneNumber
+                                </dd>
+                                
+                                <dt>
+                                    Email
+                                </dt>
+
+                                <dd>
+                                    @_organization.Email
+                                </dd>
+                                
+                                <dt>
+                                    Main Branch Address
+                                </dt>
+                                
+                                <dd>
+                                    @_organization.MainBranchAddress
+                                </dd>
+                                
+                                <dt>
+                                    Description
+                                </dt>
+                                
+                                <dd>
+                                    @_organization.Description
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                <button class="btn btn-danger" @onclick="() => DeleteClick(_organization.Id)">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (_showDeleteModal)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+
+    [Parameter]
+    public EventCallback<string> OnSaveClick { get; set; }
+
+    private string _modalDisplay = "none;";
+    private string _modalClass = "";
+    private bool _showDeleteModal = false;
+    private CustomerOrganization _organization = new CustomerOrganization();
+
+    private async Task DeleteClick(int id)
+    {
+        // TODO: Add some kind of "are you sure" check before this
+
+        await OrganizationService.Delete(id);
+
+        await OnSaveClick.InvokeAsync(null);
+        await Close();
+    }
+
+    public async Task Open(int id)
+    {
+        Logger.LogInformation("Now loading... /Customers/Organizations/Delete/{Id}", id);
+
+        await new Css(JSRuntime).HideBodyOverflow();
+
+        _organization = await OrganizationService.GetById(id);
+
+        _modalDisplay = "block;";
+        _modalClass = "Show";
+        _showDeleteModal = true;
+
+        StateHasChanged();
+    }
+
+    private async Task Close()
+    {
+        await new Css(JSRuntime).ShowBodyOverflow();
+        _modalDisplay = "none";
+        _modalClass = "";
+        _showDeleteModal = false;
+    }
+}

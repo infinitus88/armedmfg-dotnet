@@ -25,8 +25,7 @@ public class CustomerOrganizationConfiguration : IEntityTypeConfiguration<Custom
                 .IsRequired();
 
             a.Property(address => address.Region)
-                .HasMaxLength(100)
-                .IsRequired();
+                .HasMaxLength(100);
         });
 
         builder.Navigation(x => x.MainBranchAddress).IsRequired();

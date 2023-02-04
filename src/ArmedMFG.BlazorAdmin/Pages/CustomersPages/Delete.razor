@@ -1,0 +1,134 @@
+﻿@inject ILogger<Delete> Logger
+@inject IJSRuntime JSRuntime
+@inject ICustomerService CustomerService
+
+@inherits ArmedMFG.BlazorAdmin.Helpers.BlazorComponent
+
+@namespace ArmedMFG.BlazorAdmin.Pages.CustomersPages
+
+<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Customer</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @if (_customer == null)
+                {
+                    <Spinner></Spinner>
+                }
+                else
+                {
+                    <div class="container">
+                        <div class="row">
+                            <dl class="col-md-12 dl-horizontal">
+                                <dt>
+                                    Full Name
+                                </dt>
+
+                                <dd>
+                                    @_customer.FullName
+                                </dd>
+
+                                <dt>
+                                    Phone Number
+                                </dt>
+
+                                <dd>
+                                    @_customer.PhoneNumber
+                                </dd>
+                                
+                                <dt>
+                                    Email
+                                </dt>
+
+                                <dd>
+                                    @_customer.Email
+                                </dd>
+                                
+                                <dt>
+                                    Organization
+                                </dt>
+                                
+                                <dd>
+                                    @_customer.Organization
+                                </dd>
+                                
+                                <dt>
+                                    Find Out Through
+                                </dt>
+                                
+                                <dd>
+                                    @_customer.FindOutThrough
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                <button class="btn btn-danger" @onclick="() => DeleteClick(_customer.Id)">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (_showDeleteModal)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+
+    [Parameter]
+    public IEnumerable<CustomerOrganization> Organizations { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnSaveClick { get; set; }
+
+    private string _modalDisplay = "none;";
+    private string _modalClass = "";
+    private bool _showDeleteModal = false;
+    private Customer _customer = new Customer();
+
+    private async Task DeleteClick(int id)
+    {
+        // TODO: Add some kind of "are you sure" check before this
+
+        await CustomerService.Delete(id);
+
+        await OnSaveClick.InvokeAsync(null);
+        await Close();
+    }
+
+    public async Task Open(int id)
+    {
+        Logger.LogInformation("Now loading... /Customers/Delete/{Id}", id);
+
+        await new Css(JSRuntime).HideBodyOverflow();
+
+        _customer = await CustomerService.GetById(id);
+
+        _modalDisplay = "block;";
+        _modalClass = "Show";
+        _showDeleteModal = true;
+
+        StateHasChanged();
+    }
+
+    private async Task Close()
+    {
+        await new Css(JSRuntime).ShowBodyOverflow();
+        _modalDisplay = "none";
+        _modalClass = "";
+        _showDeleteModal = false;
+    }
+}

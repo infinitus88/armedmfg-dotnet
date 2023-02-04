@@ -8,7 +8,7 @@ public class CreateCustomerRequest
     public string FullName { get; set; }
     
     public string PhoneNumber { get; set; }
-    public int OrganizationId { get; set; }
     public string Email { get; set; } = string.Empty;
+    public int OrganizationId { get; set; }
     public string FindOutThrough { get; set; } = string.Empty;
 }

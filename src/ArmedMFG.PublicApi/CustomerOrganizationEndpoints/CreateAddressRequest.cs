@@ -1,4 +1,6 @@
-﻿namespace ArmedMFG.PublicApi.CustomerOrganizationEndpoints;
+﻿using System;
+
+namespace ArmedMFG.PublicApi.CustomerOrganizationEndpoints;
 
 public class CreateAddressRequest
 {

@@ -4,7 +4,7 @@ using ArmedMFG.BlazorShared.Models;
 
 namespace ArmedMFG.BlazorShared.Interfaces;
 
-public interface IClientService
+public interface ICustomerService
 {
     Task<Customer> Create(CreateCustomerRequest customer);
     Task<Customer> Edit(Customer customer);

@@ -1,0 +1,155 @@
+﻿@inject ILogger<Create> Logger
+@inject IJSRuntime JSRuntime
+@inject ICustomerOrganizationService OrganizationService
+
+@inherits ArmedMFG.BlazorAdmin.Helpers.BlazorComponent
+
+@namespace ArmedMFG.BlazorAdmin.Pages.CustomerOrganizationsPage
+
+<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <EditForm Model="_organization" OnValidSubmit="@CreateClick">
+                <DataAnnotationsValidator />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if (_organization == null)
+                    {
+                        <Spinner></Spinner>
+                    }
+                    else
+                    {
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Name</label>
+                                        <div class="col-md-12">
+                                            <InputText class="form-control" @bind-Value="_organization.Name" />
+                                            <ValidationMessage For="(() => _organization.Name)" />
+                                        </div>
+                                    </div>
+                                </div>
+                               <div class="col-md-12">
+                                   <div class="form-group">
+                                       <label class="control-label col-md-6">Taxpayer Id Number</label>
+                                       <div class="col-md-12">
+                                           <InputText class="form-control" @bind-Value="_organization.TaxpayerIdNum" />
+                                           <ValidationMessage For="(() => _organization.TaxpayerIdNum)" />
+                                       </div>
+                                   </div>
+                               </div> 
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Phone Number</label>
+                                        <div class="col-md-12">
+                                            <InputText class="form-control" @bind-Value="_organization.PhoneNumber" />
+                                            <ValidationMessage For="(() => _organization.PhoneNumber)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-inline form-group">
+                                        <label class="control-label col-md-6">Main Branch Address</label>
+                                        <div class="col-md-12">
+                                            <InputText class="form-control" @bind-Value="_organization.MainBranchAddress.Region" />
+                                            <ValidationMessage For="(() => _organization.MainBranchAddress.Region)" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <InputText class="form-control" @bind-Value="_organization.MainBranchAddress.District" />
+                                            <ValidationMessage For="(() => _organization.MainBranchAddress.District)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Email</label>
+                                        <div class="col-md-12">
+                                            <InputText class="form-control" @bind-Value="_organization.Email" />
+                                            <ValidationMessage For="(() => _organization.Email)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Description</label>
+                                        <div class="col-md-12">
+                                            <InputText class="form-control" @bind-Value="_organization.Description" />
+                                            <ValidationMessage For="(() => _organization.Description)" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        Create
+                    </button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+
+
+@if (_showCreateModal)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    // [Parameter]
+    // public IEnumerable<CustomerOrganization> Organizations { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnSaveClick { get; set; }
+
+    private string _badFileMessage = string.Empty;
+    private string _modalDisplay = "none;";
+    private string _modalClass = "";
+    private bool _showCreateModal = false;
+    private CreateCustomerOrganizationRequest _organization = new CreateCustomerOrganizationRequest();
+
+    private async Task CreateClick()
+    {
+        var result = await OrganizationService.Create(_organization);
+        if (result != null)
+        {
+            await OnSaveClick.InvokeAsync(null);
+            await Close();
+        }
+    }
+
+    public async Task Open()
+    {
+    
+        Logger.LogInformation("Now loading... /Customers/Organizations/Create");
+
+        await new Css(JSRuntime).HideBodyOverflow();
+
+        _organization = new CreateCustomerOrganizationRequest();
+
+        _modalDisplay = "block;";
+        _modalClass = "Show";
+        _showCreateModal = true;
+
+        StateHasChanged();
+    }
+
+    private async Task Close()
+    {
+        await new Css(JSRuntime).ShowBodyOverflow();
+        _modalDisplay = "none";
+        _modalClass = "";
+        _showCreateModal = false;
+    }
+}

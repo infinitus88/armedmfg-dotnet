@@ -45,7 +45,7 @@ public class CreateCustomerEndpoint : IEndpoint<IResult, CreateCustomerRequest, 
 
         var newCustomer = new Customer(request.FullName, request.PhoneNumber, request.Email, request.FindOutThrough);
         
-        if (request.OrganizationId.HasValue)
+        if (request.OrganizationId > 0)
         {
             var existingOrganization = await organizationRepository.GetByIdAsync(request.OrganizationId);
             
@@ -55,6 +55,10 @@ public class CreateCustomerEndpoint : IEndpoint<IResult, CreateCustomerRequest, 
             } 
             
             newCustomer.SetOrganization(existingOrganization.Id);
+        }
+        else if (request.OrganizationId == 0)
+        {
+            newCustomer.SetOrganization(0);
         }
         
         newCustomer = await customerRepository.AddAsync(newCustomer);
