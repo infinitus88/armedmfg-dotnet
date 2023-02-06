@@ -1,0 +1,62 @@
+﻿@page "/admin/material-types/supplies"
+@attribute [Authorize(Roles = ArmedMFG.BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS)]
+@inherits ArmedMFG.BlazorAdmin.Helpers.BlazorComponent
+@namespace ArmedMFG.BlazorAdmin.Pages.MaterialSupplyPage
+
+<PageTitle>ArmedMFG Admin</PageTitle>
+
+<h1>Manage </h1>
+
+@if (_materialSupplies == null)
+{
+    <Spinner></Spinner>
+}
+else
+{
+    
+    <p class="esh-link-wrapper">
+        <button class="btn btn-primary" @onclick="@(CreateClick)">
+            Create New
+        </button>
+    </p>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Delivered Date</th>
+            <th>Material Type</th>
+            <th>Unit Price</th>
+            <th>Amount</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody class="cursor-pointer">
+        @foreach (var materialSupply in _materialSupplies)
+        {
+            <tr>
+                <td>@materialSupply.Id</td>
+                <td>@materialSupply.DeliveredDate</td>
+                <td>@materialSupply.MaterialType</td>
+                <td>@materialSupply.UnitPrice</td>
+                <td>@materialSupply.Amount</td>
+                <td>
+                    <button @onclick="@(() => EditClick(materialSupply.Id))" @onclick:stopPropagation="true" class="btn btn-primary">
+                        Edit
+                    </button>
+
+                    <button @onclick="@(() => DeleteClick(materialSupply.Id))" @onclick:stopPropagation="true" class="btn btn-danger">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    
+    
+    <Create MaterialTypes="@_materialTypes" OnSaveClick="ReloadMaterialSupplies" @ref="CreateComponent"></Create>
+    <Delete MaterialTypes="@_materialTypes" OnSaveClick="ReloadMaterialSupplies" @ref="DeleteComponent"></Delete>
+    @* <Details Categories="@materialCategories" OnEditClick="EditClick" @ref="DetailsComponent"></Details> *@
+    @* <Edit Categories="@materialCategories" OnSaveClick="ReloadMaterialTypes" @ref="EditComponent"></Edit> *@
+}

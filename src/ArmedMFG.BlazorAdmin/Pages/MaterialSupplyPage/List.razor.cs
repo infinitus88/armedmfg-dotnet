@@ -4,18 +4,18 @@ using ArmedMFG.BlazorAdmin.Helpers;
 using ArmedMFG.BlazorShared.Interfaces;
 using ArmedMFG.BlazorShared.Models;
 
-namespace ArmedMFG.BlazorAdmin.Pages.ProductPricePage;
+namespace ArmedMFG.BlazorAdmin.Pages.MaterialSupplyPage;
 
 public partial class List : BlazorComponent
 {
     [Microsoft.AspNetCore.Components.Inject]
-    public IProductPriceService ProductPriceService { get; set; }
-
+    public IMaterialSupplyService MaterialSupplyService { get; set; }
+    
     [Microsoft.AspNetCore.Components.Inject]
-    public IProductTypeService ProductTypeService { get; set; }
+    public IMaterialTypeService MaterialTypeService { get; set; }
 
-    private List<ProductPrice> _productPrices = new List<ProductPrice>();
-    private List<ProductType> _productTypes = new List<ProductType>();
+    private List<MaterialSupply> _materialSupplies = new List<MaterialSupply>();
+    private List<MaterialType> _materialTypes = new List<MaterialType>();
 
     private Create CreateComponent { get; set; }
     private Delete DeleteComponent { get; set; }
@@ -26,10 +26,8 @@ public partial class List : BlazorComponent
     {
         if (firstRender)
         {
-            _productPrices = await ProductPriceService.List();
-            
-            // TODO Get Categories for specific department
-            _productTypes = await ProductTypeService.List();
+            _materialSupplies = await MaterialSupplyService.List();
+            _materialTypes = await MaterialTypeService.List();
 
             CallRequestRefresh();
         }
@@ -57,9 +55,9 @@ public partial class List : BlazorComponent
         await DeleteComponent.Open(id);
     }
 
-    private async Task ReloadProductPrices()
+    private async Task ReloadMaterialSupplies()
     {
-        _productPrices = await ProductPriceService.List();
+        _materialSupplies = await MaterialSupplyService.List();
         StateHasChanged();
     }
 }

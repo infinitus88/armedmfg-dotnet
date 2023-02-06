@@ -49,8 +49,10 @@ public class ProductType : BaseEntity, IAggregateRoot
 
     public decimal GetCurrentPrice()
     {
+        var latestPrice = _productPrices.Where(p => p.FromDate <= DateTime.Now).MaxBy(p => p.FromDate);
+        
         // TODO Return latest price
-        return _productPrices.FirstOrDefault().Price;
+        return latestPrice == null ? 0 : latestPrice.Price;
     }
 
     public void UpdateDetails(ProductTypeDetails details)

@@ -11,9 +11,9 @@ public class CustomerService : ICustomerService
 {
     private readonly ICustomerOrganizationService _organizationService;
     private readonly HttpService _httpService;
-    private readonly ILogger<Customer> _logger;
+    private readonly ILogger<CustomerService> _logger;
 
-    public CustomerService(HttpService httpService, ILogger<Customer> logger, ICustomerOrganizationService organizationService)
+    public CustomerService(HttpService httpService, ILogger<CustomerService> logger, ICustomerOrganizationService organizationService)
     {
         _httpService = httpService;
         _logger = logger;

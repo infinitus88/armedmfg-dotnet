@@ -54,7 +54,7 @@ public class CachedProductPriceServiceDecorator : IProductPriceService
 
     public async Task<List<ProductPrice>> ListPaged(int pageSize, int? productTypeId)
     {
-        string key = "productPrice";
+        string key = "productPrices";
         var cacheEntry = await _localStorageService.GetItemAsync<CacheEntry<List<ProductPrice>>>(key);
         if (cacheEntry != null)
         {

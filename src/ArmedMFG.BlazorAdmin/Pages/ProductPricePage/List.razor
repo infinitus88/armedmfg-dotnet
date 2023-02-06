@@ -7,7 +7,7 @@
 
 <h1>Manage Product Prices</h1>
 
-@if (productPrices == null)
+@if (_productPrices == null)
 {
     <Spinner></Spinner>
 }
@@ -31,7 +31,7 @@ else
         </tr>
         </thead>
         <tbody class="cursor-pointer">
-        @foreach (var productPrice in productPrices)
+        @foreach (var productPrice in _productPrices)
         {
             <tr>
                 <td>@productPrice.Id</td>
@@ -53,8 +53,8 @@ else
     </table>
     
     
-    <Create ProductTypes="@productTypes" OnSaveClick="ReloadProductPrices" @ref="CreateComponent"></Create>
-    <Delete ProductTypes="@productTypes" OnSaveClick="ReloadProductPrices" @ref="DeleteComponent"></Delete>
+    <Create ProductTypes="@_productTypes" OnSaveClick="ReloadProductPrices" @ref="CreateComponent"></Create>
+    <Delete ProductTypes="@_productTypes" OnSaveClick="ReloadProductPrices" @ref="DeleteComponent"></Delete>
     @* <Details Categories="@materialCategories" OnEditClick="EditClick" @ref="DetailsComponent"></Details> *@
     @* <Edit Categories="@materialCategories" OnSaveClick="ReloadMaterialTypes" @ref="EditComponent"></Edit> *@
 }

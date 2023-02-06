@@ -12,9 +12,9 @@ public class ProductPriceService : IProductPriceService
 {
     private readonly IProductTypeService _productTypeService;
     private readonly HttpService _httpService;
-    private readonly ILogger<ProductPrice> _logger;
+    private readonly ILogger<ProductPriceService> _logger;
 
-    public ProductPriceService(HttpService httpService, ILogger<ProductPrice> logger, IProductTypeService productTypeService)
+    public ProductPriceService(HttpService httpService, ILogger<ProductPriceService> logger, IProductTypeService productTypeService)
     {
         _httpService = httpService;
         _logger = logger;

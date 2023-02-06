@@ -13,7 +13,7 @@ public class CachedMaterialTypeServiceDecorator : IMaterialTypeService
 {
     private readonly ILocalStorageService _localStorageService;
     private readonly MaterialTypeService _materialTypeService;
-    private ILogger<CachedMaterialTypeServiceDecorator> _logger;
+    private readonly ILogger<CachedMaterialTypeServiceDecorator> _logger;
 
     public CachedMaterialTypeServiceDecorator(ILocalStorageService localStorageService, MaterialTypeService materialTypeService, ILogger<CachedMaterialTypeServiceDecorator> logger)
     {

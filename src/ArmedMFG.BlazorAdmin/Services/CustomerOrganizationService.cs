@@ -10,9 +10,9 @@ namespace ArmedMFG.BlazorAdmin.Services;
 public class CustomerOrganizationService : ICustomerOrganizationService
 {
     private readonly HttpService _httpService;
-    private readonly ILogger<CustomerOrganization> _logger;
+    private readonly ILogger<CustomerOrganizationService> _logger;
 
-    public CustomerOrganizationService(HttpService httpService, ILogger<CustomerOrganization> logger)
+    public CustomerOrganizationService(HttpService httpService, ILogger<CustomerOrganizationService> logger)
     {
         _httpService = httpService;
         _logger = logger;

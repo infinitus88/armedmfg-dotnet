@@ -34,6 +34,9 @@ public static class ServicesConfiguration
         services.AddScoped<IMaterialTypeService, CachedMaterialTypeServiceDecorator>();
         services.AddScoped<MaterialTypeService>();
 
+        services.AddScoped<IMaterialSupplyService, CachedMaterialSupplyServiceDecorator>();
+        services.AddScoped<MaterialSupplyService>();
+
         // Product Batches
         services.AddScoped<IProductBatchService, CachedProductBatchServiceDecorator>();
         services.AddScoped<ProductBatchService>();

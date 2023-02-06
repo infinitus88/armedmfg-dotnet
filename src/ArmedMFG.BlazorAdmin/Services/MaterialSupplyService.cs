@@ -11,13 +11,13 @@ public class MaterialSupplyService : IMaterialSupplyService
 {
     private readonly IMaterialTypeService _materialTypeService;
     private readonly HttpService _httpService;
-    private readonly ILogger<ProductPrice> _logger;
+    private readonly ILogger<MaterialSupplyService> _logger;
 
-    public MaterialSupplyService(IMaterialTypeService materialTypeService, HttpService httpService, ILogger<ProductPrice> logger)
+    public MaterialSupplyService(HttpService httpService, ILogger<MaterialSupplyService> logger, IMaterialTypeService materialTypeService)
     {
-        _materialTypeService = materialTypeService;
         _httpService = httpService;
         _logger = logger;
+        _materialTypeService = materialTypeService;
     }
 
 

@@ -54,7 +54,7 @@ public class CachedMaterialSupplyServiceDecorator : IMaterialSupplyService
 
     public async Task<List<MaterialSupply>> ListPaged(int pageSize, int? materialTypeId)
     {
-        string key = "materialSupply";
+        string key = "materialSupplies";
         var cacheEntry = await _localStorageService.GetItemAsync<CacheEntry<List<MaterialSupply>>>(key);
         if (cacheEntry != null)
         {
@@ -70,10 +70,10 @@ public class CachedMaterialSupplyServiceDecorator : IMaterialSupplyService
             }
         }
 
-        var materialSupplys = await _materialSupplyService.ListPaged(pageSize, materialTypeId);
-        var entry = new CacheEntry<List<MaterialSupply>>(materialSupplys);
+        var materialSupplies = await _materialSupplyService.ListPaged(pageSize, materialTypeId);
+        var entry = new CacheEntry<List<MaterialSupply>>(materialSupplies);
         await _localStorageService.SetItemAsync(key, entry);
-        return materialSupplys;
+        return materialSupplies;
     }
 
     public async Task<List<MaterialSupply>> List()
