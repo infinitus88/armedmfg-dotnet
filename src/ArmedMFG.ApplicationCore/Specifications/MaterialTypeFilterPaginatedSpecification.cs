@@ -14,6 +14,7 @@ public class MaterialTypeFilterPaginatedSpecification : Specification<MaterialTy
         }
         Query
             .Where(t => (!materialCategoryId.HasValue || t.MaterialCategoryId == materialCategoryId))
-            .Skip(skip).Take(take);
+            .Skip(skip).Take(take)
+            .Include(t => t.MaterialSupplies);
     }
 }

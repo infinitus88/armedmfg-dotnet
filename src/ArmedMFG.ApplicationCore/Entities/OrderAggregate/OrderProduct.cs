@@ -1,9 +1,10 @@
 ﻿using System.Reflection.Metadata;
 using ArmedMFG.ApplicationCore.Entities.ProductTypeAggregate;
+using ArmedMFG.ApplicationCore.Interfaces;
 
 namespace ArmedMFG.ApplicationCore.Entities.OrderAggregate;
 
-public class OrderProduct : BaseEntity
+public class OrderProduct : BaseEntity, IAggregateRoot
 {
     public int ProductTypeId { get; set; }
     public ProductType? ProductType { get; set; }

@@ -7,5 +7,6 @@ public class CustomerDto
     public string? PhoneNumber { get; set; }
     public int? OrganizationId { get; set; }
     public string? Email { get; set; }
+    public string? Position { get; set; }
     public string? FindOutThrough { get; set; }
 }

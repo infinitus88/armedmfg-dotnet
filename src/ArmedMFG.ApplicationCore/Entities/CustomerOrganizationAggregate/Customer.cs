@@ -9,14 +9,16 @@ public class Customer : BaseEntity, IAggregateRoot
     public string PhoneNumber { get; private set; }
     public int? OrganizationId { get; private set; }
     public CustomerOrganization? CustomerOrganization { get; private set; }
+    public string Position { get; private set; }
     public string Email { get; private set; }
     public string FindOutThrough { get; private set; }
 
-    public Customer(string fullName, string phoneNumber, string email, string findOutThrough)
+    public Customer(string fullName, string phoneNumber, string position, string email, string findOutThrough)
     {
         FullName = fullName;
         PhoneNumber = phoneNumber;
         FindOutThrough = findOutThrough;
+        Position = position;
         Email = email;
     }
 
@@ -47,14 +49,16 @@ public class Customer : BaseEntity, IAggregateRoot
     {
         public string? FullName { get; }
         public string? PhoneNumber { get; }
+        public string? Position { get; }
         public string? Email { get; }
         public string? FindOutThrough { get; }
 
-        public CustomerDetails(string? fullName, string? phoneNumber, string email, string? findOutThrough)
+        public CustomerDetails(string? fullName, string? phoneNumber, string email, string position, string? findOutThrough)
         {
             FullName = fullName;
             PhoneNumber = phoneNumber;
             Email = email;
+            Position = position;
             FindOutThrough = findOutThrough;
         }
     }

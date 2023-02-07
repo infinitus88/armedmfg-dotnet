@@ -14,6 +14,7 @@ public class ProductTypeFilterPaginatedSpecification : Specification<ProductType
         }
         Query
             .Where(t => (!productCategoryId.HasValue || t.ProductCategoryId == productCategoryId))
-            .Skip(skip).Take(take);
+            .Skip(skip).Take(take)
+            .Include(t => t.ProductPrices);
     }
 }
