@@ -3,7 +3,8 @@ using ArmedMFG.ApplicationCore.Entities;
 using ArmedMFG.ApplicationCore.Entities.BasketAggregate;
 using ArmedMFG.ApplicationCore.Entities.CustomerOrganizationAggregate;
 using ArmedMFG.ApplicationCore.Entities.MaterialTypeAggregate;
-using ArmedMFG.ApplicationCore.Entities.OrderCatalogAggregate;
+// using ArmedMFG.ApplicationCore.Entities.OrderCatalogAggregate;
+using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
 using ArmedMFG.ApplicationCore.Entities.ProductBatch;
 using ArmedMFG.ApplicationCore.Entities.ProductTypeAggregate;
 using Microsoft.EntityFrameworkCore;
@@ -21,9 +22,9 @@ public class ProductsContext : DbContext
     public DbSet<CatalogItem> CatalogItems { get; set; }
     public DbSet<CatalogBrand> CatalogBrands { get; set; }
     public DbSet<CatalogType> CatalogTypes { get; set; }
-    public DbSet<Order> Orders { get; set; }
-    public DbSet<OrderItem> OrderItems { get; set; }
-    public DbSet<BasketItem> BasketItems { get; set; } 
+    // public DbSet<Order> Orders { get; set; }
+    // public DbSet<OrderItem> OrderItems { get; set; }
+    // public DbSet<BasketItem> BasketItems { get; set; } 
     //
     public DbSet<ProductBatch> ProductBatches { get; set; }
     public DbSet<ProducedProduct> ProducedProducts { get; set; }
@@ -41,6 +42,9 @@ public class ProductsContext : DbContext
     
     public DbSet<Customer> Customers { get; set; }
     public DbSet<CustomerOrganization> CustomerOrganizations { get; set; }
+    
+    // Orders
+    public DbSet<Order> Orders { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

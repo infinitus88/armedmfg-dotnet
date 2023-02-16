@@ -72,6 +72,15 @@ public class CustomerService : ICustomerService
         return customers;
     }
 
+    public async Task<List<AutocompleteCustomer>> ListAutocomplete(string fullName)
+    {
+        _logger.LogInformation("Fetching customers autocomplete from API");
+
+        var customers = await _httpService.HttpGet<AutocompleteCustomerResponse>($"customers/filter?fullName={fullName}");
+
+        return customers.Customers;
+    }
+
     public async Task<List<Customer>> List()
     {
         _logger.LogInformation("Fetching customers from API.");

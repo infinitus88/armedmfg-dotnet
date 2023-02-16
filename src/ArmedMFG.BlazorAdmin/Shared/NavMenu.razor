@@ -8,6 +8,7 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
+        
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="admin" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> Home
@@ -18,47 +19,67 @@
                 <span class="oi oi-home" aria-hidden="true"></span> Catalog Items
             </NavLink>
         </li>
-        
-        <li class="nav-item px-3">
-           <NavLink class="nav-link" @onclick="() => _customersNavSubmenu.Toggle(NavSubmenuStatus.First)">
-               <span class="oi oi-list-rich" aria-hidden="true"></span> Customers
-           </NavLink>
-       </li>
 
-       @if (_customersNavSubmenu.Status == NavSubmenuStatus.First)
-       {
-           <li class="nav-item px-5">
-               <NavLink class="nav-link" href="admin/customers" Match="NavLinkMatch.All">
-                   <span class="oi oi-plus" aria-hidden="true"></span> List
-               </NavLink>
-           </li>
-           <li class="nav-item px-5">
-               <NavLink class="nav-link" href="admin/customers/organizations">
-                   <span class="oi oi-list-rich" aria-hidden="true"></span> Organizations
-               </NavLink>
-           </li>
-       } 
-        
         <li class="nav-item px-3">
-           <NavLink class="nav-link" @onclick="() => _productProducingNavSubmenu.Toggle(NavSubmenuStatus.First)">
-               <span class="oi oi-list-rich" aria-hidden="true"></span> Product Producing
-           </NavLink>
-       </li>
+            <NavLink class="nav-link" @onclick="() => _customersNavSubmenu.Toggle(NavSubmenuStatus.First)">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Customers
+            </NavLink>
+        </li>
 
-       @if (_productProducingNavSubmenu.Status == NavSubmenuStatus.First)
-       {
-           <li class="nav-item px-5">
-               <NavLink class="nav-link" href="admin/product-producing" Match="NavLinkMatch.All">
-                   <span class="oi oi-plus" aria-hidden="true"></span> List
-               </NavLink>
-           </li>
-           <li class="nav-item px-5">
-               <NavLink class="nav-link" href="admin/product-price">
-                   <span class="oi oi-list-rich" aria-hidden="true"></span> Price History
-               </NavLink>
-           </li>
-       } 
-        
+        @if (_customersNavSubmenu.Status == NavSubmenuStatus.First)
+        {
+            <li class="nav-item px-5">
+                <NavLink class="nav-link" href="admin/customers" Match="NavLinkMatch.All">
+                    <span class="oi oi-plus" aria-hidden="true"></span> List
+                </NavLink>
+            </li>
+            <li class="nav-item px-5">
+                <NavLink class="nav-link" href="admin/customers/organizations">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Organizations
+                </NavLink>
+            </li>
+        }
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="() => _ordersNavSubmenu.Toggle(NavSubmenuStatus.First)">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Orders
+            </NavLink>
+        </li>
+
+        @if (_ordersNavSubmenu.Status == NavSubmenuStatus.First)
+        {
+            <li class="nav-item px-5">
+                <NavLink class="nav-link" href="admin/orders" Match="NavLinkMatch.All">
+                    <span class="oi oi-plus" aria-hidden="true"></span> List
+                </NavLink>
+            </li>
+            @* <li class="nav-item px-5"> *@
+            @*     <NavLink class="nav-link" href="admin/product-types/prices"> *@
+            @*         <span class="oi oi-list-rich" aria-hidden="true"></span> Price History *@
+            @*     </NavLink> *@
+            @* </li> *@
+        }
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="() => _productProducingNavSubmenu.Toggle(NavSubmenuStatus.First)">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Product Producing
+            </NavLink>
+        </li>
+
+        @if (_productProducingNavSubmenu.Status == NavSubmenuStatus.First)
+        {
+            <li class="nav-item px-5">
+                <NavLink class="nav-link" href="admin/product-producing" Match="NavLinkMatch.All">
+                    <span class="oi oi-plus" aria-hidden="true"></span> List
+                </NavLink>
+            </li>
+            <li class="nav-item px-5">
+                <NavLink class="nav-link" href="admin/product-price">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Price History
+                </NavLink>
+            </li>
+        }
+
         <li class="nav-item px-3">
             <NavLink class="nav-link" @onclick="() => _productTypesNavSubmenu.Toggle(NavSubmenuStatus.First)">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Product Types
@@ -78,13 +99,13 @@
                 </NavLink>
             </li>
         }
-                
+
         @* <li class="nav-item px-3"> *@
         @*     <NavLink class="nav-link" href="admin/product-types" Match="NavLinkMatch.All"> *@
         @*         <span class="oi oi-home" aria-hidden="true"></span> Product Types *@
         @*     </NavLink> *@
         @* </li> *@
-        
+
         <li class="nav-item px-3">
             <NavLink class="nav-link" @onclick="() => _materialTypesNavSubmenu.Toggle(NavSubmenuStatus.First)">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Material Types
@@ -113,7 +134,7 @@
             <Authorized>
                 <li class="nav-item px-3">
                     <NavLink class="nav-link" href="manage/my-account" Match="NavLinkMatch.All">
-                        <span class="oi oi-person" aria-hidden="true"></span>                         
+                        <span class="oi oi-person" aria-hidden="true"></span>
                         Admin
                         @* @context.User.Identity.Name *@
 
@@ -135,6 +156,7 @@
     private NavSubmenu _productProducingNavSubmenu = new NavSubmenu();
     private NavSubmenu _productTypesNavSubmenu = new NavSubmenu();
     private NavSubmenu _materialTypesNavSubmenu = new NavSubmenu();
+    private NavSubmenu _ordersNavSubmenu = new NavSubmenu();
     
     private bool collapseNavMenu = true;
 

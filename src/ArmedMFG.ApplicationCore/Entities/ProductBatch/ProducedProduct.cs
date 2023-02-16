@@ -1,9 +1,10 @@
 ﻿using Ardalis.GuardClauses;
+using ArmedMFG.ApplicationCore.Interfaces;
 using ArmedMFG.BlazorShared.Models;
 
 namespace ArmedMFG.ApplicationCore.Entities.ProductBatch;
 
-public class ProducedProduct : BaseEntity
+public class ProducedProduct : BaseEntity, IAggregateRoot
 {
     public int ProductTypeId { get; private set; }
     public ProductType? ProductType { get; private set; }

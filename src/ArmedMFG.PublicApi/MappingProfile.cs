@@ -2,6 +2,7 @@
 using ArmedMFG.ApplicationCore.Entities;
 using ArmedMFG.ApplicationCore.Entities.CustomerOrganizationAggregate;
 using ArmedMFG.ApplicationCore.Entities.MaterialTypeAggregate;
+using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
 using ArmedMFG.ApplicationCore.Entities.ProductBatch;
 using ArmedMFG.ApplicationCore.Entities.ProductTypeAggregate;
 using ArmedMFG.PublicApi.CatalogBrandEndpoints;
@@ -12,6 +13,7 @@ using ArmedMFG.PublicApi.CustomerOrganizationEndpoints;
 using ArmedMFG.PublicApi.MaterialCategoryEndpoints;
 using ArmedMFG.PublicApi.MaterialTypeEndpoints;
 using ArmedMFG.PublicApi.MaterialTypeEndpoints.MaterialSupplyEndpoints;
+using ArmedMFG.PublicApi.OrderEndpoints;
 using ArmedMFG.PublicApi.ProductBatchEndpoints;
 using ArmedMFG.PublicApi.ProductCategoryEndpoints;
 using ArmedMFG.PublicApi.ProductTypeEndpoints;
@@ -54,5 +56,9 @@ public class MappingProfile : Profile
         CreateMap<CustomerOrganization, CustomerOrganizationDto>()
             .ForMember(dto => dto.MainBranchAddress,
                 options => options.MapFrom(src => src.MainBranchAddress.ToString()));
+
+        CreateMap<Order, OrderDto>();
+        CreateMap<OrderShipment, OrderShipmentDto>();
+        CreateMap<OrderProduct, OrderProductDto>();
     }
 }

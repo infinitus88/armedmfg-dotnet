@@ -12,7 +12,7 @@
             <EditForm Model="_customer" OnValidSubmit="@CreateClick">
                 <DataAnnotationsValidator />
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Create</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Добавить Клиента</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -28,7 +28,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label col-md-6">Full Name</label>
+                                        <label class="control-label col-md-6">Полное Имя</label>
                                         <div class="col-md-12">
                                             <InputText class="form-control" @bind-Value="_customer.FullName" />
                                             <ValidationMessage For="(() => _customer.FullName)" />
@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label col-md-6">Phone Number</label>
+                                        <label class="control-label col-md-6">Номер Телефона</label>
                                         <div class="col-md-12">
                                             <InputText class="form-control" @bind-Value="_customer.PhoneNumber" />
                                             <ValidationMessage For="(() => _customer.PhoneNumber)" />
@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label col-md-6">Email</label>
+                                        <label class="control-label col-md-6">Эл. Почта</label>
                                         <div class="col-md-12">
                                             <InputText class="form-control" @bind-Value="_customer.Email" />
                                             <ValidationMessage For="(() => _customer.Email)" />
@@ -55,7 +55,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label col-md-6">Organization</label>
+                                        <label class="control-label col-md-6">Организация (если есть)</label>
                                         <div class="col-md-12">
                                             <InputSelect @bind-Value="_customer.OrganizationId" class="form-control">
                                                 @foreach (var organization in Organizations)
@@ -69,7 +69,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label col-md-6">Find Out Through</label>
+                                        <label class="control-label col-md-6">Откуда Узнал о Нас</label>
                                         <div class="col-md-12">
                                             <InputText class="form-control" @bind-Value="_customer.FindOutThrough" />
                                             <ValidationMessage For="(() => _customer.FindOutThrough)" />
@@ -81,9 +81,9 @@
                     }
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Отмена</button>
                     <button type="submit" class="btn btn-primary">
-                        Create
+                        Добавить
                     </button>
                 </div>
             </EditForm>
@@ -131,6 +131,7 @@
         _customer = new CreateCustomerRequest
         {
             OrganizationId = 0,
+            Position = ""
         };
 
         _modalDisplay = "block;";

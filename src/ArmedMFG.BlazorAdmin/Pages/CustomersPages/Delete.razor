@@ -10,7 +10,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete Customer</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Удалить Клиента с ID: @_customer.Id</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -26,7 +26,7 @@
                         <div class="row">
                             <dl class="col-md-12 dl-horizontal">
                                 <dt>
-                                    Full Name
+                                    Полное Имя
                                 </dt>
 
                                 <dd>
@@ -34,7 +34,7 @@
                                 </dd>
 
                                 <dt>
-                                    Phone Number
+                                    Номер Телефона
                                 </dt>
 
                                 <dd>
@@ -42,7 +42,7 @@
                                 </dd>
                                 
                                 <dt>
-                                    Email
+                                    Эл. Почта
                                 </dt>
 
                                 <dd>
@@ -50,7 +50,7 @@
                                 </dd>
                                 
                                 <dt>
-                                    Organization
+                                    Организация
                                 </dt>
                                 
                                 <dd>
@@ -58,7 +58,7 @@
                                 </dd>
                                 
                                 <dt>
-                                    Find Out Through
+                                    Узнал о Нас Через
                                 </dt>
                                 
                                 <dd>
@@ -71,9 +71,9 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Отмена</button>
                 <button class="btn btn-danger" @onclick="() => DeleteClick(_customer.Id)">
-                    Delete
+                    Удалить
                 </button>
             </div>
         </div>

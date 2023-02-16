@@ -1,0 +1,247 @@
+﻿@inject ILogger<Create> Logger
+@inject IJSRuntime JSRuntime
+@inject IOrderService OrderService
+@inject ICustomerService CustomerService
+
+@using System.Net
+@inherits ArmedMFG.BlazorAdmin.Helpers.BlazorComponent
+
+@namespace ArmedMFG.BlazorAdmin.Pages.OrderPage
+
+<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <EditForm Model="_order" OnValidSubmit="@CreateClick">
+                <DataAnnotationsValidator />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div>
+                </div>
+                <div class="modal-body">
+                    @if (_order == null)
+                    {
+                        <Spinner></Spinner>
+                    }
+                    else
+                    {
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Ordered Date</label>
+                                        <div class="col-md-12">
+                                            <InputDate class="form-control" @bind-Value="_order.OrderedDate" />
+                                            <ValidationMessage For="(() => _order.OrderedDate)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Required Date</label>
+                                        <div class="col-md-12">
+                                            <InputDate class="form-control" @bind-Value="_order.RequiredDate" />
+                                            <ValidationMessage For="(() => _order.RequiredDate)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="autocomplete col-md-12">
+                                    <input @bind=selectedCustomerFullName @oninput=HandleInput class="form-control filter" />
+                                    @if (customers is not null)
+                                    {
+                                        <ul class="options">
+                                            @if (customers.Any())
+                                            {
+                                                @foreach (var customer in customers)
+                                                {
+                                                    <li class="option" @onclick=@(_ => SelectCustomer(customer.Id))>
+                                                        <span class="option-text">@customer.FullName</span>
+                                                    </li>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <li class="disabled option">No results</li>
+                                            }
+                                        </ul>
+                                    }
+                                </div>
+                                
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Product Type</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="cursor-pointer">
+                                    @foreach (var orderProduct in _orderProducts)
+                                    {   
+                                        <tr>
+                                            <td>@ProductTypes.First(t => t.Id == orderProduct.ProductTypeId).Name</td>
+                                            <td>@orderProduct.Quantity</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                                <form class="form-inline">
+                                    <div class="form-group mb-2">
+                                        <InputSelect @bind-Value="_orderProduct.ProductTypeId" class="form-control sm-2">
+                                            @foreach (var type in ProductTypes)
+                                            {
+                                                <option value="@type.Id">@type.Name</option>
+                                            }
+                                        </InputSelect>
+                                        <ValidationMessage For="(() => _orderProduct.ProductTypeId)" />
+                                    </div>
+                                    <div class="form-group mb-2">
+                                        <InputNumber @bind-Value="_orderProduct.Quantity" class="form-control sm-2" />
+                                        <ValidationMessage For="(() => _orderProduct.Quantity)" />
+                                    </div>
+                                    <button type="button" class="btn btn-secondary mb-2" @onclick="ClearOrderedProducts">Clear</button>
+                                    <button type="button" class="btn btn-primary mb-2" @onclick="AddOrderedProductClick">Add</button>
+                                </form>
+                               <div class="col-md-12">
+                                   <div class="form-group">
+                                       <label class="control-label col-md-6">Description</label>
+                                       <div class="col-md-12">
+                                           <InputTextArea class="form-control" @bind-Value="_order.Description" />
+                                           <ValidationMessage For="(() => _order.Description)" />
+                                       </div>
+                                   </div>
+                               </div> 
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        Create
+                    </button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+
+
+@if (_showCreateModal)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+        [Parameter]
+        public IEnumerable<ProductType> ProductTypes { get; set; }
+
+        [Parameter]
+        public EventCallback<string> OnSaveClick { get; set; }
+    
+    private string _badFileMessage = string.Empty;
+    private string _modalDisplay = "none;";
+    private string _modalClass = "";
+    private bool _showCreateModal = false;
+
+    private List<AutocompleteCustomer> customers;
+    int selectedCustomerId = 0;
+    string? selectedCustomerFullName;
+    string? filterFullName;
+    
+    private CreateOrderRequest _order = new CreateOrderRequest();
+    private List<CreateOrderProductRequest> _orderProducts = new List<CreateOrderProductRequest>();
+    private CreateOrderProductRequest _orderProduct = new CreateOrderProductRequest();
+
+    private async Task CreateClick()
+    {
+        _order.CustomerId = selectedCustomerId;
+        _order.OrderProducts = _orderProducts.ToList();
+        var result = await OrderService.Create(_order);
+        if (result != null)
+        {
+            await OnSaveClick.InvokeAsync(null);
+            await Close();
+        }
+    }
+
+    private async Task HandleInput(ChangeEventArgs e)
+    {
+        filterFullName = e.Value?.ToString();
+        if (filterFullName?.Length > 2)
+        {
+            customers = await CustomerService.ListAutocomplete(filterFullName);
+        }
+        else
+        {
+            customers = null;
+            selectedCustomerId = 0;
+            selectedCustomerFullName = null;
+        }
+    }
+
+    private void SelectCustomer(int id)
+    {
+        selectedCustomerId = id;
+        selectedCustomerFullName = customers!.First(c => c.Id.Equals(selectedCustomerId)).FullName;
+        customers = null;
+    }
+
+    private void AddOrderedProductClick()
+    {
+        _orderProducts.Add(_orderProduct);
+        _orderProduct = new CreateOrderProductRequest()
+        {
+            ProductTypeId = ProductTypes.First().Id,
+            Quantity = 10 
+        };
+    }
+
+
+    public void ClearOrderedProducts()
+    {
+        _orderProducts.Clear();
+    }
+
+    public async Task Open()
+    {
+    
+        Logger.LogInformation("Now loading... /Orders/Create");
+
+        await new Css(JSRuntime).HideBodyOverflow();
+
+        _order = new CreateOrderRequest
+        {
+            CustomerId = 0,
+            OrderedDate = DateTime.Now,
+            RequiredDate = DateTime.Now.AddMonths(1),
+            Description = String.Empty
+        };
+
+        _orderProduct = new CreateOrderProductRequest()
+        {
+            ProductTypeId = ProductTypes.First().Id,
+            Quantity = 10
+        };
+
+
+        _modalDisplay = "block;";
+        _modalClass = "Show";
+        _showCreateModal = true;
+
+        StateHasChanged();
+    }
+
+    private async Task Close()
+    {
+        await new Css(JSRuntime).ShowBodyOverflow();
+        _modalDisplay = "none";
+        _modalClass = "";
+        _showCreateModal = false;
+    }
+}

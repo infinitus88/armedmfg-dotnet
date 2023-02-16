@@ -11,5 +11,6 @@ public interface ICustomerService
     Task<string> Delete(int id);
     Task<Customer> GetById(int id);
     Task<List<Customer>> ListPaged(int pageSize);
+    Task<List<AutocompleteCustomer>> ListAutocomplete(string fullName);
     Task<List<Customer>> List();
 }

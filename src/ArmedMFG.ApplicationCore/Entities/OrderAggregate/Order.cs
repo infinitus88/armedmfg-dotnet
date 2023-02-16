@@ -10,52 +10,44 @@ public class Order : BaseEntity, IAggregateRoot
 {
     public DateTime OrderedDate { get; private set; }
     public DateTime RequiredDate { get; private set; }
-    public DateTime ShippedDate { get; private set; }
+    public DateTime? FinishedDate { get; private set; }
     public int CustomerId { get; private set; }
     public Customer? Customer { get; private set; }
     public Status Status { get; private set; }
+    public PaymentType PaymentType { get; private set; }
     public string Description { get; private set; }
-
-    private readonly List<PartialPayment> _partialPayments = new List<PartialPayment>();
-    public IReadOnlyCollection<PartialPayment> PartialPayments => _partialPayments.AsReadOnly();
     
-    private readonly List<PartialShipment> _partialShipments = new List<PartialShipment>();
-    public IReadOnlyCollection<PartialShipment> PartialShipments => _partialShipments.AsReadOnly();
+    private readonly List<OrderShipment> _orderShipments = new List<OrderShipment>();
+    public IReadOnlyCollection<OrderShipment> OrderShipments => _orderShipments.AsReadOnly();
 
     private readonly List<OrderProduct> _orderProducts = new List<OrderProduct>();
     public IReadOnlyCollection<OrderProduct> OrderProducts => _orderProducts.AsReadOnly();
 
-    public Order(DateTime orderedDate,
-        int customerId,
+    public Order(int customerId, 
+        DateTime orderedDate,
+        DateTime requiredDate,
         string description
         )
     {
-        OrderedDate = orderedDate;
         CustomerId = customerId;
+        OrderedDate = orderedDate;
+        RequiredDate = requiredDate;
         Description = description;
-    }
-
-    public void AddRangePartialPayments(IEnumerable<PartialPayment> partialPayments)
-    {
-        foreach (var partialPayment in partialPayments)
-        {
-            _partialPayments.Add(partialPayment);
-        }
-    }
-
-    public void AddPartialPayment(DateTime payedDate, decimal amount)
-    {
-        _partialPayments.Add(new PartialPayment(Id, payedDate, amount));
     }
 
     public void AddPartialShipment(DateTime shipmentDate, string driverName, string driverPhone, string carNumber, IEnumerable<ShipmentProduct> shipmentProducts)
     {
-        var partialShipment = new PartialShipment(Id, driverName, driverPhone, carNumber, shipmentDate);
+        var partialShipment = new OrderShipment(Id, driverName, driverPhone, carNumber, shipmentDate);
 
         foreach (var shipmentProduct in shipmentProducts)
         {
-            partialShipment.AddProducts(shipmentProduct.ProductTypeId, shipmentProduct.Quantity);
+            partialShipment.AddShipmentProduct(shipmentProduct.ProductTypeId, shipmentProduct.Quantity);
         }
+    }
+
+    public void AddOrderProduct(int productTypeId, int quantity, bool haveSingleTimePrice, decimal singleTimePrice)
+    {
+        _orderProducts.Add(new OrderProduct(productTypeId, quantity, haveSingleTimePrice, singleTimePrice));
     }
 
     public void AddRangeProducts(IEnumerable<OrderProduct> orderProducts)
@@ -65,6 +57,17 @@ public class Order : BaseEntity, IAggregateRoot
             _orderProducts.Add(orderProduct);
         } 
     }
+
+    public void SetPaymentType(PaymentType paymentType)
+    {
+        PaymentType = paymentType;
+    }
+
+    public void SetStatus(Status status)
+    {
+        Status = status;
+    }
+    
 
     public void UpdateDetails(OrderDetails details)
     {
@@ -78,12 +81,16 @@ public class Order : BaseEntity, IAggregateRoot
     public readonly record struct OrderDetails
     {
         public DateTime OrderedDate { get; }
+        public DateTime RequiredDate { get; }
         public int CustomerId { get; }
+        public string Description { get; }
 
-        public OrderDetails(DateTime orderedDate, int customerId)
+        public OrderDetails(int customerId, DateTime orderedDate, DateTime requiredDate, string description)
         {
-            OrderedDate = orderedDate;
             CustomerId = customerId;
+            OrderedDate = orderedDate;
+            RequiredDate = requiredDate;
+            Description = description;
         }
     }
 }
@@ -92,7 +99,7 @@ public enum PaymentType : byte
 {
     Transfer = 1,
     CashWithVAT = 2,
-    CashWithoutVAT = 2
+    CashWithoutVAT = 3
 }
 
 public enum Status : byte

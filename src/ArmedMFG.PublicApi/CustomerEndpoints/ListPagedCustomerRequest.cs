@@ -1,4 +1,6 @@
-﻿namespace ArmedMFG.PublicApi.CustomerEndpoints;
+﻿using System;
+
+namespace ArmedMFG.PublicApi.CustomerEndpoints;
 
 public class ListPagedCustomerRequest : BaseRequest
 {

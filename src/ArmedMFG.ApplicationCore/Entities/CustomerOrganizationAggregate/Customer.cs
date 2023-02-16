@@ -12,8 +12,9 @@ public class Customer : BaseEntity, IAggregateRoot
     public string Position { get; private set; }
     public string Email { get; private set; }
     public string FindOutThrough { get; private set; }
+    public string? Description { get; private set; }
 
-    public Customer(string fullName, string phoneNumber, string position, string email, string findOutThrough)
+    public Customer(string fullName, string phoneNumber, string position, string email, string findOutThrough, string description)
     {
         FullName = fullName;
         PhoneNumber = phoneNumber;

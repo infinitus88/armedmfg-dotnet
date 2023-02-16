@@ -31,7 +31,7 @@ public class ProductBatchService : IProductBatchService
 
     public async Task<ProductBatch> Edit(ProductBatch productBatch)
     {
-        return (await _httpService.HttpPut<EditProductBatchResult>("product-batch", productBatch)).ProductBatch;
+        return (await _httpService.HttpPut<EditProductBatchResult>("product-batches", productBatch)).ProductBatch;
     }
 
     public async Task<string> Delete(int id)

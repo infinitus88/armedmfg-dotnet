@@ -76,13 +76,20 @@ public class CachedCustomerServiceDecorator : ICustomerService
         return productPrices;
     }
 
+    public async Task<List<AutocompleteCustomer>> ListAutocomplete(string fullName)
+    {
+        var customers = await _customerService.ListAutocomplete(fullName);
+
+        return customers;
+    }
+
     public async Task<List<Customer>> List()
     {
         string key = "customers";
         var cacheEntry = await _localStorageService.GetItemAsync<CacheEntry<List<Customer>>>(key);
         if (cacheEntry != null)
         {
-            _logger.LogInformation("Loading product prices from local storage.");
+            _logger.LogInformation("Loading customers from local storage.");
             if (cacheEntry.DateCreated.AddMinutes(1) > DateTime.UtcNow)
             {
                 return cacheEntry.Value;

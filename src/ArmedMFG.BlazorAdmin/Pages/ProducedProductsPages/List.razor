@@ -61,8 +61,8 @@ else
         </tbody>
     </table>
     
-    @* <Details Categories="@materialCategories" OnEditClick="EditClick" @ref="DetailsComponent"></Details> *@
-    @* <Edit Categories="@materialCategories" OnSaveClick="ReloadProductBatchs" @ref="EditComponent"></Edit> *@
+    <Details MaterialTypes="@materialTypes" ProductTypes="@productTypes" OnEditClick="EditClick" @ref="DetailsComponent"></Details>
+    <Edit MaterialTypes="@materialTypes" ProductTypes="@productTypes" OnSaveClick="ReloadProductBatches" @ref="EditComponent"></Edit>
     <Create MaterialTypes ="@materialTypes" ProductTypes="@productTypes"  OnSaveClick="ReloadProductBatches" @ref="CreateComponent"></Create>
     <Delete ProductTypes="@productTypes" MaterialTypes="@materialTypes" OnSaveClick="ReloadProductBatches" @ref="DeleteComponent"></Delete>
 }

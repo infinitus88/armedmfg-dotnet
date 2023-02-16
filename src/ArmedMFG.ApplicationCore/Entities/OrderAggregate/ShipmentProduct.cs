@@ -5,15 +5,15 @@ namespace ArmedMFG.ApplicationCore.Entities.OrderAggregate;
 
 public class ShipmentProduct : BaseEntity, IAggregateRoot
 {
-    public int PartialShipmentId { get; private set; }
-    public PartialShipment PartialShipment { get; private set; }
+    public int OrderShipmentId { get; private set; }
+    public OrderShipment OrderShipment { get; private set; }
     public int ProductTypeId { get; private set; }
     public ProductType ProductType { get; private set; }
     public int Quantity { get; private set; }
 
-    public ShipmentProduct(int partialShipmentId, int productTypeId, int quantity)
+    public ShipmentProduct(int orderShipmentId, int productTypeId, int quantity)
     {
-        PartialShipmentId = partialShipmentId;
+        OrderShipmentId = orderShipmentId;
         ProductTypeId = productTypeId;
         Quantity = quantity;
     }

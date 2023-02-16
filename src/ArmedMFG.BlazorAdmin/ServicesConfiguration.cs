@@ -47,6 +47,10 @@ public static class ServicesConfiguration
         services.AddScoped<ICustomerService, CachedCustomerServiceDecorator>();
         services.AddScoped<CustomerService>();
         
+        // Orders
+        services.AddScoped<IOrderService, CachedOrderServiceDecorator>();
+        services.AddScoped<OrderService>();
+        
         
         return services;
     }

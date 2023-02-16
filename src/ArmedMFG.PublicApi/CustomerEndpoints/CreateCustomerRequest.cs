@@ -10,4 +10,5 @@ public class CreateCustomerRequest : BaseRequest
     public string Position { get; set; }
     public string FindOutThrough { get; set; }
     public int OrganizationId { get; set; }
+    public string Description { get; set; }
 }

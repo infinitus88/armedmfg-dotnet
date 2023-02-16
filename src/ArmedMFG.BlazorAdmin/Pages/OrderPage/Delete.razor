@@ -1,0 +1,153 @@
+﻿@inject ILogger<Delete> Logger
+@inject IJSRuntime JSRuntime
+@inject IOrderService OrderService
+
+@inherits ArmedMFG.BlazorAdmin.Helpers.BlazorComponent
+
+@namespace ArmedMFG.BlazorAdmin.Pages.OrderPage
+
+<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Order</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @if (_order == null)
+                {
+                    <Spinner></Spinner>
+                }
+                else
+                {
+                    <div class="container">
+                        <div class="row">
+                            <dl class="col-md-12 dl-horizontal">
+                                <dt>
+                                    Ordered Date
+                                </dt>
+
+                                <dd>
+                                    @_order.OrderedDate
+                                </dd>
+                                
+                                <dt>
+                                    Required Date
+                                </dt>
+                                
+                                <dd>
+                                    @_order.RequiredDate
+                                </dd>
+                                
+                                @if(_order.Status == 5) 
+                                {
+                                    <dt>
+                                        Finished Date
+                                    </dt>
+                                    
+                                    <dd>
+                                        @_order.FinishedDate
+                                    </dd>
+                                }
+                                
+                                <dt>
+                                    Status
+                                </dt>
+                                
+                                <dd>
+                                    @_order.Status
+                                </dd>
+                                
+                                <dt>
+                                    Payment Type
+                                </dt>
+                                
+                                <dd>
+                                    @_order.PaymentType
+                                </dd>
+                            </dl>
+                        </div>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>Product Type</th>
+                                <th>Quantity</th>
+                            </tr>
+                            </thead>
+                            <tbody class="cursor-pointer">
+                            @foreach (var orderProduct in _order.OrderProducts)
+                            {   
+                                <tr>
+                                    <td>@ProductTypes.First(t => t.Id == orderProduct.ProductTypeId).Name</td>
+                                    <td>@orderProduct.Quantity</td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                <button class="btn btn-danger" @onclick="() => DeleteClick(_order.Id)">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (_showDeleteModal)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+
+    [Parameter]
+    public IEnumerable<ProductType> ProductTypes { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnSaveClick { get; set; }
+
+    private string _modalDisplay = "none;";
+    private string _modalClass = "";
+    private bool _showDeleteModal = false;
+    private Order _order = new Order();
+
+    private async Task DeleteClick(int id)
+    {
+        // TODO: Add some kind of "are you sure" check before this
+
+        await OrderService.Delete(id);
+
+        await OnSaveClick.InvokeAsync(null);
+        await Close();
+    }
+
+    public async Task Open(int id)
+    {
+        Logger.LogInformation("Now loading... /Orders/Delete/{Id}", id);
+
+        await new Css(JSRuntime).HideBodyOverflow();
+
+        _order = await OrderService.GetById(id);
+
+        _modalDisplay = "block;";
+        _modalClass = "Show";
+        _showDeleteModal = true;
+
+        StateHasChanged();
+    }
+
+    private async Task Close()
+    {
+        await new Css(JSRuntime).ShowBodyOverflow();
+        _modalDisplay = "none";
+        _modalClass = "";
+        _showDeleteModal = false;
+    }
+}

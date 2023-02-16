@@ -4,7 +4,7 @@ using ArmedMFG.ApplicationCore.Interfaces;
 
 namespace ArmedMFG.ApplicationCore.Entities.OrderAggregate;
 
-public class PartialShipment : BaseEntity, IAggregateRoot
+public class OrderShipment : BaseEntity, IAggregateRoot
 {
     public int OrderId { get; private set; }
     public Order Order { get; private set; }
@@ -16,15 +16,16 @@ public class PartialShipment : BaseEntity, IAggregateRoot
     private readonly List<ShipmentProduct> _shipmentProducts = new List<ShipmentProduct>();
     public IReadOnlyCollection<ShipmentProduct> ShipmentProducts => _shipmentProducts.AsReadOnly();
 
-    public PartialShipment(int orderId, string driverName, string driverPhone, string carNumber, DateTime shipmentDate)
+    public OrderShipment(int orderId, string driverName, string driverPhone, string carNumber, DateTime shipmentDate)
     {
         OrderId = orderId;
         DriverName = driverName;
         DriverPhone = driverPhone;
+        CarNumber = carNumber;
         ShipmentDate = shipmentDate;
     }
     
-    public void AddProducts(int productTypeId, int quantity)
+    public void AddShipmentProduct(int productTypeId, int quantity)
     {
         _shipmentProducts.Add(new ShipmentProduct(Id, productTypeId, quantity));
     }

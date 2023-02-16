@@ -42,7 +42,7 @@ public class CreateCustomerEndpoint : IEndpoint<IResult, CreateCustomerRequest, 
         
         // var productPriceNameSpecification = new ProductPrice
 
-        var newCustomer = new Customer(request.FullName, request.PhoneNumber, request.Email, request.Position, request.FindOutThrough);
+        var newCustomer = new Customer(request.FullName, request.PhoneNumber, request.Position, request.Email, request.FindOutThrough, request.Description);
         
         if (request.OrganizationId > 0)
         {

@@ -26,9 +26,9 @@ public partial class List : BlazorComponent
     private List<MaterialType> materialTypes = new List<MaterialType>();
     // private List<MaterialCategory> materialCategories = new List<MaterialCategory>();
 
-    // private Edit EditComponent { get; set; }
+    private Edit EditComponent { get; set; }
     private Delete DeleteComponent { get; set; }
-    // private Details DetailsComponent { get; set; }
+    private Details DetailsComponent { get; set; }
     private Create CreateComponent { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -50,7 +50,7 @@ public partial class List : BlazorComponent
 
     private async void DetailsClick(int id)
     {
-        // await DetailsComponent.Open(id);
+        await DetailsComponent.Open(id);
     }
 
     private async Task CreateClick()
@@ -60,7 +60,7 @@ public partial class List : BlazorComponent
 
     private async Task EditClick(int id)
     {
-        // await EditComponent.Open(id);
+        await EditComponent.Open(id);
     }
 
     private async Task DeleteClick(int id)
