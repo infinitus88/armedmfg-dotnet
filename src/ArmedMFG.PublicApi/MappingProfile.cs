@@ -60,5 +60,7 @@ public class MappingProfile : Profile
         CreateMap<Order, OrderDto>();
         CreateMap<OrderShipment, OrderShipmentDto>();
         CreateMap<OrderProduct, OrderProductDto>();
+
+        CreateMap<ShipmentProduct, ShipmentProductDto>();
     }
 }

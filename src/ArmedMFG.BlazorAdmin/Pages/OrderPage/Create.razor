@@ -14,7 +14,7 @@
             <EditForm Model="_order" OnValidSubmit="@CreateClick">
                 <DataAnnotationsValidator />
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Create</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Добавить</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -32,7 +32,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label col-md-6">Ordered Date</label>
+                                        <label class="control-label col-md-6">Дата Заказа</label>
                                         <div class="col-md-12">
                                             <InputDate class="form-control" @bind-Value="_order.OrderedDate" />
                                             <ValidationMessage For="(() => _order.OrderedDate)" />
@@ -42,7 +42,7 @@
                                 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label col-md-6">Required Date</label>
+                                        <label class="control-label col-md-6">Дата Завершения требуемая заказчиком</label>
                                         <div class="col-md-12">
                                             <InputDate class="form-control" @bind-Value="_order.RequiredDate" />
                                             <ValidationMessage For="(() => _order.RequiredDate)" />
@@ -51,7 +51,8 @@
                                 </div>
                                 
                                 <div class="autocomplete col-md-12">
-                                    <input @bind=selectedCustomerFullName @oninput=HandleInput class="form-control filter" />
+                                    <label class="control-label col-md-6">Заказчик</label>
+                                    <input @bind=selectedCustomerFullName @oninput=HandleInput class="form-control filter"/>
                                     @if (customers is not null)
                                     {
                                         <ul class="options">
@@ -66,7 +67,7 @@
                                             }
                                             else
                                             {
-                                                <li class="disabled option">No results</li>
+                                                <li class="disabled option">Заказчик не найден</li>
                                             }
                                         </ul>
                                     }
@@ -75,8 +76,8 @@
                                 <table class="table table-striped table-hover">
                                     <thead>
                                     <tr>
-                                        <th>Product Type</th>
-                                        <th>Quantity</th>
+                                        <th>Наименование Товара</th>
+                                        <th>Количество</th>
                                     </tr>
                                     </thead>
                                     <tbody class="cursor-pointer">
@@ -103,12 +104,12 @@
                                         <InputNumber @bind-Value="_orderProduct.Quantity" class="form-control sm-2" />
                                         <ValidationMessage For="(() => _orderProduct.Quantity)" />
                                     </div>
-                                    <button type="button" class="btn btn-secondary mb-2" @onclick="ClearOrderedProducts">Clear</button>
-                                    <button type="button" class="btn btn-primary mb-2" @onclick="AddOrderedProductClick">Add</button>
+                                    <button type="button" class="btn btn-secondary mb-2" @onclick="ClearOrderedProducts">Очистить</button>
+                                    <button type="button" class="btn btn-primary mb-2" @onclick="AddOrderedProductClick">Добавить</button>
                                 </form>
                                <div class="col-md-12">
                                    <div class="form-group">
-                                       <label class="control-label col-md-6">Description</label>
+                                       <label class="control-label col-md-6">Описание заказа (коментарии, требования заказчика)</label>
                                        <div class="col-md-12">
                                            <InputTextArea class="form-control" @bind-Value="_order.Description" />
                                            <ValidationMessage For="(() => _order.Description)" />
@@ -120,9 +121,9 @@
                     }
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Отмена</button>
                     <button type="submit" class="btn btn-primary">
-                        Create
+                        Добавить
                     </button>
                 </div>
             </EditForm>

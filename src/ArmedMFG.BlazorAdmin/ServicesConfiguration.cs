@@ -51,6 +51,9 @@ public static class ServicesConfiguration
         services.AddScoped<IOrderService, CachedOrderServiceDecorator>();
         services.AddScoped<OrderService>();
         
+        // Order Shipments
+        services.AddScoped<IOrderShipmentService, CachedOrderShipmentServiceDecorator>();
+        services.AddScoped<OrderShipmentService>();
         
         return services;
     }

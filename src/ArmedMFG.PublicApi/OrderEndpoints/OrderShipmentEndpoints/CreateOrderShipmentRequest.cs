@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ArmedMFG.PublicApi.OrderEndpoints;
+namespace ArmedMFG.PublicApi.OrderEndpoints.OrderShipmentEndpoints;
 
-public class OrderShipmentDto
+public class CreateOrderShipmentRequest : BaseRequest
 {
-    public int Id { get; set; }
     public int OrderId { get; set; }
+    public DateTime ShipmentDate { get; set; }
     public string DriverName { get; set; }
     public string DriverPhone { get; set; }
     public string CarNumber { get; set; }
+    public string Destination { get; set; }
+
     public List<ShipmentProductDto> ShipmentProducts { get; set; } = new List<ShipmentProductDto>();
-    public DateTime ShipmentDate { get; set; } 
 }

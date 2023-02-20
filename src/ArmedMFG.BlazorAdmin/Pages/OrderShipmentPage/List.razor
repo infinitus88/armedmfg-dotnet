@@ -1,12 +1,12 @@
-﻿@page "/admin/orders"
+﻿@page "/admin/orders/shipments"
 @attribute [Authorize(Roles = ArmedMFG.BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS)]
 @inherits ArmedMFG.BlazorAdmin.Helpers.BlazorComponent
 
 <PageTitle>ArmedMFG Admin</PageTitle>
 
-<h1>Список Заказов</h1>
+<h1>Список Отправок продуктов</h1>
 
-@if (_orders == null)
+@if (_orderShipments == null)
 {
     <Spinner></Spinner>
 }
@@ -15,7 +15,7 @@ else
 
     <p class="esh-link-wrapper">
         <button class="btn btn-primary" @onclick="@(CreateClick)">
-            Create New
+            Добавить
         </button>
     </p>
 
@@ -23,34 +23,26 @@ else
         <thead>
         <tr>
             <th>ID Заказа</th>
-            <th>Имя Заказчика</th>
-            <th>Дата Заказа</th>
-            <th>Дата требуемая заказчиком</th>
-            <th>Дата Завершения</th>
-            <th>Статус</th>
-            <th>Товары</th>
+            <th>Дата Отправки</th>
+            <th>Отправленые Товары</th>
             <th>Действия</th>
         </tr>
         </thead>
         <tbody class="cursor-pointer">
-        @foreach (var order in _orders)
+        @foreach (var order in _orderShipments)
         {
             <tr @onclick="@(() => DetailsClick(order.Id))">
                 <td>@order.Id</td>
-                <td>@order.Customer</td>
-                <td>@order.OrderedDate</td>
-                <td>@order.RequiredDate</td>
-                <td>@order.FinishedDate</td>
-                <td>@order.Status</td>
+                <td>@order.ShipmentDate</td>
                 <td>
-                    @foreach (var orderProduct in order.OrderProducts)
+                    @foreach (var shipmentProduct in order.ShipmentProducts)
                     {
-                        <div>@orderProduct.ProductType - @orderProduct.Quantity</div><br>
+                        <div>@shipmentProduct.ProductType - @shipmentProduct.Quantity</div><br>
                     }
                 </td>
                 <td>
                     <button @onclick="@(() => EditClick(order.Id))" @onclick:stopPropagation="true" class="btn btn-primary">
-                        Именить
+                        Изменить
                     </button>
 
                     <button @onclick="@(() => DeleteClick(order.Id))" @onclick:stopPropagation="true" class="btn btn-danger">
@@ -64,6 +56,6 @@ else
     
     @* <Details Categories="@materialCategories" OnEditClick="EditClick" @ref="DetailsComponent"></Details> *@
     @* <Edit Categories="@materialCategories" OnSaveClick="ReloadOrders" @ref="EditComponent"></Edit> *@
-    <Create ProductTypes="@productTypes"  OnSaveClick="ReloadOrders" @ref="CreateComponent"></Create>
-    <Delete ProductTypes="@productTypes"  OnSaveClick="ReloadOrders" @ref="DeleteComponent"></Delete>
+    <Create ProductTypes="@productTypes"  OnSaveClick="ReloadOrderShipments" @ref="CreateComponent"></Create>
+    <Delete ProductTypes="@productTypes"  OnSaveClick="ReloadOrderShipments" @ref="DeleteComponent"></Delete>
 }

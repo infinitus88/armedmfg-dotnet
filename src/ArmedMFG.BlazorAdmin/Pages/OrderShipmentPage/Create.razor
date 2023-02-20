@@ -1,0 +1,222 @@
+﻿@inject ILogger<Create> Logger
+@inject IJSRuntime JSRuntime
+@inject IOrderShipmentService OrderShipmentService
+@inherits ArmedMFG.BlazorAdmin.Helpers.BlazorComponent
+
+@namespace ArmedMFG.BlazorAdmin.Pages.OrderShipmentPage
+
+<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <EditForm Model="_orderShipment" OnValidSubmit="@CreateClick">
+                <DataAnnotationsValidator />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Добавить</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div>
+                </div>
+                <div class="modal-body">
+                    @if (_orderShipment == null)
+                    {
+                        <Spinner></Spinner>
+                    }
+                    else
+                    {
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">ID Заказа</label>
+                                        <div class="col-md-12">
+                                            <InputNumber class="form-control" @bind-Value="_orderShipment.OrderId"/>
+                                            <ValidationMessage For="(() => _orderShipment.OrderId)"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Дата отправки</label>
+                                        <div class="col-md-12">
+                                            <InputDate class="form-control" @bind-Value="_orderShipment.ShipmentDate"/>
+                                            <ValidationMessage For="(() => _orderShipment.ShipmentDate)"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Имя Водителя</label>
+                                        <div class="col-md-12">
+                                            <InputText class="form-control" @bind-Value="_orderShipment.DriverName"/>
+                                            <ValidationMessage For="(() => _orderShipment.DriverName)"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Номер Водителя</label>
+                                        <div class="col-md-12">
+                                            <InputText class="form-control" @bind-Value="_orderShipment.DriverPhone"/>
+                                            <ValidationMessage For="(() => _orderShipment.DriverPhone)"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Номер Машины</label>
+                                        <div class="col-md-12">
+                                            <InputText class="form-control" @bind-Value="_orderShipment.CarNumber"/>
+                                            <ValidationMessage For="(() => _orderShipment.CarNumber)"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-6">Пункт Назначения</label>
+                                        <div class="col-md-12">
+                                            <InputText class="form-control" @bind-Value="_orderShipment.Destination"/>
+                                            <ValidationMessage For="(() => _orderShipment.Destination)"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Название Товара</th>
+                                        <th>Количество</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="cursor-pointer">
+                                    @foreach (var orderProduct in _shipmentProducts)
+                                    {
+                                        <tr>
+                                            <td>@ProductTypes.First(t => t.Id == orderProduct.ProductTypeId).Name</td>
+                                            <td>@orderProduct.Quantity</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                                <form class="form-inline">
+                                    <div class="form-group mb-2">
+                                        <InputSelect @bind-Value="_shipmentProduct.ProductTypeId" class="form-control sm-2">
+                                            @foreach (var type in ProductTypes)
+                                            {
+                                                <option value="@type.Id">@type.Name</option>
+                                            }
+                                        </InputSelect>
+                                        <ValidationMessage For="(() => _shipmentProduct.ProductTypeId)"/>
+                                    </div>
+                                    <div class="form-group mb-2">
+                                        <InputNumber @bind-Value="_shipmentProduct.Quantity" class="form-control sm-2"/>
+                                        <ValidationMessage For="(() => _shipmentProduct.Quantity)"/>
+                                    </div>
+                                    <button type="button" class="btn btn-secondary mb-2" @onclick="ClearOrderedProducts">Очистить</button>
+                                    <button type="button" class="btn btn-primary mb-2" @onclick="AddOrderedProductClick">Добавить</button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Отмена</button>
+                    <button type="submit" class="btn btn-primary">
+                        Добавить
+                    </button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+
+
+@if (_showCreateModal)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+        [Parameter]
+        public IEnumerable<ProductType> ProductTypes { get; set; }
+
+        [Parameter]
+        public EventCallback<string> OnSaveClick { get; set; }
+    
+    private string _badFileMessage = string.Empty;
+    private string _modalDisplay = "none;";
+    private string _modalClass = "";
+    private bool _showCreateModal = false;
+
+    private CreateOrderShipmentRequest _orderShipment = new CreateOrderShipmentRequest();
+    private List<CreateShipmentProduct> _shipmentProducts = new List<CreateShipmentProduct>();
+    private CreateShipmentProduct _shipmentProduct = new CreateShipmentProduct();
+
+    private async Task CreateClick()
+    {
+        _orderShipment.ShipmentProducts = _shipmentProducts.ToList();
+        var result = await OrderShipmentService.Create(_orderShipment);
+        if (result != null)
+        {
+            await OnSaveClick.InvokeAsync(null);
+            await Close();
+        }
+    }
+
+    private void AddOrderedProductClick()
+    {
+        _shipmentProducts.Add(_shipmentProduct);
+        _shipmentProduct = new CreateShipmentProduct()
+        {
+            ProductTypeId = ProductTypes.First().Id,
+            Quantity = 10 
+        };
+    }
+
+
+    public void ClearOrderedProducts()
+    {
+        _shipmentProducts.Clear();
+    }
+
+    public async Task Open()
+    {
+    
+        Logger.LogInformation("Now loading... /OrderShipments/Create");
+
+        await new Css(JSRuntime).HideBodyOverflow();
+
+        _orderShipment = new CreateOrderShipmentRequest
+        {
+            ShipmentDate = DateTime.Now,
+        };
+
+        _shipmentProduct = new CreateShipmentProduct()
+        {
+            ProductTypeId = ProductTypes.First().Id,
+            Quantity = 10
+        };
+
+
+        _modalDisplay = "block;";
+        _modalClass = "Show";
+        _showCreateModal = true;
+
+        StateHasChanged();
+    }
+
+    private async Task Close()
+    {
+        await new Css(JSRuntime).ShowBodyOverflow();
+        _modalDisplay = "none";
+        _modalClass = "";
+        _showCreateModal = false;
+    }
+}
