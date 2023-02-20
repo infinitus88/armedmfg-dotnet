@@ -10,7 +10,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Details @_item.Name</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Детали сырья @_item.Name</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -27,36 +27,29 @@
                         <div class="row">
                             <dl class="col-md-12 dl-horizontal">
                                 <dt>
-                                    Name
+                                    Название
                                 </dt>
 
                                 <dd>
                                     @_item.Name
                                 </dd>
 
-                                <dt>
-                                    Description
-                                </dt>
-
-                                <dd>
-                                    @_item.Description
-                                </dd>
 
                                 <dt>
-                                    Category
+                                    Категория
                                 </dt>
 
                                 <dd>
                                     @_item.MaterialCategory
                                 </dd>
+                                
                                 <dt>
-                                    Amount
+                                    Описание
                                 </dt>
 
                                 <dd>
-                                    @_item.CurrentAmount
+                                    @_item.Description
                                 </dd>
-
                             </dl>
                         </div>
 
@@ -65,9 +58,9 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Отмена</button>
                 <button class="btn btn-primary" @onclick="EditClick">
-                    Edit
+                    Изменить
                 </button>
             </div>
         </div>

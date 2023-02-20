@@ -16,7 +16,7 @@ public class MaterialSupplyConfiguration : IEntityTypeConfiguration<MaterialSupp
             .IsRequired(true)
             .HasColumnType("decimal(18,2)");    
         
-        builder.Property(ms => ms.UnitPrice)
+        builder.Property(ms => ms.Price)
             .IsRequired(true)
             .HasColumnType("decimal(18,2)");
     }
