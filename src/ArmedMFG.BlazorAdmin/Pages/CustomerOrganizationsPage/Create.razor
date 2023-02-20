@@ -12,7 +12,7 @@
             <EditForm Model="_organization" OnValidSubmit="@CreateClick">
                 <DataAnnotationsValidator />
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Create Organization</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Добавить Организацию</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -28,7 +28,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label col-md-6">Name</label>
+                                        <label class="control-label col-md-6">Название</label>
                                         <div class="col-md-12">
                                             <InputText class="form-control" @bind-Value="_organization.Name" />
                                             <ValidationMessage For="(() => _organization.Name)" />
@@ -37,7 +37,7 @@
                                 </div>
                                <div class="col-md-12">
                                    <div class="form-group">
-                                       <label class="control-label col-md-6">Taxpayer Id Number</label>
+                                       <label class="control-label col-md-6">ИНН</label>
                                        <div class="col-md-12">
                                            <InputText class="form-control" @bind-Value="_organization.TaxpayerIdNum" />
                                            <ValidationMessage For="(() => _organization.TaxpayerIdNum)" />
@@ -46,7 +46,7 @@
                                </div> 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label col-md-6">Phone Number</label>
+                                        <label class="control-label col-md-6">Телефон</label>
                                         <div class="col-md-12">
                                             <InputText class="form-control" @bind-Value="_organization.PhoneNumber" />
                                             <ValidationMessage For="(() => _organization.PhoneNumber)" />
@@ -55,11 +55,12 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-inline form-group">
-                                        <label class="control-label col-md-6">Main Branch Address</label>
+                                        <label class="control-label col-md-6">Адрес</label>
                                         <div class="col-md-12">
                                             <InputText class="form-control" @bind-Value="_organization.MainBranchAddress.Region" />
                                             <ValidationMessage For="(() => _organization.MainBranchAddress.Region)" />
                                         </div>
+                                        
                                         <div class="col-md-12">
                                             <InputText class="form-control" @bind-Value="_organization.MainBranchAddress.District" />
                                             <ValidationMessage For="(() => _organization.MainBranchAddress.District)" />
@@ -68,7 +69,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label col-md-6">Email</label>
+                                        <label class="control-label col-md-6">Эл. почта</label>
                                         <div class="col-md-12">
                                             <InputText class="form-control" @bind-Value="_organization.Email" />
                                             <ValidationMessage For="(() => _organization.Email)" />
@@ -77,7 +78,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label col-md-6">Description</label>
+                                        <label class="control-label col-md-6">Описание</label>
                                         <div class="col-md-12">
                                             <InputText class="form-control" @bind-Value="_organization.Description" />
                                             <ValidationMessage For="(() => _organization.Description)" />
@@ -89,9 +90,9 @@
                     }
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Отмена</button>
                     <button type="submit" class="btn btn-primary">
-                        Create
+                        Добавить
                     </button>
                 </div>
             </EditForm>

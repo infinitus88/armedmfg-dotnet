@@ -56,7 +56,7 @@ public class CreateMaterialSupplyEndpoint : IEndpoint<IResult, CreateMaterialSup
             Id = newSupply.Id,
             MaterialTypeId = newSupply.MaterialTypeId,
             DeliveredDate = newSupply.DeliveredDate,
-            UnitPrice = newSupply.UnitPrice,
+            UnitPrice = newSupply.Price,
             Amount = newSupply.Amount
         };
         response.MaterialSupply = dto;

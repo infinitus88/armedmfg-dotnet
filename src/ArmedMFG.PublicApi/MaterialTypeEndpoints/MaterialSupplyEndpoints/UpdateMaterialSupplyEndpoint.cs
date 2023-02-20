@@ -48,7 +48,7 @@ public class UpdateMaterialSupplyEndpoint : IEndpoint<IResult, UpdateMaterialSup
             Id = existingMaterialSupply.Id,
             MaterialTypeId = existingMaterialSupply.MaterialTypeId,
             DeliveredDate = existingMaterialSupply.DeliveredDate,
-            UnitPrice = existingMaterialSupply.UnitPrice,
+            UnitPrice = existingMaterialSupply.Price,
             Amount = existingMaterialSupply.Amount
         };
         response.MaterialSupply = dto;

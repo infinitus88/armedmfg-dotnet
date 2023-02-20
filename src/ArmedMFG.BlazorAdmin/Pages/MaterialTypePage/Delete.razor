@@ -10,7 +10,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete @_item.Name</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Удалить сырье: @_item.Name</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -26,34 +26,27 @@
                         <div class="row">
                             <dl class="col-md-12 dl-horizontal">
                                 <dt>
-                                    Name
+                                    Название
                                 </dt>
 
                                 <dd>
                                     @_item.Name
                                 </dd>
-
+                                
                                 <dt>
-                                    Description
-                                </dt>
-
-                                <dd>
-                                    @_item.Description
-                                </dd>
-
-                                <dt>
-                                    Category
+                                    Категория
                                 </dt>
 
                                 <dd>
                                     @_item.MaterialCategory
                                 </dd>
+
                                 <dt>
-                                    Price
+                                    Описание
                                 </dt>
 
                                 <dd>
-                                    @_item.CurrentAmount
+                                    @_item.Description
                                 </dd>
                             </dl>
                         </div>
@@ -63,9 +56,9 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Отмена</button>
                 <button class="btn btn-danger" @onclick="() => DeleteClick(_item.Id)">
-                    Delete
+                    Удалить
                 </button>
             </div>
         </div>

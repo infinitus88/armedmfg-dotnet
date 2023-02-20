@@ -10,7 +10,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete Organization with ID: @_organization.Id</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Удалить Организацию с ID: @_organization.Id</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -26,7 +26,7 @@
                         <div class="row">
                             <dl class="col-md-12 dl-horizontal">
                                 <dt>
-                                    Name
+                                    Название
                                 </dt>
 
                                 <dd>
@@ -34,7 +34,7 @@
                                 </dd>
                                 
                                 <dt>
-                                    Taxpayer Id Num
+                                    ИНН
                                 </dt>
 
                                 <dd>
@@ -42,7 +42,7 @@
                                 </dd>
                                 
                                 <dt>
-                                    Phone Number
+                                    Телефон
                                 </dt>
 
                                 <dd>
@@ -50,7 +50,7 @@
                                 </dd>
                                 
                                 <dt>
-                                    Email
+                                    Эл. почта
                                 </dt>
 
                                 <dd>
@@ -58,7 +58,7 @@
                                 </dd>
                                 
                                 <dt>
-                                    Main Branch Address
+                                    Адрес
                                 </dt>
                                 
                                 <dd>
@@ -66,7 +66,7 @@
                                 </dd>
                                 
                                 <dt>
-                                    Description
+                                    Описание
                                 </dt>
                                 
                                 <dd>
@@ -79,9 +79,9 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Отмена</button>
                 <button class="btn btn-danger" @onclick="() => DeleteClick(_organization.Id)">
-                    Delete
+                    Удалить
                 </button>
             </div>
         </div>

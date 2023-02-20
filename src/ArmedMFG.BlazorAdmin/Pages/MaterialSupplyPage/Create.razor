@@ -12,7 +12,7 @@
             <EditForm Model="_materialSupply" OnValidSubmit="@CreateClick">
                 <DataAnnotationsValidator />
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Create Material Supply Record</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Добавить запись о Поставке сырья</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -28,7 +28,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label col-md-6">Delivered Date</label>
+                                        <label class="control-label col-md-6">Дата доставки</label>
                                         <div class="col-md-12">
                                             <InputDate class="form-control" @bind-Value="_materialSupply.DeliveredDate" />
                                             <ValidationMessage For="(() => _materialSupply.DeliveredDate)" />
@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label col-md-6">Material Type</label>
+                                        <label class="control-label col-md-6">Тип сырья</label>
                                         <div class="col-md-12">
                                             <InputSelect @bind-Value="_materialSupply.MaterialTypeId" class="form-control">
                                                 @foreach (var materialType in MaterialTypes)
@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label col-md-6">Unit Price</label>
+                                        <label class="control-label col-md-6">Цена (всего обьема)</label>
                                         <div class="col-md-12">
                                             <InputNumber class="form-control" @bind-Value="_materialSupply.UnitPrice" />
                                             <ValidationMessage For="(() => _materialSupply.UnitPrice)" />
@@ -60,7 +60,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label col-md-6">Amount</label>
+                                        <label class="control-label col-md-6">Обьем</label>
                                         <div class="col-md-12">
                                             <InputNumber class="form-control" @bind-Value="_materialSupply.Amount" />
                                             <ValidationMessage For="(() => _materialSupply.Amount)" />
@@ -72,9 +72,9 @@
                     }
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Отмена</button>
                     <button type="submit" class="btn btn-primary">
-                        Create
+                        Добавить
                     </button>
                 </div>
             </EditForm>

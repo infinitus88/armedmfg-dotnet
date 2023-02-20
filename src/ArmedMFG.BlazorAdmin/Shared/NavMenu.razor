@@ -11,18 +11,18 @@
         
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="admin" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+                <span class="oi oi-home" aria-hidden="true"></span> Главное меню
             </NavLink>
         </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="admin/catalog-items" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Catalog Items
-            </NavLink>
-        </li>
+        @* <li class="nav-item px-3"> *@
+        @*     <NavLink class="nav-link" href="admin/catalog-items" Match="NavLinkMatch.All"> *@
+        @*         <span class="oi oi-home" aria-hidden="true"></span> Catalog Items *@
+        @*     </NavLink> *@
+        @* </li> *@
 
         <li class="nav-item px-3">
             <NavLink class="nav-link" @onclick="() => _customersNavSubmenu.Toggle(NavSubmenuStatus.First)">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Customers
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Клиенты
             </NavLink>
         </li>
 
@@ -30,19 +30,19 @@
         {
             <li class="nav-item px-5">
                 <NavLink class="nav-link" href="admin/customers" Match="NavLinkMatch.All">
-                    <span class="oi oi-plus" aria-hidden="true"></span> List
+                    <span class="oi oi-plus" aria-hidden="true"></span> Список
                 </NavLink>
             </li>
             <li class="nav-item px-5">
                 <NavLink class="nav-link" href="admin/customers/organizations">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> Organizations
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Организации
                 </NavLink>
             </li>
         }
 
         <li class="nav-item px-3">
             <NavLink class="nav-link" @onclick="() => _ordersNavSubmenu.Toggle(NavSubmenuStatus.First)">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Orders
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Заказы
             </NavLink>
         </li>
 
@@ -50,7 +50,7 @@
         {
             <li class="nav-item px-5">
                 <NavLink class="nav-link" href="admin/orders" Match="NavLinkMatch.All">
-                    <span class="oi oi-plus" aria-hidden="true"></span> List
+                    <span class="oi oi-plus" aria-hidden="true"></span> Список
                 </NavLink>
             </li>
             @* <li class="nav-item px-5"> *@
@@ -62,7 +62,7 @@
 
         <li class="nav-item px-3">
             <NavLink class="nav-link" @onclick="() => _productProducingNavSubmenu.Toggle(NavSubmenuStatus.First)">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Product Producing
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Производство
             </NavLink>
         </li>
 
@@ -70,19 +70,19 @@
         {
             <li class="nav-item px-5">
                 <NavLink class="nav-link" href="admin/product-producing" Match="NavLinkMatch.All">
-                    <span class="oi oi-plus" aria-hidden="true"></span> List
+                    <span class="oi oi-plus" aria-hidden="true"></span> Список
                 </NavLink>
             </li>
-            <li class="nav-item px-5">
-                <NavLink class="nav-link" href="admin/product-price">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> Price History
-                </NavLink>
-            </li>
+            @* <li class="nav-item px-5"> *@
+            @*     <NavLink class="nav-link" href="admin/product-price"> *@
+            @*         <span class="oi oi-list-rich" aria-hidden="true"></span> Цены товаров *@
+            @*     </NavLink> *@
+            @* </li> *@
         }
 
         <li class="nav-item px-3">
             <NavLink class="nav-link" @onclick="() => _productTypesNavSubmenu.Toggle(NavSubmenuStatus.First)">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Product Types
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Товары
             </NavLink>
         </li>
 
@@ -90,12 +90,12 @@
         {
             <li class="nav-item px-5">
                 <NavLink class="nav-link" href="admin/product-types" Match="NavLinkMatch.All">
-                    <span class="oi oi-plus" aria-hidden="true"></span> List
+                    <span class="oi oi-plus" aria-hidden="true"></span> Список
                 </NavLink>
             </li>
             <li class="nav-item px-5">
                 <NavLink class="nav-link" href="admin/product-types/prices">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> Price History
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Цены
                 </NavLink>
             </li>
         }
@@ -108,7 +108,7 @@
 
         <li class="nav-item px-3">
             <NavLink class="nav-link" @onclick="() => _materialTypesNavSubmenu.Toggle(NavSubmenuStatus.First)">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Material Types
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Сырьё
             </NavLink>
         </li>
 
@@ -116,12 +116,12 @@
         {
             <li class="nav-item px-5">
                 <NavLink class="nav-link" href="admin/material-types" Match="NavLinkMatch.All">
-                    <span class="oi oi-plus" aria-hidden="true"></span> List
+                    <span class="oi oi-plus" aria-hidden="true"></span> Список
                 </NavLink>
             </li>
             <li class="nav-item px-5">
                 <NavLink class="nav-link" href="admin/material-types/supplies">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> Supplies
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Поставки
                 </NavLink>
             </li>
         }

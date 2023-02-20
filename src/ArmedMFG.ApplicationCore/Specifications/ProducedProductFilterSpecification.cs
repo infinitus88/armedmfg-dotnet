@@ -14,4 +14,10 @@ public class ProducedProductFilterSpecification : Specification<ProducedProduct>
                         && (!endDate.HasValue || p.ProductBatch.ProducedDate.Date <= endDate.Value.Date)
                         && (!productTypeId.HasValue || p.ProductTypeId == productTypeId));
     }
+
+    public ProducedProductFilterSpecification()
+    {
+        Query
+            .Include(p => p.ProductBatch);
+    }
 }

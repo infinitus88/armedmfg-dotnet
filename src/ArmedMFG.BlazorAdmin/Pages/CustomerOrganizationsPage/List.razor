@@ -16,19 +16,19 @@ else
     
     <p class="esh-link-wrapper">
         <button class="btn btn-primary" @onclick="@(CreateClick)">
-            Create New
+            Добавить
         </button>
     </p>
 
     <table class="table table-striped table-hover">
         <thead>
         <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Phone Number</th>
-            <th>Email</th>
-            <th>Description</th>
-            <th>Actions</th>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Телефон</th>
+            <th>Эл. почта</th>
+            <th>Описание</th>
+            <th>Действия</th>
         </tr>
         </thead>
         <tbody class="cursor-pointer">
@@ -42,11 +42,11 @@ else
                 <td>@organization.Description</td>
                 <td>
                     <button @onclick="@(() => EditClick(organization.Id))" @onclick:stopPropagation="true" class="btn btn-primary">
-                        Edit
+                        Изменить
                     </button>
 
                     <button @onclick="@(() => DeleteClick(organization.Id))" @onclick:stopPropagation="true" class="btn btn-danger">
-                        Delete
+                        Удалить
                     </button>
                 </td>
             </tr>
