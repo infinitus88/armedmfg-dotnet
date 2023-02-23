@@ -9,12 +9,12 @@ public class SpentMaterial : BaseEntity
     public MaterialType? MaterialType { get; set; }
     public int ProductBatchId { get; private set; }
     public ProductBatch? ProductBatch { get; private set; }
-    public decimal Amount { get; private set; }
+    public double Amount { get; private set; }
 
     public SpentMaterial(
         int materialTypeId,
         int productBatchId,
-        decimal amount)
+        double amount)
     {
         MaterialTypeId = materialTypeId;
         ProductBatchId = productBatchId;
@@ -23,22 +23,24 @@ public class SpentMaterial : BaseEntity
 
     public SpentMaterial(
         int materialTypeId,
-        decimal amount)
+        double amount)
     {
         MaterialTypeId = materialTypeId;
         SetAmount(amount);
     }
 
-    public void AddQuantity(decimal amount)
+    public void AddQuantity(double amount)
     {
-        Guard.Against.OutOfRange(amount, nameof(amount), 0, decimal.MaxValue);
+        Guard.Against.OutOfRange(amount, nameof(amount), 0, double.MaxValue);
+        Guard.Against.Negative(amount, nameof(amount));
 
         Amount += amount;
     }
 
-    public void SetAmount(decimal amount)
+    public void SetAmount(double amount)
     {
-        Guard.Against.OutOfRange(amount, nameof(amount), 0, decimal.MaxValue);
+        Guard.Against.OutOfRange(amount, nameof(amount), 0, double.MaxValue);
+        Guard.Against.Negative(amount, nameof(amount));
 
         Amount = amount;
     }
@@ -55,9 +57,9 @@ public class SpentMaterial : BaseEntity
     public readonly record struct SpentMaterialDetails
     {
         public int MaterialTypeId { get; init; }
-        public decimal Amount { get; init; }
+        public double Amount { get; init; }
 
-        public SpentMaterialDetails(int materialTypeId, decimal amount)
+        public SpentMaterialDetails(int materialTypeId, double amount)
         {
             MaterialTypeId = materialTypeId;
             Amount = amount;

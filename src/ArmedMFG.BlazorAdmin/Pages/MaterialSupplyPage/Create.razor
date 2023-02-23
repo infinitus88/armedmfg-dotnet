@@ -53,8 +53,8 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-6">Цена (всего обьема)</label>
                                         <div class="col-md-12">
-                                            <InputNumber class="form-control" @bind-Value="_materialSupply.UnitPrice" />
-                                            <ValidationMessage For="(() => _materialSupply.UnitPrice)" />
+                                            <InputNumber class="form-control" @bind-Value="_materialSupply.Price" />
+                                            <ValidationMessage For="(() => _materialSupply.Price)" />
                                         </div>
                                     </div>
                                 </div>
@@ -123,8 +123,8 @@
         {
             DeliveredDate = DateTime.Now,
             MaterialTypeId = MaterialTypes.First().Id,
-            Amount = 1,
-            UnitPrice = 1,
+            Price = 100000,
+            Amount = 100.0,
         };
 
         _modalDisplay = "block;";

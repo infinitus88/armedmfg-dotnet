@@ -134,9 +134,9 @@ using (var scope = app.Services.CreateScope())
     var scopedProvider = scope.ServiceProvider;
     try
     {
-        var productsContext = scopedProvider.GetRequiredService<ProductsContext>();
-        await ProductsContextSeed.SeedAsync(productsContext, app.Logger);
-        
+        //var productsContext = scopedProvider.GetRequiredService<ProductsContext>();
+        // await ProductsContextSeed.SeedAsync(productsContext, app.Logger);
+
         // var catalogContext = scopedProvider.GetRequiredService<CatalogContext>();
         // await CatalogContextSeed.SeedAsync(productsContext, app.Logger);
 

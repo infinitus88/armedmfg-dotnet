@@ -15,8 +15,8 @@ public class UpdateMaterialSupplyRequest : BaseRequest
     public DateTime DeliveredDate { get; set; }
     
     [Required]
-    public decimal UnitPrice { get; set; }
+    public decimal Price { get; set; }
     
     [Required]
-    public decimal Amount { get; set; }
+    public double Amount { get; set; }
 }

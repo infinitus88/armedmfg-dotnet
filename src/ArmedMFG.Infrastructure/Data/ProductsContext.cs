@@ -50,6 +50,8 @@ public class ProductsContext : DbContext
     
     // Orders
     public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderShipment> OrderShipments { get; set; }
+    public DbSet<OrderProduct> OrderProducts { get; set; }
     
     // Warehouse
     public DbSet<WarehouseProductCheckPoint> WarehouseProductCheckPoints { get; set; }

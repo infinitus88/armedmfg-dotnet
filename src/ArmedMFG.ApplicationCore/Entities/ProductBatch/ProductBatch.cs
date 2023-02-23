@@ -34,7 +34,7 @@ public class ProductBatch : BaseEntity, IAggregateRoot
     }
     
     public void AddMaterial(int materialTypeId,
-        decimal amount)
+        double amount)
     {
         if (!SpentMaterials.Any(m => m.MaterialTypeId == materialTypeId))
         {

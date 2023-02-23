@@ -38,7 +38,7 @@ public class UpdateMaterialSupplyEndpoint : IEndpoint<IResult, UpdateMaterialSup
 
         var existingMaterialSupply = await materialSupplyRepository.GetByIdAsync(request.Id);
 
-        MaterialSupply.MaterialSupplyDetails details = new(request.DeliveredDate, request.UnitPrice, request.Amount);
+        MaterialSupply.MaterialSupplyDetails details = new(request.DeliveredDate, request.Price, request.Amount);
         existingMaterialSupply.UpdateDetails(details);
 
         await materialSupplyRepository.UpdateAsync(existingMaterialSupply);
@@ -48,7 +48,7 @@ public class UpdateMaterialSupplyEndpoint : IEndpoint<IResult, UpdateMaterialSup
             Id = existingMaterialSupply.Id,
             MaterialTypeId = existingMaterialSupply.MaterialTypeId,
             DeliveredDate = existingMaterialSupply.DeliveredDate,
-            UnitPrice = existingMaterialSupply.Price,
+            Price = existingMaterialSupply.Price,
             Amount = existingMaterialSupply.Amount
         };
         response.MaterialSupply = dto;

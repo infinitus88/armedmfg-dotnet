@@ -11,5 +11,5 @@ public class UpdateSpentMaterialRequest
     public int MaterialTypeId { get; set; }
     
     [Required]
-    public decimal Amount { get; set; }
+    public double Amount { get; set; }
 }

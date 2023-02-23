@@ -30,7 +30,7 @@ public class MaterialType : BaseEntity, IAggregateRoot
     public MaterialType(int materialCategoryId,
         string name,
         string description,
-        decimal amount)
+        double amount)
     {
         MaterialCategoryId = materialCategoryId;
         Name = name;
@@ -39,17 +39,9 @@ public class MaterialType : BaseEntity, IAggregateRoot
         // AddSupplyDelivery(DateTime.Now, unitPrice, amount);
     }
     
-    public void AddSupplyDelivery(DateTime deliveredDate, decimal unitPrice, decimal amount)
+    public void AddSupplyDelivery(DateTime deliveredDate, decimal price, double amount)
     {
-        _materialSupplies.Add(new MaterialSupply(Id, deliveredDate, unitPrice, amount));
-    }
-
-    public decimal GetCurrentAmount()
-    {
-        var totalAmount = _materialSupplies.Where(m => m.MaterialTypeId == Id).Sum(m => m.Amount);
-        
-        // TODO Return real current amount
-        return totalAmount;
+        _materialSupplies.Add(new MaterialSupply(Id, deliveredDate, price, amount));
     }
 
     public void UpdateDetails(MaterialTypeDetails details)

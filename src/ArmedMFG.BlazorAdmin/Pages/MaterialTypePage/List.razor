@@ -27,7 +27,6 @@ else
             <th>Название</th>
             <th>Категория</th>
             <th>Описание</th>
-            <th>Обьем в складе</th>
             <th>Действия</th>
         </tr>
         </thead>
@@ -39,7 +38,6 @@ else
                 <td>@item.Name</td>
                 <td>@item.MaterialCategory</td>
                 <td>@item.Description</td>
-                <td>@item.CurrentAmount</td>
                 <td>
                     <button @onclick="@(() => EditClick(item.Id))" @onclick:stopPropagation="true" class="btn btn-primary">
                         Изменить

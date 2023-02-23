@@ -14,6 +14,10 @@ public class ProductPriceConfiguration : IEntityTypeConfiguration<ProductPrice>
         builder.Property(p => p.Id)
             .UseHiLo("product_price_hilo")
             .IsRequired();
+        
+        builder.Property(p => p.Price)
+            .IsRequired(true)
+            .HasColumnType("decimal(18,2)");
 
         // builder.HasOne(p => p.ProductType)
         //     .WithMany()

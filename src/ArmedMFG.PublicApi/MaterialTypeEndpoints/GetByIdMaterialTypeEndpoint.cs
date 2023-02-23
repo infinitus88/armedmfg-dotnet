@@ -43,7 +43,6 @@ public class GetByIdMaterialTypeEndpoint : IEndpoint<IResult, GetByIdMaterialTyp
             MaterialCategoryId = materialType.MaterialCategoryId,
             Description = materialType.Description,
             Name = materialType.Name,
-            CurrentAmount = materialType.GetCurrentAmount()
         };
 
         return Results.Ok(response);

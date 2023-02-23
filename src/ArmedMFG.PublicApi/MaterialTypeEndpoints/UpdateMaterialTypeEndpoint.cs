@@ -46,7 +46,6 @@ public class UpdateMaterialTypeEndpoint : IEndpoint<IResult, UpdateMaterialTypeR
             MaterialCategoryId = existingMaterialType.MaterialCategoryId,
             Description = existingMaterialType.Description,
             Name = existingMaterialType.Name,
-            CurrentAmount = existingMaterialType.GetCurrentAmount()
         };
         response.MaterialType = dto;
         return Results.Ok(response);

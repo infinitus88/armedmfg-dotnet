@@ -40,10 +40,7 @@ public class MappingProfile : Profile
 
         CreateMap<ProductPrice, ProductPriceDto>();
 
-        // TODO Remove null checks for GetCurrentAmount()
-        CreateMap<MaterialType, MaterialTypeDto>()
-            .ForMember(dto => dto.CurrentAmount,
-                options => options.MapFrom((src => src.GetCurrentAmount() == null ? 0 : src.GetCurrentAmount())));
+        CreateMap<MaterialType, MaterialTypeDto>();
         CreateMap<MaterialCategory, MaterialCategoryDto>();
 
         CreateMap<MaterialSupply, MaterialSupplyDto>();

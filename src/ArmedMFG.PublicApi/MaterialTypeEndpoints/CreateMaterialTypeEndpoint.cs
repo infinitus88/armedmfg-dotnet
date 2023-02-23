@@ -41,7 +41,7 @@ public class CreateMaterialTypeEndpoint : IEndpoint<IResult, CreateMaterialTypeR
             throw new DuplicateException($"A materialType with name {request.Name} already exists");
         }
 
-        var newItem = new MaterialType(request.MaterialCategoryId, request.Name, request.Description, request.CurrentAmount);
+        var newItem = new MaterialType(request.MaterialCategoryId, request.Name, request.Description);
         newItem = await materialTypeRepository.AddAsync(newItem);
 
         var dto = new MaterialTypeDto
@@ -50,7 +50,6 @@ public class CreateMaterialTypeEndpoint : IEndpoint<IResult, CreateMaterialTypeR
             MaterialCategoryId = newItem.MaterialCategoryId,
             Description = newItem.Description,
             Name = newItem.Name,
-            CurrentAmount = newItem.GetCurrentAmount()
         };
         response.MaterialType = dto;
         return Results.Created($"api/material-types/{dto.Id}", response);

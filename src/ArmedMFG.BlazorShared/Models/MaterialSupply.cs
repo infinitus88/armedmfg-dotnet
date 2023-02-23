@@ -13,12 +13,12 @@ public class MaterialSupply
     
     [RegularExpression(@"^\d+(\.\d{0,2})*$",
         ErrorMessage = "The field Unit Price must be a positive number with maximum two decimals.")]
-    [Range(1.00, 1000000.00)] 
+    [Range(100000.00, 1000000.00)] 
     [DataType(DataType.Currency)]
-    public decimal UnitPrice { get; set; }
+    public decimal Price { get; set; }
     
     [RegularExpression(@"^\d+(\.\d{0,2})*$",
         ErrorMessage = "The field Amount must be a positive number with maximum two decimals.")]
-    [Range(1.00, 1000000.00)] 
-    public decimal Amount { get; set; }
+    [Range(100.0, 1000000.0)] 
+    public double Amount { get; set; }
 }

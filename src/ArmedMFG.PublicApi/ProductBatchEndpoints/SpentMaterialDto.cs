@@ -4,5 +4,5 @@ public class SpentMaterialDto
 {
     public int Id { get; set; }
     public int MaterialTypeId { get; set; }
-    public decimal Amount { get; set; }
+    public double Amount { get; set; }
 }

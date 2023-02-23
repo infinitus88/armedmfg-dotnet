@@ -48,7 +48,7 @@ public class CreateMaterialSupplyEndpoint : IEndpoint<IResult, CreateMaterialSup
             throw new NotFoundException($"A materialType with Id: {request.MaterialTypeId} not be found");
         }
 
-        var newSupply = new MaterialSupply(existingMaterialType.Id, request.DeliveredDate, request.UnitPrice, request.Amount);
+        var newSupply = new MaterialSupply(existingMaterialType.Id, request.DeliveredDate, request.Price, request.Amount);
         newSupply = await materialSupplyRepository.AddAsync(newSupply);
 
         var dto = new MaterialSupplyDto
@@ -56,7 +56,7 @@ public class CreateMaterialSupplyEndpoint : IEndpoint<IResult, CreateMaterialSup
             Id = newSupply.Id,
             MaterialTypeId = newSupply.MaterialTypeId,
             DeliveredDate = newSupply.DeliveredDate,
-            UnitPrice = newSupply.Price,
+            Price = newSupply.Price,
             Amount = newSupply.Amount
         };
         response.MaterialSupply = dto;

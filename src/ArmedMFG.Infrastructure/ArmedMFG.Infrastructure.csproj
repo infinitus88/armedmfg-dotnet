@@ -15,8 +15,5 @@
 		<ProjectReference Include="..\ArmedMFG.ApplicationCore\ArmedMFG.ApplicationCore.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<Folder Include="Data\Migrations" />
-		<Folder Include="Data\Migrations\" />
-		<Folder Include="Identity\Migrations" />
 	</ItemGroup>
 </Project>

@@ -41,7 +41,7 @@ public class GetByIdMaterialSupplyEndpoint : IEndpoint<IResult, GetByIdMaterialS
             Id = materialSupply.Id,
             DeliveredDate = materialSupply.DeliveredDate,
             MaterialTypeId = materialSupply.MaterialTypeId,
-            UnitPrice = materialSupply.Price,
+            Price = materialSupply.Price,
             Amount = materialSupply.Amount
         };
 

@@ -11,10 +11,9 @@ public class MaterialSupplyConfiguration : IEntityTypeConfiguration<MaterialSupp
         builder.Property(ms => ms.Id)
             .UseHiLo("material_supply_hilo")
             .IsRequired();
-        
+
         builder.Property(ms => ms.Amount)
-            .IsRequired(true)
-            .HasColumnType("decimal(18,2)");    
+            .IsRequired(true);
         
         builder.Property(ms => ms.Price)
             .IsRequired(true)
