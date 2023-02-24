@@ -35,7 +35,7 @@ public class ListPagedOrderEndpoint : IEndpoint<IResult, ListPagedOrderRequest, 
     
     public async Task<IResult> HandleAsync(ListPagedOrderRequest request, IRepository<Order> orderRepository)
     {
-        await Task.Delay(1000);
+        //await Task.Delay(1000);
         var response = new ListPagedOrderResponse(request.CorrelationId());
 
         var filterSpec = new OrderFilterSpecification(request.CustomerId);

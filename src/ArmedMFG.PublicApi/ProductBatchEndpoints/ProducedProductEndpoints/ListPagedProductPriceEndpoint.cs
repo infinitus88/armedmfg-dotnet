@@ -35,7 +35,7 @@ public class ListPagedProducedProductEndpoint : IEndpoint<IResult, ListPagedProd
     
     public async Task<IResult> HandleAsync(ListPagedProducedProductRequest request, IRepository<ProducedProduct> producedProductRepository)
     {
-        await Task.Delay(1000);
+        //await Task.Delay(1000);
         var response = new ListPagedProducedProductResponse(request.CorrelationId());
 
         var filterSpec = new ProducedProductFilterSpecification(request.StartDate, request.EndDate, request.ProductTypeId);

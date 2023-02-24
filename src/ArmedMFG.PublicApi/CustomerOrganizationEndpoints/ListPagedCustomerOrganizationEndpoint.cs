@@ -35,7 +35,7 @@ public class ListPagedCustomerOrganizationEndpoint : IEndpoint<IResult, ListPage
     
     public async Task<IResult> HandleAsync(ListPagedCustomerOrganizationRequest request, IRepository<CustomerOrganization> organizationRepository)
     {
-        await Task.Delay(1000);
+        //await Task.Delay(1000);
         var response = new ListPagedCustomerOrganizationResponse(request.CorrelationId());
 
         int totalItems = await organizationRepository.CountAsync();

@@ -34,7 +34,7 @@ public class ListPagedMaterialTypeEndpoint : IEndpoint<IResult, ListPagedMateria
     
     public async Task<IResult> HandleAsync(ListPagedMaterialTypeRequest request, IRepository<MaterialType> materialTypeRepository)
     {
-        await Task.Delay(1000);
+        //await Task.Delay(1000);
         var response = new ListPagedMaterialTypeResponse(request.CorrelationId());
 
         var filterSpec = new MaterialTypeFilterSpecification(request.MaterialCategoryId);

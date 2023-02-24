@@ -93,41 +93,41 @@ builder.Services.AddScoped<HttpService>();
 builder.Services.AddBlazorServices();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
+//builder.WebHost.UseUrls("http://localhost:5003", "https://localhost:5004");
 var app = builder.Build();
 
 app.Logger.LogInformation("App created...");
 
-app.Logger.LogInformation("Seeding Database...");
+//app.Logger.LogInformation("Seeding Database...");
 
-using (var scope = app.Services.CreateScope())
-{
-    var scopedProvider = scope.ServiceProvider;
-    try
-    {
-        //var productsContext = scopedProvider.GetRequiredService<ProductsContext>();
-        // await ProductsContextSeed.SeedAsync(productsContext, app.Logger);
+//using (var scope = app.Services.CreateScope())
+//{
+//    var scopedProvider = scope.ServiceProvider;
+//    try
+//    {
+//        //var productsContext = scopedProvider.GetRequiredService<ProductsContext>();
+//        // await ProductsContextSeed.SeedAsync(productsContext, app.Logger);
 
-        // var catalogContext = scopedProvider.GetRequiredService<CatalogContext>();
-        // await CatalogContextSeed.SeedAsync(productsContext, app.Logger);
+//        // var catalogContext = scopedProvider.GetRequiredService<CatalogContext>();
+//        // await CatalogContextSeed.SeedAsync(productsContext, app.Logger);
 
-        var userManager = scopedProvider.GetRequiredService<UserManager<ApplicationUser>>();
-        var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();
-        var identityContext = scopedProvider.GetRequiredService<AppIdentityDbContext>();
-        await AppIdentityDbContextSeed.SeedAsync(identityContext, userManager, roleManager);
-    }
-    catch (Exception ex)
-    {
-        app.Logger.LogError(ex, "An error occurred seeding the DB.");
-    }
-}
+//        var userManager = scopedProvider.GetRequiredService<UserManager<ApplicationUser>>();
+//        var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();
+//        var identityContext = scopedProvider.GetRequiredService<AppIdentityDbContext>();
+//        await AppIdentityDbContextSeed.SeedAsync(identityContext, userManager, roleManager);
+//    }
+//    catch (Exception ex)
+//    {
+//        app.Logger.LogError(ex, "An error occurred seeding the DB.");
+//    }
+//}
 
-var catalogBaseUrl = builder.Configuration.GetValue(typeof(string), "CatalogBaseUrl") as string;
-if (!string.IsNullOrEmpty(catalogBaseUrl))
+var productsBaseUrl = builder.Configuration.GetValue(typeof(string), "ProductsBaseUrl") as string;
+if (!string.IsNullOrEmpty(productsBaseUrl))
 {
     app.Use((context, next) =>
     {
-        context.Request.PathBase = new PathString(catalogBaseUrl);
+        context.Request.PathBase = new PathString(productsBaseUrl);
         return next();
     });
 }

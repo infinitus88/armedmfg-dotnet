@@ -34,7 +34,7 @@ public class ListPagedProductPriceEndpoint : IEndpoint<IResult, ListPagedProduct
     
     public async Task<IResult> HandleAsync(ListPagedProductPriceRequest request, IRepository<ProductPrice> productPriceRepository)
     {
-        await Task.Delay(1000);
+        //await Task.Delay(1000);
         var response = new ListPagedProductPriceResponse(request.CorrelationId());
 
         var filterSpec = new ProductPriceFilterSpecification(request.ProductTypeId);

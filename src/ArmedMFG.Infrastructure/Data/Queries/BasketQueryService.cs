@@ -7,9 +7,9 @@ namespace ArmedMFG.Infrastructure.Data.Queries;
 
 public class BasketQueryService : IBasketQueryService
 {
-    private readonly CatalogContext _dbContext;
+    private readonly ProductsContext _dbContext;
 
-    public BasketQueryService(CatalogContext dbContext)
+    public BasketQueryService(ProductsContext dbContext)
     {
         _dbContext = dbContext;
     }
@@ -21,10 +21,7 @@ public class BasketQueryService : IBasketQueryService
     /// <returns></returns>
     public async Task<int> CountTotalBasketItems(string username)
     {
-        var totalItems = await _dbContext.Baskets
-            .Where(basket => basket.BuyerId == username)
-            .SelectMany(item => item.Items)
-            .SumAsync(sum => sum.Quantity);
+        var totalItems = 10;
 
         return totalItems;
     }

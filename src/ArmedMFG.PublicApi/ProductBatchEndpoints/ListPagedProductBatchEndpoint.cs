@@ -34,7 +34,7 @@ public class ListPagedProductBatchEndpoint : IEndpoint<IResult, ListPagedProduct
     
     public async Task<IResult> HandleAsync(ListPagedProductBatchRequest request, IRepository<ProductBatch> productBatchRepository)
     {
-        await Task.Delay(1000);
+        //await Task.Delay(1000);
         var response = new ListPagedProductBatchResponse(request.CorrelationId());
 
         var filterSpec = new ProductBatchFilterSpecification(request.StartDate, request.EndDate);

@@ -34,7 +34,7 @@ public class ListPagedOrderShipmentEndpoint : IEndpoint<IResult, ListPagedOrderS
     
     public async Task<IResult> HandleAsync(ListPagedOrderShipmentRequest request, IRepository<OrderShipment> orderShipmentRepository)
     {
-        await Task.Delay(1000);
+        //await Task.Delay(1000);
         var response = new ListPagedOrderShipmentResponse(request.CorrelationId());
 
         var filterSpec = new OrderShipmentFilterSpecification(request.StartDate, request.EndDate, request.OrderId);
