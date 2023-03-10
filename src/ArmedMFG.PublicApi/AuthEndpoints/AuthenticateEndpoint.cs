@@ -1,10 +1,13 @@
-﻿using System.Threading;
+﻿using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ArmedMFG.ApplicationCore.Interfaces;
 using ArmedMFG.Infrastructure.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ArmedMFG.PublicApi.AuthEndpoints;
@@ -26,7 +29,7 @@ public class AuthenticateEndpoint : EndpointBaseAsync
         _tokenClaimsService = tokenClaimsService;
     }
 
-    [HttpPost("api/authenticate")]
+    [HttpPost("api/auth/login")]
     [SwaggerOperation(
         Summary = "Authenticates a user",
         Description = "Authenticates a user",
@@ -56,3 +59,30 @@ public class AuthenticateEndpoint : EndpointBaseAsync
         return response;
     }
 }
+
+public class GetUserByTokenEndpoint : EndpointBaseAsync
+    .WithoutRequest
+    .WithActionResult<AuthenticateResponse>
+{
+    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly ITokenClaimsService _tokenClaimsService;
+
+    public GetUserByTokenEndpoint(SignInManager<ApplicationUser> signInManager, ITokenClaimsService tokenClaimsService)
+    {
+        _signInManager = signInManager;
+        _tokenClaimsService = tokenClaimsService;
+    }
+
+    [HttpGet("api/auth/me")]
+    [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public override async Task<ActionResult<AuthenticateResponse>> HandleAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+        var response = new AuthenticateResponse();
+        var result = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        response.Username = result;
+
+        return response;
+    }
+}
+
