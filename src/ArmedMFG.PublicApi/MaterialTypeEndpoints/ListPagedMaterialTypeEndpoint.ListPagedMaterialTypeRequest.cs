@@ -1,4 +1,7 @@
-﻿namespace ArmedMFG.PublicApi.MaterialTypeEndpoints;
+﻿using System;
+using System.Runtime.InteropServices.JavaScript;
+
+namespace ArmedMFG.PublicApi.MaterialTypeEndpoints;
 
 public class ListPagedMaterialTypeRequest : BaseRequest
 {
@@ -13,3 +16,4 @@ public class ListPagedMaterialTypeRequest : BaseRequest
         MaterialCategoryId = materialCategoryId;
     }
 }
+
