@@ -1,4 +1,7 @@
-﻿namespace ArmedMFG.PublicApi.MaterialTypeEndpoints;
+﻿using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+
+namespace ArmedMFG.PublicApi.MaterialTypeEndpoints;
 
 public class MaterialTypeDto
 {

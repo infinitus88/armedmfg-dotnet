@@ -34,14 +34,14 @@ public class CreateMaterialTypeEndpoint : IEndpoint<IResult, CreateMaterialTypeR
     {
         var response = new CreateMaterialTypeResponse(request.CorrelationId());
 
-        var materialTypeNameSpecification = new MaterialTypeNameSpecification(request.Name);
+        var materialTypeNameSpecification = new MaterialTypeNameSpecification(request.Data.Name);
         var existingMaterialType = await materialTypeRepository.CountAsync(materialTypeNameSpecification);
         if (existingMaterialType > 0)
         {
-            throw new DuplicateException($"A materialType with name {request.Name} already exists");
+            throw new DuplicateException($"A materialType with name {request.Data.Name} already exists");
         }
 
-        var newItem = new MaterialType(request.MaterialCategoryId, request.Name, request.Description);
+        var newItem = new MaterialType(request.Data.MaterialCategoryId, request.Data.Name, request.Data.Description);
         newItem = await materialTypeRepository.AddAsync(newItem);
 
         var dto = new MaterialTypeDto
