@@ -7,9 +7,10 @@ namespace ArmedMFG.ApplicationCore.Specifications;
 
 public class OrderFilterSpecification : Specification<Order>
 {
-    public OrderFilterSpecification(DateTime? startDate, DateTime? endDate, string? name)
+    public OrderFilterSpecification(DateTime? startDate, DateTime? endDate, string? customerFullName)
     {
         Query.Where(o => (!startDate.HasValue || o.OrderedDate <= startDate) &&
-                         (!endDate.HasValue || o.OrderedDate >= endDate));
+                         (!endDate.HasValue || o.OrderedDate >= endDate) &&
+                         (!String.IsNullOrWhiteSpace(customerFullName) || o.Customer.FullName.ToLower().Contains(customerFullName.ToLower())));
     }
 }

@@ -38,26 +38,21 @@ public class ListPagedOrderEndpoint : IEndpoint<IResult, ListPagedOrderRequest, 
         //await Task.Delay(1000);
         var response = new ListPagedOrderResponse(request.CorrelationId());
 
-        var filterSpec = new OrderFilterSpecification(request.CustomerId);
-        int totalItems = await orderRepository.CountAsync(filterSpec);
+        // var filterSpec = new OrderFilterSpecification();
+        // int totalItems = await orderRepository.CountAsync(filterSpec);
 
-        var pagedSpec = new OrderFilterPaginatedSpecification(
-            skip: request.PageIndex.Value * request.PageSize.Value,
-            take: request.PageSize.Value,
-            customerId: request.CustomerId);
-
-        var orders = await orderRepository.ListAsync(pagedSpec);
+        var orders = await orderRepository.ListAsync();
 
         response.Orders.AddRange(orders.Select(((IMapperBase)_mapper).Map<OrderDto>));
 
-        if (request.PageSize > 0)
-        {
-            response.PageCount = int.Parse(Math.Ceiling((decimal)totalItems / request.PageSize.Value).ToString());
-        }
-        else
-        {
-            response.PageCount = totalItems > 0 ? 1 : 0;
-        }
+        // if (request.PageSize > 0)
+        // {
+        //     response.PageCount = int.Parse(Math.Ceiling((decimal)totalItems / request.PageSize.Value).ToString());
+        // }
+        // else
+        // {
+        //     response.PageCount = totalItems > 0 ? 1 : 0;
+        // }
 
         return Results.Ok(response);
     }

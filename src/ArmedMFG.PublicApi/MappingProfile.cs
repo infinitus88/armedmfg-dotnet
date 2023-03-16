@@ -55,8 +55,14 @@ public class MappingProfile : Profile
                 options => options.MapFrom(src => src.MainBranchAddress.ToString()));
 
         CreateMap<Order, OrderDto>();
+        CreateMap<Order, OrderInfoDto>()
+            .ForMember(dto => dto.CustomerFullName,
+                options => options.MapFrom(src => src.Customer.FullName));
         CreateMap<OrderShipment, OrderShipmentDto>();
         CreateMap<OrderProduct, OrderProductDto>();
+        CreateMap<OrderProduct, OrderProductInfoDto>()
+            .ForMember(dto => dto.ProductTypeName,
+                options => options.MapFrom(src => src.ProductType.Name));
 
         CreateMap<ShipmentProduct, ShipmentProductDto>();
     }

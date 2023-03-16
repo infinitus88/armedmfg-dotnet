@@ -6,7 +6,7 @@ namespace ArmedMFG.ApplicationCore.Specifications;
 
 public class OrderFilterPaginatedSpecification : Specification<Order>
 {
-    public OrderFilterPaginatedSpecification(int skip, int take, int? customerId)
+    public OrderFilterPaginatedSpecification(int skip, int take, DateTime? startDate, DateTime? endDate, string? customerName)
         : base()
     {
         if (take == 0)
@@ -15,28 +15,13 @@ public class OrderFilterPaginatedSpecification : Specification<Order>
         }
 
         Query
-            .Where(o => (!customerId.HasValue || o.CustomerId == customerId))
+            .Where(o => (!startDate.HasValue || o.OrderedDate >= startDate) &&
+                        (!endDate.HasValue || o.OrderedDate <= endDate) &&
+                        (!String.IsNullOrEmpty(customerName) || o.Customer.FullName.ToLower().Contains(customerName.ToLower())))
             .Skip(skip).Take(take)
+            .Include(o => o.Customer)
             .Include(o => o.OrderProducts)
+            .ThenInclude(op => op.ProductType)
             .Include(o => o.OrderShipments);
-    }
-}
-
-public class OrderShipmentFilterPaginatedSpecification : Specification<OrderShipment>
-{
-    public OrderShipmentFilterPaginatedSpecification(int skip, int take, DateTime? startDate, DateTime? endDate, int? orderId)
-    : base()
-    {
-        if (take == 0)
-        {
-            take = int.MaxValue;
-        }
-
-        Query
-            .Where(o => (!startDate.HasValue || o.ShipmentDate.Date >= startDate) &&
-                        (!endDate.HasValue || o.ShipmentDate <= endDate) &&
-                        (!orderId.HasValue || o.OrderId == orderId))
-            .Skip(skip).Take(take)
-            .Include(o => o.ShipmentProducts);
     }
 }

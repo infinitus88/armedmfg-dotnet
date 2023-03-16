@@ -55,7 +55,7 @@ public class CreateOrderEndpoint : IEndpoint<IResult, CreateOrderRequest, IRepos
         var newOrder = new Order(request.CustomerId, request.OrderedDate, request.RequiredDate, request.Description);
 
         newOrder.SetStatus(Status.Pending);
-        newOrder.SetPaymentType(PaymentType.Transfer);
+        newOrder.SetPaymentType(PaymentType.TransferWithVAT);
         
         foreach (var orderProduct in request.OrderProducts)
         {

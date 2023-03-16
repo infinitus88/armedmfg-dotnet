@@ -97,17 +97,17 @@ public class Order : BaseEntity, IAggregateRoot
 
 public enum PaymentType : byte
 {
-    Transfer = 1,
-    CashWithVAT = 2,
-    CashWithoutVAT = 3
+    TransferWithVAT = 0,
+    TransferWithoutVAT = 1,
+    CashWithoutVAT = 2
 }
 
 public enum Status : byte
 {
-    Pending = 1,
-    InQueue = 2,
-    InProcess = 3,
-    Canceled = 4,
-    WaitsForShipping = 5, 
-    Finished = 6,
+    Pending = 0,
+    InQueue = 1,
+    InProcess = 2,
+    Canceled = 3,
+    WaitsForShipping = 4, 
+    Finished = 5,
 }

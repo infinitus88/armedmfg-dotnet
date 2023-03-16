@@ -13,6 +13,6 @@ public class FindListPagedOrderResponse : BaseResponse
     {
     }
 
-    public List<OrderDto> Orders { get; set; } = new List<OrderDto>();
+    public List<OrderInfoDto> Orders { get; set; } = new List<OrderInfoDto>();
     public int TotalCount { get; set; }
 }

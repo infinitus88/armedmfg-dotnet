@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
 using ArmedMFG.ApplicationCore.Interfaces;
 using ArmedMFG.ApplicationCore.Specifications;
-using ArmedMFG.PublicApi.OrderEndpoints;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -37,28 +36,21 @@ public class FindListPagedOrderEndpoint : IEndpoint<IResult, FindListPagedOrderR
         //await Task.Delay(1000);
         var response = new FindListPagedOrderResponse(request.CorrelationId());
 
-        var filterSpec = new OrderFilterSpecification(request.Filter.Name);
+        var filterSpec = new OrderFilterSpecification(request.Filter.StartDate, request.Filter.EndDate, request.Filter.CustomerName);
         int totalItems = await orderRepository.CountAsync(filterSpec);
 
         var pagedSpec = new OrderFilterPaginatedSpecification(
             skip: (request.PageNumber.Value - 1) * request.PageSize.Value,
             take: request.PageSize.Value,
-            request.Filter.Name);
+            request.Filter.StartDate,
+            request.Filter.EndDate,
+            request.Filter.CustomerName);
 
-        var materialTypes = await orderRepository.ListAsync(pagedSpec);
+        var orders = await orderRepository.ListAsync(pagedSpec);
 
-        response.Orders.AddRange(materialTypes.Select(((IMapperBase)_mapper).Map<MaterialTypeDto>));
+        response.Orders.AddRange(orders.Select(((IMapperBase)_mapper).Map<OrderInfoDto>));
 
         response.TotalCount = totalItems;
-
-        // if (request.PageSize > 0)
-        // {
-        //     response.TotalCount = int.Parse(Math.Ceiling((decimal)totalItems / request.PageSize.Value).ToString());
-        // }
-        // else
-        // {
-        //     response.PageCount = totalItems > 0 ? 1 : 0;
-        // }
 
         return Results.Ok(response);
     }
