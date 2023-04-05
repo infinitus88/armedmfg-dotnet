@@ -1,11 +1,12 @@
-﻿using Ardalis.Specification;
+﻿using System;
+using Ardalis.Specification;
 using ArmedMFG.ApplicationCore.Entities.ProductTypeAggregate;
 
 namespace ArmedMFG.ApplicationCore.Specifications;
 
 public class ProductTypeFilterPaginatedSpecification : Specification<ProductType>
 {
-    public ProductTypeFilterPaginatedSpecification(int skip, int take, int? productCategoryId)
+    public ProductTypeFilterPaginatedSpecification(int skip, int take, string? name, int? productCategoryId)
         : base()
     {
         if (take == 0)
@@ -13,7 +14,8 @@ public class ProductTypeFilterPaginatedSpecification : Specification<ProductType
             take = int.MaxValue;
         }
         Query
-            .Where(t => (!productCategoryId.HasValue || t.ProductCategoryId == productCategoryId))
+            .Where(t => (!String.IsNullOrEmpty(name) || t.Name.ToLower().Contains(name.ToLower())) && 
+                        (!productCategoryId.HasValue || t.ProductCategoryId == productCategoryId))
             .Skip(skip).Take(take)
             .Include(t => t.ProductPrices);
     }

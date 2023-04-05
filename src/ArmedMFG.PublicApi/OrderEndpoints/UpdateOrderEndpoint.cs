@@ -53,7 +53,6 @@ public class UpdateOrderEndpoint : IEndpoint<IResult, UpdateOrderRequest, IRepos
             RequiredDate = existingOrder.RequiredDate,
             FinishedDate = existingOrder.FinishedDate,
             Status = (byte)existingOrder.Status,
-            PaymentType = (byte)existingOrder.PaymentType,
             Description = existingOrder.Description,
             OrderProducts = existingOrder.OrderProducts.Select(_mapper.Map<OrderProductDto>).ToList(),
             OrderShipments = existingOrder.OrderShipments.Select(_mapper.Map<OrderShipmentDto>).ToList()

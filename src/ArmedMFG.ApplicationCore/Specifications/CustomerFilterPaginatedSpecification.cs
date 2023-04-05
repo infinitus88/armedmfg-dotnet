@@ -1,11 +1,12 @@
-﻿using Ardalis.Specification;
+﻿using System;
+using Ardalis.Specification;
 using ArmedMFG.ApplicationCore.Entities.CustomerOrganizationAggregate;
 
 namespace ArmedMFG.ApplicationCore.Specifications;
 
 public class CustomerFilterPaginatedSpecification : Specification<Customer>
 {
-    public CustomerFilterPaginatedSpecification(int skip, int take, int? organizationId)
+    public CustomerFilterPaginatedSpecification(int skip, int take, string? fullName)
     {
         if (take == 0)
         {
@@ -13,7 +14,7 @@ public class CustomerFilterPaginatedSpecification : Specification<Customer>
         }
 
         Query
-            .Where(c => (!organizationId.HasValue || c.OrganizationId == organizationId))
+            .Where(c => (!String.IsNullOrEmpty(fullName) || c.FullName.ToLower().Contains(fullName.ToLower())))
             .Skip(skip).Take(take);
     }
 }

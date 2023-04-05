@@ -37,26 +37,26 @@ public class ListPagedCustomerEndpoint : IEndpoint<IResult, ListPagedCustomerReq
         //await Task.Delay(1000);
         var response = new ListPagedCustomerResponse(request.CorrelationId());
 
-        var filterSpec = new CustomerFilterSpecification(request.OrganizationId);
-        int totalItems = await customerRepository.CountAsync(filterSpec);
-
-        var pagedSpec = new CustomerFilterPaginatedSpecification(
-            skip: request.PageIndex.Value * request.PageSize.Value,
-            take: request.PageSize.Value,
-            organizationId: request.OrganizationId);
-
-        var customers = await customerRepository.ListAsync(pagedSpec);
-
-        response.Customers.AddRange(customers.Select(((IMapperBase)_mapper).Map<CustomerDto>));
-
-        if (request.PageSize > 0)
-        {
-            response.PageCount = int.Parse(Math.Ceiling((decimal)totalItems / request.PageSize.Value).ToString());
-        }
-        else
-        {
-            response.PageCount = totalItems > 0 ? 1 : 0;
-        }
+        // var filterSpec = new CustomerFilterSpecification(request.OrganizationId);
+        // int totalItems = await customerRepository.CountAsync(filterSpec);
+        //
+        // var pagedSpec = new CustomerFilterPaginatedSpecification(
+        //     skip: request.PageIndex.Value * request.PageSize.Value,
+        //     take: request.PageSize.Value,
+        //     organizationId: request.OrganizationId);
+        //
+        // var customers = await customerRepository.ListAsync(pagedSpec);
+        //
+        // response.Customers.AddRange(customers.Select(((IMapperBase)_mapper).Map<CustomerDto>));
+        //
+        // if (request.PageSize > 0)
+        // {
+        //     response.PageCount = int.Parse(Math.Ceiling((decimal)totalItems / request.PageSize.Value).ToString());
+        // }
+        // else
+        // {
+        //     response.PageCount = totalItems > 0 ? 1 : 0;
+        // }
 
         return Results.Ok(response);
     }

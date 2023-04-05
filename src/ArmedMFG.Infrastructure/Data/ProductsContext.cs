@@ -2,12 +2,14 @@
 using ArmedMFG.ApplicationCore.Entities;
 using ArmedMFG.ApplicationCore.Entities.BasketAggregate;
 using ArmedMFG.ApplicationCore.Entities.CustomerOrganizationAggregate;
+using ArmedMFG.ApplicationCore.Entities.MaterialStockAggregate;
 using ArmedMFG.ApplicationCore.Entities.MaterialTypeAggregate;
 // using ArmedMFG.ApplicationCore.Entities.OrderCatalogAggregate;
 using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
+using ArmedMFG.ApplicationCore.Entities.PaymentRecordAggregate;
 using ArmedMFG.ApplicationCore.Entities.ProductBatch;
+using ArmedMFG.ApplicationCore.Entities.ProductStockAggregate;
 using ArmedMFG.ApplicationCore.Entities.ProductTypeAggregate;
-using ArmedMFG.ApplicationCore.Entities.WarehouseAggregate;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArmedMFG.Infrastructure.Data;
@@ -39,6 +41,10 @@ public class ProductsContext : DbContext
     public DbSet<ProductCategory> ProductCategories { get; set; }
     public DbSet<ProductPrice> ProductPrices { get; set; }
     
+    // Payments
+    public DbSet<PaymentRecord> PaymentRecords { get; set; }
+    public DbSet<PaymentCategory> PaymentCategories { get; set; }
+
     // Materials
     public DbSet<MaterialType> MaterialTypes { get; set; }
     public DbSet<MaterialCategory> MaterialCategories { get; set; }
@@ -54,8 +60,8 @@ public class ProductsContext : DbContext
     public DbSet<OrderProduct> OrderProducts { get; set; }
     
     // Warehouse
-    public DbSet<WarehouseProductCheckPoint> WarehouseProductCheckPoints { get; set; }
-    public DbSet<WarehouseMaterialCheckPoint> WarehouseMaterialCheckPoints { get; set; }
+    public DbSet<ProductCheckPoint> ProductCheckPoints { get; set; }
+    public DbSet<MaterialCheckPoint> MaterialCheckPoints { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

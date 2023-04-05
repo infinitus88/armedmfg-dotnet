@@ -12,11 +12,8 @@ public class OrderProductConfiguration : IEntityTypeConfiguration<OrderProduct>
             .UseHiLo("order_product_hilo")
             .IsRequired();
         
-        builder.Property(op => op.SingleTimePrice)
+        builder.Property(op => op.Price)
             .IsRequired(true)
             .HasColumnType("decimal(18,2)");
-
-        builder.Property(op => op.HaveSingleTimePrice)
-            .IsRequired();
     }
 }

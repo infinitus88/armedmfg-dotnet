@@ -1,33 +1,36 @@
 ﻿using System;
-using System.Globalization;
-using System.Linq;
 using Ardalis.Specification;
 using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
-using ArmedMFG.ApplicationCore.Entities.WarehouseAggregate;
 
 namespace ArmedMFG.ApplicationCore.Specifications;
 
 public class OrderShipmentFilterSpecification : Specification<OrderShipment>
 {
-    public OrderShipmentFilterSpecification(DateTime? startDate, DateTime? endDate, int? orderId)
+    public OrderShipmentFilterSpecification(DateTime? startDate, DateTime? endDate, string customerName, string driverName, string carNumber)
     {
-        Query.Where(o => (!startDate.HasValue || o.ShipmentDate <= startDate) &&
-                         (!endDate.HasValue || o.ShipmentDate >= endDate) &&
-                         (!orderId.HasValue || o.OrderId == orderId))
-            .Include(o => o.ShipmentProducts);
+        Query
+            .Include(o => o.Order)
+            .ThenInclude(o => o.Customer)
+            .Where(o => ((!startDate.HasValue || o.ShipmentDate <= startDate) &&
+                        (!endDate.HasValue || o.ShipmentDate >= endDate)) &&
+                        ((!String.IsNullOrEmpty(customerName) ||
+                         o.Order.Customer.FullName.ToLower().Contains(customerName.ToLower())) ||
+                        (!String.IsNullOrEmpty(driverName) || o.DriverName.ToLower().Contains(driverName.ToLower())) ||
+                        (!String.IsNullOrEmpty(carNumber) || o.CarNumber.ToLower().Contains(carNumber.ToLower()))));
+
     }
 
-    public OrderShipmentFilterSpecification(DateTime? startDate)
+    public OrderShipmentFilterSpecification()
     {
-        Query.Where(o => (!startDate.HasValue || o.ShipmentDate <= startDate))
-            .Include(o => o.ShipmentProducts);
+        Query.OrderBy(o => o.ShipmentDate);
     }
 }
 
-public class WarehouseProductCheckPointRecentSpecification : Specification<WarehouseProductCheckPoint>
+public class ShipmentProductFilterSpecification : Specification<ShipmentProduct>
 {
-    public WarehouseProductCheckPointRecentSpecification()
+    public ShipmentProductFilterSpecification()
     {
-        Query.OrderBy(cp => cp.CheckedDate);
+        Query
+            .Include(sp => sp.OrderShipment);
     }
 }

@@ -24,7 +24,7 @@ public class CreateOrderShipmentEndpoint : IEndpoint<IResult, CreateOrderShipmen
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPost("api/orders/shipments",
+        app.MapPost("api/order-shipments",
                 [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS,
                     AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
                 async
@@ -50,7 +50,7 @@ public class CreateOrderShipmentEndpoint : IEndpoint<IResult, CreateOrderShipmen
             throw new NotFoundException($"A order with Id: {request.OrderId} is not found");
         }
         
-        var newOrderShipment = new OrderShipment(request.OrderId, request.DriverName, request.DriverPhone, request.CarNumber, request.ShipmentDate);
+        var newOrderShipment = new OrderShipment(request.OrderId, request.ShipmentDate, request.DriverName, request.DriverPhone, request.CarNumber, request.Destination);
         
         foreach (var shipmentProduct in request.ShipmentProducts)
         {
@@ -63,10 +63,11 @@ public class CreateOrderShipmentEndpoint : IEndpoint<IResult, CreateOrderShipmen
         {
             Id = newOrderShipment.Id,
             OrderId = newOrderShipment.OrderId,
+            ShipmentDate = newOrderShipment.ShipmentDate,
             DriverName = newOrderShipment.DriverName,
             DriverPhone = newOrderShipment.DriverPhone,
             CarNumber = newOrderShipment.CarNumber,
-            ShipmentDate = newOrderShipment.ShipmentDate,
+            Destination = newOrderShipment.Destination,
             ShipmentProducts = newOrderShipment.ShipmentProducts.Select(_mapper.Map<ShipmentProductDto>).ToList()
         };
         

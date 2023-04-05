@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using ArmedMFG.ApplicationCore.Entities.CustomerOrganizationAggregate;
 using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
@@ -52,14 +51,13 @@ public class CreateOrderEndpoint : IEndpoint<IResult, CreateOrderRequest, IRepos
             throw new NotFoundException($"A order's customer with Id: {request.CustomerId} is not found");
         }
         
-        var newOrder = new Order(request.CustomerId, request.OrderedDate, request.RequiredDate, request.Description);
+        var newOrder = new Order(request.CustomerId, request.OrderedDate, request.RequiredDate, request.TotalAmount, request.Description);
 
         newOrder.SetStatus(Status.Pending);
-        newOrder.SetPaymentType(PaymentType.TransferWithVAT);
         
         foreach (var orderProduct in request.OrderProducts)
         {
-            newOrder.AddOrderProduct(orderProduct.ProductTypeId, orderProduct.Quantity, orderProduct.HaveSingleTimePrice, orderProduct.SingleTimePrice);
+            newOrder.AddOrderProduct(orderProduct.ProductTypeId, orderProduct.Quantity, orderProduct.Price);
         }
         
         newOrder = await orderRepository.AddAsync(newOrder);
@@ -71,7 +69,6 @@ public class CreateOrderEndpoint : IEndpoint<IResult, CreateOrderRequest, IRepos
             OrderedDate = newOrder.OrderedDate,
             RequiredDate = newOrder.RequiredDate,
             FinishedDate = newOrder.FinishedDate,
-            PaymentType = (byte)newOrder.PaymentType,
             Status = (byte)newOrder.Status,
             OrderProducts = newOrder.OrderProducts.Select(_mapper.Map<OrderProductDto>).ToList(),
             OrderShipments = newOrder.OrderShipments.Select(_mapper.Map<OrderShipmentDto>).ToList(),

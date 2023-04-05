@@ -9,4 +9,8 @@ public class MaterialSupplyFilterSpecification : Specification<MaterialSupply>
     {
         Query.Where(p => (!materialTypeId.HasValue || p.MaterialTypeId == materialTypeId));
     }
+
+    public MaterialSupplyFilterSpecification()
+    {
+    }
 }

@@ -14,8 +14,8 @@ public class Order : BaseEntity, IAggregateRoot
     public int CustomerId { get; private set; }
     public Customer? Customer { get; private set; }
     public Status Status { get; private set; }
-    public PaymentType PaymentType { get; private set; }
     public string Description { get; private set; }
+    public decimal TotalAmount { get; private set; }
     
     private readonly List<OrderShipment> _orderShipments = new List<OrderShipment>();
     public IReadOnlyCollection<OrderShipment> OrderShipments => _orderShipments.AsReadOnly();
@@ -26,28 +26,35 @@ public class Order : BaseEntity, IAggregateRoot
     public Order(int customerId, 
         DateTime orderedDate,
         DateTime requiredDate,
+        decimal totalAmount,
         string description
         )
     {
         CustomerId = customerId;
         OrderedDate = orderedDate;
         RequiredDate = requiredDate;
+        TotalAmount = totalAmount;
         Description = description;
     }
 
-    public void AddPartialShipment(DateTime shipmentDate, string driverName, string driverPhone, string carNumber, IEnumerable<ShipmentProduct> shipmentProducts)
+    public void AddPartialShipment(DateTime shipmentDate, string driverName, string driverPhone, string carNumber, string destination, IEnumerable<ShipmentProduct> shipmentProducts)
     {
-        var partialShipment = new OrderShipment(Id, driverName, driverPhone, carNumber, shipmentDate);
+        var partialShipment = new OrderShipment(Id, shipmentDate, driverName, driverPhone, carNumber, destination);
 
         foreach (var shipmentProduct in shipmentProducts)
         {
             partialShipment.AddShipmentProduct(shipmentProduct.ProductTypeId, shipmentProduct.Quantity);
         }
     }
-
-    public void AddOrderProduct(int productTypeId, int quantity, bool haveSingleTimePrice, decimal singleTimePrice)
+    
+    public void AddPartialShipment(OrderShipment orderShipment)
     {
-        _orderProducts.Add(new OrderProduct(productTypeId, quantity, haveSingleTimePrice, singleTimePrice));
+        _orderShipments.Add(orderShipment);
+    }
+
+    public void AddOrderProduct(int productTypeId, int quantity, decimal price)
+    {
+        _orderProducts.Add(new OrderProduct(productTypeId, quantity, price));
     }
 
     public void AddRangeProducts(IEnumerable<OrderProduct> orderProducts)
@@ -56,11 +63,6 @@ public class Order : BaseEntity, IAggregateRoot
         {
             _orderProducts.Add(orderProduct);
         } 
-    }
-
-    public void SetPaymentType(PaymentType paymentType)
-    {
-        PaymentType = paymentType;
     }
 
     public void SetStatus(Status status)
@@ -95,12 +97,6 @@ public class Order : BaseEntity, IAggregateRoot
     }
 }
 
-public enum PaymentType : byte
-{
-    TransferWithVAT = 0,
-    TransferWithoutVAT = 1,
-    CashWithoutVAT = 2
-}
 
 public enum Status : byte
 {

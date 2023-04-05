@@ -5,8 +5,7 @@ public class OrderProductDto
     public int Id { get; set; }
     public int ProductTypeId { get; set; }
     public int Quantity { get; set; }
-    public bool HaveSingleTimePrice { get; set; }
-    public decimal SingleTimePrice { get; set; }
+    public decimal Price { get; set; }
 }
 
 public class OrderProductInfoDto

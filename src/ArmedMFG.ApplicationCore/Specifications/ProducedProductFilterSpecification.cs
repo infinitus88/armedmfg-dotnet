@@ -21,3 +21,12 @@ public class ProducedProductFilterSpecification : Specification<ProducedProduct>
             .Include(p => p.ProductBatch);
     }
 }
+
+public class SpentMaterialFilterSpecification : Specification<SpentMaterial>
+{
+    public SpentMaterialFilterSpecification()
+    {
+        Query
+            .Include(sm => sm.ProductBatch);
+    }
+}

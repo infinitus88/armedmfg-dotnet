@@ -9,6 +9,7 @@ public class CreateOrderRequest : BaseRequest
     public DateTime OrderedDate { get; set; }
     public DateTime RequiredDate { get; set; }
     public byte PaymentType { get; set; }
+    public decimal TotalAmount { get; set; }
     public string Description { get; set; }
 
     public List<OrderProductDto> OrderProducts { get; set; } = new List<OrderProductDto>();

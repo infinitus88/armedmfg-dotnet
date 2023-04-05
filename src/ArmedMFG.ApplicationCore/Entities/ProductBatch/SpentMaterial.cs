@@ -1,9 +1,10 @@
 ﻿using Ardalis.GuardClauses;
 using ArmedMFG.ApplicationCore.Entities.MaterialTypeAggregate;
+using ArmedMFG.ApplicationCore.Interfaces;
 
 namespace ArmedMFG.ApplicationCore.Entities.ProductBatch;
 
-public class SpentMaterial : BaseEntity
+public class SpentMaterial : BaseEntity, IAggregateRoot
 {
     public int MaterialTypeId { get; private set; }
     public MaterialType? MaterialType { get; set; }

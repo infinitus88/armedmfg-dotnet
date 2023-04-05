@@ -6,7 +6,7 @@ namespace ArmedMFG.ApplicationCore.Specifications;
 
 public class OrderShipmentFilterPaginatedSpecification : Specification<OrderShipment>
 {
-    public OrderShipmentFilterPaginatedSpecification(int skip, int take, DateTime? startDate, DateTime? endDate, int? orderId)
+    public OrderShipmentFilterPaginatedSpecification(int skip, int take, DateTime? startDate, DateTime? endDate, string customerName, string? driverName, string? carNumber)
         : base()
     {
         if (take == 0)
@@ -15,10 +15,13 @@ public class OrderShipmentFilterPaginatedSpecification : Specification<OrderShip
         }
 
         Query
-            .Where(o => (!startDate.HasValue || o.ShipmentDate.Date >= startDate) &&
-                        (!endDate.HasValue || o.ShipmentDate <= endDate) &&
-                        (!orderId.HasValue || o.OrderId == orderId))
-            .Skip(skip).Take(take)
-            .Include(o => o.ShipmentProducts);
+            .Include(o => o.Order)
+            .ThenInclude(o => o.Customer)
+            .Where(o => ((!startDate.HasValue || o.ShipmentDate.Date >= startDate) &&
+                         (!endDate.HasValue || o.ShipmentDate <= endDate)) &&
+                         (o.Order.Customer.FullName.ToLower().Contains(customerName.ToLower())) ||
+                         (o.DriverName.ToLower().Contains(driverName.ToLower())) ||
+                         (o.CarNumber.ToLower().Contains(carNumber.ToLower())))
+            .Skip(skip).Take(take);
     }
 }

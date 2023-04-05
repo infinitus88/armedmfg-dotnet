@@ -1,12 +1,13 @@
-﻿using Ardalis.Specification;
+﻿using System;
+using Ardalis.Specification;
 using ArmedMFG.ApplicationCore.Entities.CustomerOrganizationAggregate;
 
 namespace ArmedMFG.ApplicationCore.Specifications;
 
 public class CustomerFilterSpecification : Specification<Customer>
 {
-    public CustomerFilterSpecification(int? organizationId)
+    public CustomerFilterSpecification(string? fullName)
     {
-        Query.Where(c => (!organizationId.HasValue || c.OrganizationId == organizationId));
+        Query.Where(c => (!String.IsNullOrEmpty(fullName) || c.FullName.ToLower().Contains(fullName.ToLower())));
     }
 }

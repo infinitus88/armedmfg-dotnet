@@ -11,7 +11,6 @@ public class OrderInfoDto
     public DateTime OrderedDate { get; set; }
     public DateTime? FinishedDate { get; set; }
     public byte Status { get; set; }
-    public byte PaymentType { get; set; }
     public string? Description { get; set; }
     public List<OrderProductInfoDto> OrderProducts { get; set; } = new List<OrderProductInfoDto>();
     public List<OrderShipmentDto> OrderShipments { get; set; } = new List<OrderShipmentDto>();
