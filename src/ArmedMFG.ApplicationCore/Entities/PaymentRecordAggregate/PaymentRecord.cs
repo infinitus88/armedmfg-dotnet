@@ -13,11 +13,11 @@ public class PaymentRecord : BaseEntity, IAggregateRoot
     public string? Description { get; set; }
     public decimal Amount { get; private set; }
 
-    public PaymentRecord(DateTime payedDate, int paymentCategoryId, int referenceId, byte paymentMethod, string description, decimal amount)
+    public PaymentRecord(DateTime payedDate, int paymentCategoryId, int referenceId, PaymentMethod paymentMethod, string description, decimal amount)
     {
         PayedDate = payedDate;
         PaymentCategoryId = paymentCategoryId;
-        PaymentMethod = (PaymentMethod)paymentMethod;
+        PaymentMethod = paymentMethod;
         Description = description;
         ReferenceId = referenceId;
         Amount = amount;
@@ -26,10 +26,10 @@ public class PaymentRecord : BaseEntity, IAggregateRoot
 
 public enum PaymentMethod : byte
 {
-    TransferWithVAT = 0,
-    TransferWithoutVAT = 1,
-    CashWithoutVAT = 2,
-    CashWithVAT = 3
+    TransferWithVat = 0,
+    TransferWithoutVat = 1,
+    CashWithoutVat = 2,
+    CashWithVat = 3
 }
 
 public enum PaymentType : byte

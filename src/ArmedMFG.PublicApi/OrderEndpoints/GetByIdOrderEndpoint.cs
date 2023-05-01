@@ -2,10 +2,13 @@
 using System.Threading.Tasks;
 using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
 using ArmedMFG.ApplicationCore.Interfaces;
+using ArmedMFG.ApplicationCore.Specifications;
+using ArmedMFG.PublicApi.Configuration;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Options;
 using MinimalApi.Endpoint;
 
 namespace ArmedMFG.PublicApi.OrderEndpoints;
@@ -13,10 +16,12 @@ namespace ArmedMFG.PublicApi.OrderEndpoints;
 public class GetByIdOrderEndpoint : IEndpoint<IResult, GetByIdOrderRequest, IRepository<Order>>
 {
     private readonly IMapper _mapper;
+    private readonly DateParsingSettings _dateParsingSettings;
 
-    public GetByIdOrderEndpoint(IMapper mapper)
+    public GetByIdOrderEndpoint(IMapper mapper, IOptions<DateParsingSettings> dateParsingSettings)
     {
         _mapper = mapper;
+        _dateParsingSettings = dateParsingSettings.Value;
     }
     
     public void AddRoute(IEndpointRouteBuilder app)
@@ -34,7 +39,10 @@ public class GetByIdOrderEndpoint : IEndpoint<IResult, GetByIdOrderRequest, IRep
     {
         var response = new GetByIdOrderResponse(request.CorrelationId());
 
-        var order = await orderRepository.GetByIdAsync(request.OrderId);
+        var filterSpec = new OrderWithProductsSpecification(request.OrderId);
+
+        var order = await orderRepository.GetByIdAsync(filterSpec);
+        
         if (order is null)
             return Results.NotFound();
 
@@ -42,9 +50,9 @@ public class GetByIdOrderEndpoint : IEndpoint<IResult, GetByIdOrderRequest, IRep
         {
             Id = order.Id,
             CustomerId = order.CustomerId,
-            OrderedDate = order.OrderedDate,
-            RequiredDate = order.RequiredDate,
-            FinishedDate = order.FinishedDate,
+            OrderedDate = order.OrderedDate.ToString(_dateParsingSettings.DefaultInputDateFormat),
+            RequiredDate = order.RequiredDate.ToString(_dateParsingSettings.DefaultInputDateFormat),
+            FinishedDate = order.FinishedDate?.ToString(_dateParsingSettings.DefaultInputDateFormat),
             Status = (byte)order.Status,
             Description = order.Description,
             OrderProducts = order.OrderProducts.Select(_mapper.Map<OrderProductDto>).ToList(),

@@ -1,5 +1,6 @@
 ﻿using System;
 using Ardalis.Specification;
+using ArmedMFG.ApplicationCore.Entities.CustomerOrganizationAggregate;
 using ArmedMFG.ApplicationCore.Entities.PaymentRecordAggregate;
 
 namespace ArmedMFG.ApplicationCore.Specifications;
@@ -11,6 +12,7 @@ public class PaymentRecordFilterPaginatedSpecification : Specification<PaymentRe
         Query
             .Where(pr => (!startDate.HasValue || pr.PayedDate >= startDate) &&
                          (!endDate.HasValue || pr.PayedDate <= endDate))
+            .Include(p => p.PaymentCategory)
             .Skip(skip).Take(take);
     }
 }

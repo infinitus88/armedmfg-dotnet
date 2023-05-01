@@ -19,18 +19,22 @@ public class FindListPagedProductStockInfoEndpoint : IEndpoint<IResult, FindList
 {
     private readonly IRepository<ShipmentProduct> _shipmentProductsRepository;
     private readonly IRepository<OrderProduct> _orderProductsRepository;
+    private readonly IRepository<DefectiveProduct> _defectiveProductsRepository;
     private readonly IRepository<ProductCheckPoint> _checkPointsRepository;
     private readonly IRepository<ProducedProduct> _producedProductsRepository;
     private readonly IMapper _mapper;
     
     public FindListPagedProductStockInfoEndpoint(IMapper mapper, IRepository<ShipmentProduct> shipmentProductsRepository,
         IRepository<ProductCheckPoint> checkPointsRepository,
-        IRepository<ProducedProduct> producedProductsRepository, IRepository<OrderProduct> orderProductsRepository)
+        IRepository<ProducedProduct> producedProductsRepository,
+        IRepository<DefectiveProduct> defectiveRepository,
+        IRepository<OrderProduct> orderProductsRepository)
     {
         _mapper = mapper;
         _shipmentProductsRepository = shipmentProductsRepository;
         _checkPointsRepository = checkPointsRepository;
         _producedProductsRepository = producedProductsRepository;
+        _defectiveProductsRepository = defectiveRepository;
         _orderProductsRepository = orderProductsRepository;
     }
 
@@ -42,6 +46,9 @@ public class FindListPagedProductStockInfoEndpoint : IEndpoint<IResult, FindList
 
         var shipmentProductsFilter = new ShipmentProductFilterSpecification();
         var shipmentProducts = await _shipmentProductsRepository.ListAsync(shipmentProductsFilter);
+
+        var defectiveProductsFilter = new DefectiveProductFilterSpecification();
+        var defectiveProducts = await _defectiveProductsRepository.ListAsync(defectiveProductsFilter);
         
         var recentCheckPointsFilter = new ProductCheckPointRecentSpecification();
         var checkPoints = await _checkPointsRepository.ListAsync(recentCheckPointsFilter);
@@ -59,7 +66,9 @@ public class FindListPagedProductStockInfoEndpoint : IEndpoint<IResult, FindList
                            + producedProducts.Where(p => p.ProductBatch.ProducedDate.Date > checkPoint.CheckedDate.Date && p.ProductTypeId == checkPoint.ProductTypeId)
                                .Sum(p => p.Quantity)
                            - shipmentProducts.Where(sp => sp.OrderShipment.ShipmentDate > checkPoint.CheckedDate && sp.ProductTypeId == checkPoint.ProductTypeId)
-                               .Sum(sp => sp.Quantity),
+                               .Sum(sp => sp.Quantity)
+                           - defectiveProducts.Where(dp => dp.FoundDate > checkPoint.CheckedDate && dp.ProductTypeId == checkPoint.ProductTypeId)
+                               .Sum(dp => dp.Quantity),
             });
             
         }

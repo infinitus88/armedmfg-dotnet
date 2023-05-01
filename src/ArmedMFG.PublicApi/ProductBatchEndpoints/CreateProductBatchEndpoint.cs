@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using ArmedMFG.ApplicationCore.Entities.MaterialTypeAggregate;
@@ -6,12 +8,14 @@ using ArmedMFG.ApplicationCore.Entities.ProductBatch;
 using ArmedMFG.ApplicationCore.Entities.ProductTypeAggregate;
 using ArmedMFG.ApplicationCore.Exceptions;
 using ArmedMFG.ApplicationCore.Interfaces;
+using ArmedMFG.PublicApi.Configuration;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Options;
 using MinimalApi.Endpoint;
 
 namespace ArmedMFG.PublicApi.ProductBatchEndpoints;
@@ -19,10 +23,12 @@ namespace ArmedMFG.PublicApi.ProductBatchEndpoints;
 public class CreateProductBatchEndpoint : IEndpoint<IResult, CreateProductBatchRequest, IRepository<ProductBatch>>
 {
     private readonly IMapper _mapper;
+    private readonly DateParsingSettings _dateParsingSettings;
 
-    public CreateProductBatchEndpoint(IMapper mapper)
+    public CreateProductBatchEndpoint(IMapper mapper, IOptions<DateParsingSettings> dateParsingSettings)
     {
         _mapper = mapper;
+        _dateParsingSettings = dateParsingSettings.Value;
     }
 
     public void AddRoute(IEndpointRouteBuilder app)
@@ -44,7 +50,7 @@ public class CreateProductBatchEndpoint : IEndpoint<IResult, CreateProductBatchR
     {
         var response = new CreateProductBatchResponse(request.CorrelationId());
 
-        var newBatch = new ProductBatch(request.ProducedDate);
+        var newBatch = new ProductBatch(DateTime.ParseExact(request.ProducedDate, _dateParsingSettings.DefaultInputDateFormat, CultureInfo.InvariantCulture));
 
         newBatch.AddProductRange(request.ProducedProducts.Select(p => new ProducedProduct(p.ProductTypeId, p.Quantity)).ToList());
         newBatch.AddMaterialRange(request.SpentMaterials.Select(m => new SpentMaterial(m.MaterialTypeId, m.Amount)).ToList());
@@ -53,7 +59,7 @@ public class CreateProductBatchEndpoint : IEndpoint<IResult, CreateProductBatchR
         var dto = new ProductBatchDto
         {
             Id = newBatch.Id,
-            ProducedDate = newBatch.ProducedDate,
+            ProducedDate = newBatch.ProducedDate.ToString(_dateParsingSettings.DefaultDisplayDateFormat),
             ProducedProducts = newBatch.ProducedProducts.Select(_mapper.Map<ProducedProductDto>).ToList(),
             SpentMaterials = newBatch.SpentMaterials.Select(_mapper.Map<SpentMaterialDto>).ToList()
         };

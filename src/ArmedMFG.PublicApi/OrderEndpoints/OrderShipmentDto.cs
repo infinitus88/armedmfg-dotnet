@@ -7,7 +7,8 @@ public class OrderShipmentDto
 {
     public int Id { get; set; }
     public int OrderId { get; set; }
-    public DateTime ShipmentDate { get; set; } 
+    public string CustomerFullName { get; set; } = String.Empty;
+    public string ShipmentDate { get; set; } 
     public string DriverName { get; set; } = String.Empty;
     public string DriverPhone { get; set; } = String.Empty;
     public string CarNumber { get; set; } = String.Empty;

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using ArmedMFG.ApplicationCore.Entities;
 using ArmedMFG.ApplicationCore.Entities.CustomerOrganizationAggregate;
+using ArmedMFG.ApplicationCore.Entities.EmployeeAggregate;
 using ArmedMFG.ApplicationCore.Entities.MaterialStockAggregate;
 using ArmedMFG.ApplicationCore.Entities.MaterialTypeAggregate;
 using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
@@ -102,6 +104,18 @@ public class ProductsContextSeed
                 await productsContext.SaveChangesAsync();
             }
 
+            if (!await productsContext.EmployeePositions.AnyAsync())
+            {
+                await productsContext.EmployeePositions.AddRangeAsync(
+                    GetPreconfiguredEmployeePositions());
+            }
+
+            if (!await productsContext.Employees.AnyAsync())
+            {
+                await productsContext.Employees.AddRangeAsync(
+                    GetPreconfiguredEmployees());
+            }
+
             if (!await productsContext.MaterialCheckPoints.AnyAsync())
             {
                 await productsContext.MaterialCheckPoints.AddRangeAsync(
@@ -143,10 +157,8 @@ public class ProductsContextSeed
     {
         return new List<Department>
         {
-            new("Concrete"),
-            new("OtherDep1"),
-            new("OtherDep2"),
-            new("OtherDep3")
+            new("ЖБИ"),
+            new("Механический цех"),
         };
     }
 
@@ -154,10 +166,9 @@ public class ProductsContextSeed
     {
         return new List<ProductCategory>
         {
-            new(1, "Plates"),
-            new(1, "Lotocs"),
-            new(1, "Ariqs"),
-            new(2, "Sicators")
+            new(1, "Плиты Перекрытия"),
+            new(1, "Лотки"),
+            new(1, "Кольца Стеновые"),
         };
     }
     
@@ -165,18 +176,29 @@ public class ProductsContextSeed
     {
         return new List<ProductType>
         {
-            new(1, "PK 59x10 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
-            new(1, "PK 59x12 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
-            new(1, "PK 59x15 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
-            new(1, "PK 59x16 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
-            new(1, "PK 59x17 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
-            new(1, "PK 59x19 10", "Plates that are used for base of every floor buildings", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
-            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
-            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
-            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
-            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
-            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
-            new(2, "LT 10x08 10", "Lotocs that are used for water outline channels", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(1, "ПК 59x10", "Плиты перекрытия с прочностью 400", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(1, "ПК 59x12", "Плиты перекрытия с прочностью 400", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(1, "ПК 45x10", "Плиты перекрытия с прочностью 400", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(1, "ПК 45x12", "Плиты перекрытия с прочностью 400", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(1, "ПК 60x10", "Плиты перекрытия с прочностью 400", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(1, "ПК 60x12", "Плиты перекрытия с прочностью 400", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+        };
+    }
+
+    static IEnumerable<EmployeePosition> GetPreconfiguredEmployeePositions() 
+    {
+        return new List<EmployeePosition>
+        {
+            new("Сварщик", EmployeeSalaryType.PerformanceBased),
+            new("Программист", EmployeeSalaryType.Fixed)
+        };
+    }
+
+    static IEnumerable<Employee> GetPreconfiguredEmployees()
+    {
+        return new List<Employee>
+        {
+            new("Рустам Минниханов Фанисович", "+998942588311", DateTime.ParseExact("02/09/2001", "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.Now, 2, EmployeeStatus.Active),
         };
     }
 
@@ -184,9 +206,11 @@ public class ProductsContextSeed
     {
         return new List<MaterialCategory>
         {
-            new(1, "Liquid"),
-            new(1, "Dust"),
-            new(1, "Metal"),
+            new(1, "Жидкость"),
+            new(1, "Песок"),
+            new(1, "Щебень"),
+            new(1, "Цемент"),
+            new(1, "Арматура")
         };
     }
 
@@ -194,9 +218,12 @@ public class ProductsContextSeed
     {
         return new List<MaterialType>
         {
-            new(1, "Water", "Usual not distill water"),
-            new(2, "Cement", "Cement for concrete products"),
-            new(3, "Metal Sticks", "Metal sticks used for concrete products")
+            new(1, "Вода", "Обычная не дистиллированная"),
+            new(4, "Цемент QuaXin", "Цемент марки QuaXin"),
+            new(5, "Арматура 4", "Арматура диаметром 4 мм"),
+            new(5, "Арматура 8", "Арматура диаметром 8 мм"),
+            new(5, "Арматура 12", "Арматура диаметром 12 мм"),
+            new(3, "Щебень 6", "Щебенка с камнями диаметром до 12 мм")
         };
     }
 
@@ -231,7 +258,7 @@ public class ProductsContextSeed
     {
         return new List<Customer>
         {
-            new Customer("Абдувахоб Холиков", "+998905001020", "Посредник", "abduvakhob_kholikov@gmail.com", "Рекламный банер Тойтепа", "Мужчина в возрасте, ездит на жентре черной, ценит качество, готов переплачивать за качество")
+            new Customer("Абдувахоб Холиков", "+998905001020", "Посредник", "abduvakhob_kholikov@gmail.com", "Рекламный банер Тойтепа", "Мужчина в возрасте, ездит на жентре черной, ценит качество, готов переплачивать за качество. Для начало сообщил, что закажет Кольца Стеновые в комплекте до 200 штук в общем")
         };
     }
 
@@ -270,7 +297,7 @@ public class ProductsContextSeed
     {
         return new List<PaymentRecord>
         {
-            new(DateTime.Now.AddDays(-1), 1, 1, (byte)PaymentMethod.CashWithoutVAT, "Отплата заказа", 10000000),
+            new(DateTime.Now.AddDays(-1), 1, 1, PaymentMethod.CashWithoutVat, "Отплата заказа", 10000000),
         };
     } 
 }

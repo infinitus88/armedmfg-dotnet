@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Text;
 using ArmedMFG.ApplicationCore;
 using ArmedMFG.BlazorShared;
@@ -15,11 +16,15 @@ using ArmedMFG.Infrastructure.Data;
 using ArmedMFG.Infrastructure.Identity;
 using ArmedMFG.Infrastructure.Logging;
 using ArmedMFG.PublicApi;
+using ArmedMFG.PublicApi.Configuration;
+using ArmedMFG.PublicApi.Configuration.Services;
 using ArmedMFG.PublicApi.Middleware;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MinimalApi.Endpoint.Configurations.Extensions;
@@ -46,9 +51,15 @@ builder.Services.AddSingleton<IUriComposer>(new UriComposer(builder.Configuratio
 builder.Services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 builder.Services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
 
+builder.Services.AddScoped<IProductInventoryService, ProductInventoryService>();
+
 var configSection = builder.Configuration.GetRequiredSection(BaseUrlConfiguration.CONFIG_NAME);
 builder.Services.Configure<BaseUrlConfiguration>(configSection);
 var baseUrlConfig = configSection.Get<BaseUrlConfiguration>();
+
+// Configurations
+builder.Services.Configure<DateParsingSettings>(builder.Configuration.GetSection("DateParsing"));
+builder.Services.Configure<ConfigFilesSettings>(builder.Configuration.GetSection("ConfigFiles"));
 
 builder.Services.AddMemoryCache();
 
@@ -84,7 +95,14 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers();
-builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+
+builder.Services.AddScoped(provider => new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile(new MappingProfile(provider.GetRequiredService<IOptions<DateParsingSettings>>()));
+}).CreateMapper());
+
+// builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+
 builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -125,7 +143,6 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
-
 app.Logger.LogInformation("ArmedMFG.PublicApi App created...");
 
 app.Logger.LogInformation("Seeding Database...");

@@ -8,7 +8,7 @@ public class ProductTypeFilterSpecification : Specification<ProductType>
 {
     public ProductTypeFilterSpecification(string? name, int? productCategoryId)
     {
-        Query.Where(p => (!String.IsNullOrEmpty(name) || p.Name.ToLower().Contains(name.ToLower())) &&
-                         (!productCategoryId.HasValue || p.ProductCategoryId == productCategoryId));
+        Query.Where(p => (!String.IsNullOrEmpty(name) || p.Name.ToLower().Contains(name.ToLower())));
+                         //(!productCategoryId.HasValue || p.ProductCategoryId == productCategoryId));
     }
 }

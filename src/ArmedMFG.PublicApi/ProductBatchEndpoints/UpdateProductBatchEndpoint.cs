@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ArmedMFG.ApplicationCore.Entities.ProductBatch;
 using ArmedMFG.ApplicationCore.Exceptions;
 using ArmedMFG.ApplicationCore.Interfaces;
+using ArmedMFG.PublicApi.Configuration;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using Microsoft.Extensions.Options;
 using MinimalApi.Endpoint;
 
 namespace ArmedMFG.PublicApi.ProductBatchEndpoints;
@@ -17,10 +19,12 @@ namespace ArmedMFG.PublicApi.ProductBatchEndpoints;
 public class UpdateProductBatchEndpoint : IEndpoint<IResult, UpdateProductBatchRequest, IRepository<ProductBatch>>
 {
     private readonly IMapper _mapper;
+    private readonly DateParsingSettings _dateParsingSettings;
     
-    public UpdateProductBatchEndpoint(IMapper mapper)
+    public UpdateProductBatchEndpoint(IMapper mapper, IOptions<DateParsingSettings> dateParsingSettings)
     {
         _mapper = mapper;
+        _dateParsingSettings = dateParsingSettings.Value;
     }
     
     public void AddRoute(IEndpointRouteBuilder app)
@@ -64,7 +68,7 @@ public class UpdateProductBatchEndpoint : IEndpoint<IResult, UpdateProductBatchR
         var dto = new ProductBatchDto
         {
             Id = existingProductBatch.Id,
-            ProducedDate = existingProductBatch.ProducedDate
+            ProducedDate = existingProductBatch.ProducedDate.ToString(_dateParsingSettings.DefaultDisplayDateFormat)
         };
         response.ProductBatch = dto;
         response.ProductBatch.ProducedProducts.AddRange(

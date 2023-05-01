@@ -2,6 +2,7 @@
 using ArmedMFG.ApplicationCore.Entities;
 using ArmedMFG.ApplicationCore.Entities.BasketAggregate;
 using ArmedMFG.ApplicationCore.Entities.CustomerOrganizationAggregate;
+using ArmedMFG.ApplicationCore.Entities.EmployeeAggregate;
 using ArmedMFG.ApplicationCore.Entities.MaterialStockAggregate;
 using ArmedMFG.ApplicationCore.Entities.MaterialTypeAggregate;
 // using ArmedMFG.ApplicationCore.Entities.OrderCatalogAggregate;
@@ -32,8 +33,8 @@ public class ProductsContext : DbContext
     // Produced Products
     public DbSet<ProductBatch> ProductBatches { get; set; }
     public DbSet<ProducedProduct> ProducedProducts { get; set; }
+    public DbSet<DefectiveProduct> DefectiveProducts { get; set; }
     public DbSet<SpentMaterial> SpentMaterials { get; set; }
-    
     public DbSet<Department> Departments { get; set; }
     
     // Products
@@ -49,6 +50,10 @@ public class ProductsContext : DbContext
     public DbSet<MaterialType> MaterialTypes { get; set; }
     public DbSet<MaterialCategory> MaterialCategories { get; set; }
     public DbSet<MaterialSupply> MaterialSupplies { get; set; }
+
+    // Employees
+    public DbSet<EmployeePosition> EmployeePositions { get; set; }
+    public DbSet<Employee> Employees { get; set; }
     
     // Customers
     public DbSet<Customer> Customers { get; set; }

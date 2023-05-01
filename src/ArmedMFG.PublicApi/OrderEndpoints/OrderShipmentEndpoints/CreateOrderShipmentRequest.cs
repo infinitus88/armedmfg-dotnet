@@ -6,11 +6,17 @@ namespace ArmedMFG.PublicApi.OrderEndpoints.OrderShipmentEndpoints;
 public class CreateOrderShipmentRequest : BaseRequest
 {
     public int OrderId { get; set; }
-    public DateTime ShipmentDate { get; set; }
+    public string ShipmentDate { get; set; }
     public string DriverName { get; set; }
     public string DriverPhone { get; set; }
     public string CarNumber { get; set; }
     public string Destination { get; set; }
 
-    public List<ShipmentProductDto> ShipmentProducts { get; set; } = new List<ShipmentProductDto>();
+    public List<CreateOrderShipmentProductDto> ShipmentProducts { get; set; } = new List<CreateOrderShipmentProductDto>();
+}
+
+public class CreateOrderShipmentProductDto
+{
+    public int ProductTypeId { get; set; }
+    public int Quantity { get; set; }
 }

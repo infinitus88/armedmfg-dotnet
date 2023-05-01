@@ -1,6 +1,8 @@
-﻿namespace ArmedMFG.ApplicationCore.Entities.PaymentRecordAggregate;
+﻿using ArmedMFG.ApplicationCore.Interfaces;
 
-public class PaymentCategory : BaseEntity
+namespace ArmedMFG.ApplicationCore.Entities.PaymentRecordAggregate;
+
+public class PaymentCategory : BaseEntity, IAggregateRoot
 {
     public string Name { get; private set; }
     public PaymentType Type { get; private set; }

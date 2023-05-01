@@ -1,0 +1,12 @@
+﻿{
+  "1": [
+    {
+      "materialTypeId": 1,
+      "amount": 100
+    },
+    {
+      "materialTypeId": 4,
+      "amount": 100
+    }
+  ]
+}

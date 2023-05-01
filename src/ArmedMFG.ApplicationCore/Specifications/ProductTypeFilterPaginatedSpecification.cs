@@ -6,7 +6,7 @@ namespace ArmedMFG.ApplicationCore.Specifications;
 
 public class ProductTypeFilterPaginatedSpecification : Specification<ProductType>
 {
-    public ProductTypeFilterPaginatedSpecification(int skip, int take, string? name, int? productCategoryId)
+    public ProductTypeFilterPaginatedSpecification(int skip, int take, string? searchText, int? productCategoryId)
         : base()
     {
         if (take == 0)
@@ -14,8 +14,8 @@ public class ProductTypeFilterPaginatedSpecification : Specification<ProductType
             take = int.MaxValue;
         }
         Query
-            .Where(t => (!String.IsNullOrEmpty(name) || t.Name.ToLower().Contains(name.ToLower())) && 
-                        (!productCategoryId.HasValue || t.ProductCategoryId == productCategoryId))
+            .Where(t => (!String.IsNullOrEmpty(searchText) || t.Name.ToLower().Contains(searchText.ToLower()))) 
+                        //(!productCategoryId.HasValue || t.ProductCategoryId == productCategoryId))
             .Skip(skip).Take(take)
             .Include(t => t.ProductPrices);
     }

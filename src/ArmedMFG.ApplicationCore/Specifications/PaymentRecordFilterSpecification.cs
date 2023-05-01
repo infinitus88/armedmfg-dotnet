@@ -9,6 +9,15 @@ public class PaymentRecordFilterSpecification : Specification<PaymentRecord>
     public PaymentRecordFilterSpecification(DateTime? startDate, DateTime? endDate, int? paymentCategoryId)
     {
         Query.Where(pr => (!startDate.HasValue || pr.PayedDate >= startDate) &&
-                          (!endDate.HasValue || pr.PayedDate <= endDate));
+                          (!endDate.HasValue || pr.PayedDate <= endDate))
+            .Include(p => p.PaymentCategory);
+    }
+}
+
+public class OrderPaymentRecordFilterSpecification : Specification<PaymentRecord>
+{
+    public OrderPaymentRecordFilterSpecification()
+    {
+        
     }
 }

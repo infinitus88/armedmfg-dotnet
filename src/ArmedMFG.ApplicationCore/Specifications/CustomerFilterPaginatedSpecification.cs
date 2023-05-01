@@ -18,16 +18,3 @@ public class CustomerFilterPaginatedSpecification : Specification<Customer>
             .Skip(skip).Take(take);
     }
 }
-
-public class CustomerOrganizationFilterPaginatedSpecification : Specification<CustomerOrganization>
-{
-    public CustomerOrganizationFilterPaginatedSpecification(int skip, int take)
-    {
-        if (take == 0)
-        {
-            take = int.MaxValue;
-        }
-
-        Query.Skip(skip).Take(take);
-    }
-}

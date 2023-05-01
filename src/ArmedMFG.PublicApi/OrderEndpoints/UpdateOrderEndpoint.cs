@@ -49,9 +49,9 @@ public class UpdateOrderEndpoint : IEndpoint<IResult, UpdateOrderRequest, IRepos
         {
             Id = existingOrder.Id,
             CustomerId = existingOrder.CustomerId,
-            OrderedDate = existingOrder.OrderedDate,
-            RequiredDate = existingOrder.RequiredDate,
-            FinishedDate = existingOrder.FinishedDate,
+            OrderedDate = existingOrder.OrderedDate.ToString("dd.MM.yyyy"),
+            RequiredDate = existingOrder.RequiredDate.ToString("dd.MM.yyyy"),
+            FinishedDate = existingOrder.FinishedDate?.ToString("dd.MM.yyyy"),
             Status = (byte)existingOrder.Status,
             Description = existingOrder.Description,
             OrderProducts = existingOrder.OrderProducts.Select(_mapper.Map<OrderProductDto>).ToList(),

@@ -1,14 +1,18 @@
-﻿using System.Linq;
+﻿using System;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
 using ArmedMFG.ApplicationCore.Exceptions;
 using ArmedMFG.ApplicationCore.Interfaces;
+using ArmedMFG.PublicApi.Configuration;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Options;
 using MinimalApi.Endpoint;
 
 namespace ArmedMFG.PublicApi.OrderEndpoints.OrderShipmentEndpoints;
@@ -16,10 +20,12 @@ namespace ArmedMFG.PublicApi.OrderEndpoints.OrderShipmentEndpoints;
 public class CreateOrderShipmentEndpoint : IEndpoint<IResult, CreateOrderShipmentRequest, IRepository<OrderShipment>, IRepository<Order>>
 {
     private readonly IMapper _mapper;
+    private DateParsingSettings _dateParsingSettings;
 
-    public CreateOrderShipmentEndpoint(IMapper mapper)
+    public CreateOrderShipmentEndpoint(IMapper mapper, IOptions<DateParsingSettings> dateParsingSettings)
     {
         _mapper = mapper;
+        _dateParsingSettings = dateParsingSettings.Value;
     }
 
     public void AddRoute(IEndpointRouteBuilder app)
@@ -50,7 +56,9 @@ public class CreateOrderShipmentEndpoint : IEndpoint<IResult, CreateOrderShipmen
             throw new NotFoundException($"A order with Id: {request.OrderId} is not found");
         }
         
-        var newOrderShipment = new OrderShipment(request.OrderId, request.ShipmentDate, request.DriverName, request.DriverPhone, request.CarNumber, request.Destination);
+        var newOrderShipment = new OrderShipment(request.OrderId, 
+            DateTime.ParseExact(request.ShipmentDate, _dateParsingSettings.DefaultInputDateFormat, CultureInfo.InvariantCulture),
+            request.DriverName, request.DriverPhone, request.CarNumber, request.Destination);
         
         foreach (var shipmentProduct in request.ShipmentProducts)
         {
@@ -63,7 +71,8 @@ public class CreateOrderShipmentEndpoint : IEndpoint<IResult, CreateOrderShipmen
         {
             Id = newOrderShipment.Id,
             OrderId = newOrderShipment.OrderId,
-            ShipmentDate = newOrderShipment.ShipmentDate,
+            // CustomerFullName = newOrderShipment.Order?.Customer.FullName,
+            ShipmentDate = newOrderShipment.ShipmentDate.ToString(_dateParsingSettings.DefaultDisplayDateFormat),
             DriverName = newOrderShipment.DriverName,
             DriverPhone = newOrderShipment.DriverPhone,
             CarNumber = newOrderShipment.CarNumber,

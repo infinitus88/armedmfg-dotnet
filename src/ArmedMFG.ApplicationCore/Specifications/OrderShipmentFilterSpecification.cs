@@ -25,12 +25,3 @@ public class OrderShipmentFilterSpecification : Specification<OrderShipment>
         Query.OrderBy(o => o.ShipmentDate);
     }
 }
-
-public class ShipmentProductFilterSpecification : Specification<ShipmentProduct>
-{
-    public ShipmentProductFilterSpecification()
-    {
-        Query
-            .Include(sp => sp.OrderShipment);
-    }
-}

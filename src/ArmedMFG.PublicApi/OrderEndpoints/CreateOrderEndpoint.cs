@@ -1,15 +1,19 @@
-﻿using System.Linq;
+﻿using System;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using ArmedMFG.ApplicationCore.Entities.CustomerOrganizationAggregate;
 using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
 using ArmedMFG.ApplicationCore.Exceptions;
 using ArmedMFG.ApplicationCore.Interfaces;
+using ArmedMFG.PublicApi.Configuration;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Options;
 using MinimalApi.Endpoint;
 
 namespace ArmedMFG.PublicApi.OrderEndpoints;
@@ -17,10 +21,12 @@ namespace ArmedMFG.PublicApi.OrderEndpoints;
 public class CreateOrderEndpoint : IEndpoint<IResult, CreateOrderRequest, IRepository<Order>, IRepository<Customer>>
 {
     private readonly IMapper _mapper;
+    private readonly DateParsingSettings _dateParsingSettings;
 
-    public CreateOrderEndpoint(IMapper mapper)
+    public CreateOrderEndpoint(IMapper mapper, IOptions<DateParsingSettings> dateParsingSettings)
     {
         _mapper = mapper;
+        _dateParsingSettings = dateParsingSettings.Value;
     }
 
     public void AddRoute(IEndpointRouteBuilder app)
@@ -51,7 +57,10 @@ public class CreateOrderEndpoint : IEndpoint<IResult, CreateOrderRequest, IRepos
             throw new NotFoundException($"A order's customer with Id: {request.CustomerId} is not found");
         }
         
-        var newOrder = new Order(request.CustomerId, request.OrderedDate, request.RequiredDate, request.TotalAmount, request.Description);
+        var newOrder = new Order(request.CustomerId,
+            DateTime.ParseExact(request.OrderedDate, _dateParsingSettings.DefaultInputDateFormat, CultureInfo.InvariantCulture),
+            DateTime.ParseExact(request.RequiredDate, _dateParsingSettings.DefaultInputDateFormat, CultureInfo.InvariantCulture),
+            request.TotalAmount, "");
 
         newOrder.SetStatus(Status.Pending);
         
@@ -66,10 +75,11 @@ public class CreateOrderEndpoint : IEndpoint<IResult, CreateOrderRequest, IRepos
         {
             Id = newOrder.Id,
             CustomerId = newOrder.CustomerId,
-            OrderedDate = newOrder.OrderedDate,
-            RequiredDate = newOrder.RequiredDate,
-            FinishedDate = newOrder.FinishedDate,
+            OrderedDate = newOrder.OrderedDate.ToString(_dateParsingSettings.DefaultDisplayDateFormat),
+            RequiredDate = newOrder.RequiredDate.ToString(_dateParsingSettings.DefaultDisplayDateFormat),
+            FinishedDate = newOrder.FinishedDate?.ToString(_dateParsingSettings.DefaultDisplayDateFormat),
             Status = (byte)newOrder.Status,
+            TotalAmount = newOrder.TotalAmount,
             OrderProducts = newOrder.OrderProducts.Select(_mapper.Map<OrderProductDto>).ToList(),
             OrderShipments = newOrder.OrderShipments.Select(_mapper.Map<OrderShipmentDto>).ToList(),
             Description = newOrder.Description,

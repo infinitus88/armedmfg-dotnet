@@ -1,4 +1,5 @@
-﻿using Ardalis.Specification;
+﻿using System.Linq;
+using Ardalis.Specification;
 using ArmedMFG.ApplicationCore.Entities.BasketAggregate;
 
 namespace ArmedMFG.ApplicationCore.Specifications;
