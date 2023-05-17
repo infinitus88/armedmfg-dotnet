@@ -35,4 +35,8 @@
     <ProjectReference Include="..\ArmedMFG.Infrastructure\ArmedMFG.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Modules\ProductionReports\Services\" />
+  </ItemGroup>
+
 </Project>

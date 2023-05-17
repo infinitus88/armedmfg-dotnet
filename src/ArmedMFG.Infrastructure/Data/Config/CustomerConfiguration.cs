@@ -1,4 +1,4 @@
-﻿using ArmedMFG.ApplicationCore.Entities.CustomerOrganizationAggregate;
+﻿using ArmedMFG.ApplicationCore.Entities.CustomerAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,15 +8,9 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
 {
     public void Configure(EntityTypeBuilder<Customer> builder)
     {
-        
-        // builder.ToTable("");
 
-        builder.Property(p => p.Id)
-            .UseHiLo("customer_hilo")
-            .IsRequired();
+        builder.ToTable("Customers");
 
-        // builder.HasOne(p => p.ProductType)
-        //     .WithMany()
-        //     .HasForeignKey(p => p.ProductTypeId);
+        builder.HasKey(p => p.Id);
     }
 }

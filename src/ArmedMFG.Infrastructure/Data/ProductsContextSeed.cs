@@ -4,17 +4,14 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using ArmedMFG.ApplicationCore.Entities;
-using ArmedMFG.ApplicationCore.Entities.CustomerOrganizationAggregate;
+using ArmedMFG.ApplicationCore.Entities.CustomerAggregate;
 using ArmedMFG.ApplicationCore.Entities.EmployeeAggregate;
-using ArmedMFG.ApplicationCore.Entities.MaterialStockAggregate;
-using ArmedMFG.ApplicationCore.Entities.MaterialTypeAggregate;
+using ArmedMFG.ApplicationCore.Entities.MaterialAggregate;
 using ArmedMFG.ApplicationCore.Entities.OrderAggregate;
 using ArmedMFG.ApplicationCore.Entities.PaymentRecordAggregate;
-using ArmedMFG.ApplicationCore.Entities.ProductStockAggregate;
-using ArmedMFG.ApplicationCore.Entities.ProductTypeAggregate;
+using ArmedMFG.ApplicationCore.Entities.ProductAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PaymentType = ArmedMFG.ApplicationCore.Entities.PaymentRecordAggregate.PaymentType;
 
 namespace ArmedMFG.Infrastructure.Data;
 
@@ -32,13 +29,6 @@ public class ProductsContextSeed
                 productsContext.Database.Migrate();
             }
 
-            if (!await productsContext.Departments.AnyAsync())
-            {
-                await productsContext.Departments.AddRangeAsync(
-                    GetPreconfiguredDepartments());
-
-                await productsContext.SaveChangesAsync();
-            }
 
             if (!await productsContext.ProductCategories.AnyAsync())
             {
@@ -48,10 +38,10 @@ public class ProductsContextSeed
                 await productsContext.SaveChangesAsync();
             }
 
-            if (!await productsContext.ProductTypes.AnyAsync())
+            if (!await productsContext.Products.AnyAsync())
             {
-                await productsContext.ProductTypes.AddRangeAsync(
-                    GetPreconfiguredProductTypes());
+                await productsContext.Products.AddRangeAsync(
+                    GetPreconfiguredProducts());
 
                 await productsContext.SaveChangesAsync();
             }
@@ -64,21 +54,14 @@ public class ProductsContextSeed
                 await productsContext.SaveChangesAsync();
             }
             
-            if (!await productsContext.MaterialTypes.AnyAsync())
+            if (!await productsContext.Materials.AnyAsync())
             {
-                await productsContext.MaterialTypes.AddRangeAsync(
-                    GetPreconfiguredMaterialTypes());
+                await productsContext.Materials.AddRangeAsync(
+                    GetPreconfiguredMaterials());
                 
                 await productsContext.SaveChangesAsync();
             }
 
-            if (!await productsContext.ProductPrices.AnyAsync())
-            {
-                await productsContext.ProductPrices.AddRangeAsync(
-                    GetPreconfiguredProductPrices());
-                
-                await productsContext.SaveChangesAsync();
-            }
 
             if (!await productsContext.PaymentCategories.AnyAsync())
             {
@@ -96,14 +79,7 @@ public class ProductsContextSeed
                 await productsContext.SaveChangesAsync();
             }
 
-            if (!await productsContext.ProductCheckPoints.AnyAsync())
-            {
-                await productsContext.ProductCheckPoints.AddRangeAsync(
-                    GetPreconfiguredProductCheckPoints());
-
-                await productsContext.SaveChangesAsync();
-            }
-
+           
             if (!await productsContext.EmployeePositions.AnyAsync())
             {
                 await productsContext.EmployeePositions.AddRangeAsync(
@@ -116,13 +92,6 @@ public class ProductsContextSeed
                     GetPreconfiguredEmployees());
             }
 
-            if (!await productsContext.MaterialCheckPoints.AnyAsync())
-            {
-                await productsContext.MaterialCheckPoints.AddRangeAsync(
-                    GetPreconfiguredMaterialCheckPoints());
-
-                await productsContext.SaveChangesAsync();
-            }
 
             if (!await productsContext.Customers.AnyAsync())
             {
@@ -166,22 +135,22 @@ public class ProductsContextSeed
     {
         return new List<ProductCategory>
         {
-            new(1, "Плиты Перекрытия"),
-            new(1, "Лотки"),
-            new(1, "Кольца Стеновые"),
+            new("Плиты Перекрытия"),
+            new("Лотки"),
+            new("Кольца Стеновые"),
         };
     }
     
-    static IEnumerable<ProductType> GetPreconfiguredProductTypes()
+    static IEnumerable<Product> GetPreconfiguredProducts()
     {
-        return new List<ProductType>
+        return new List<Product>
         {
-            new(1, "ПК 59x10", "Плиты перекрытия с прочностью 400", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
-            new(1, "ПК 59x12", "Плиты перекрытия с прочностью 400", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
-            new(1, "ПК 45x10", "Плиты перекрытия с прочностью 400", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
-            new(1, "ПК 45x12", "Плиты перекрытия с прочностью 400", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
-            new(1, "ПК 60x10", "Плиты перекрытия с прочностью 400", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
-            new(1, "ПК 60x12", "Плиты перекрытия с прочностью 400", "http://catalogbaseurltobereplaced/images/products/PK_1.png"),
+            new(1, "ПК 59x10", 30, 1350000),
+            new(1, "ПК 59x12", 35, 1350000),
+            new(1, "ПК 45x10", 39, 1350000),
+            new(1, "ПК 45x12", 39, 1350000),
+            new(1, "ПК 60x10", 39, 1350000),
+            new(1, "ПК 60x12", 39, 1350000),
         };
     }
 
@@ -206,51 +175,24 @@ public class ProductsContextSeed
     {
         return new List<MaterialCategory>
         {
-            new(1, "Жидкость"),
-            new(1, "Песок"),
-            new(1, "Щебень"),
-            new(1, "Цемент"),
-            new(1, "Арматура")
+            new("Жидкость"),
+            new("Песок"),
+            new("Щебень"),
+            new("Цемент"),
+            new("Арматура")
         };
     }
 
-    static IEnumerable<MaterialType> GetPreconfiguredMaterialTypes()
+    static IEnumerable<Material> GetPreconfiguredMaterials()
     {
-        return new List<MaterialType>
+        return new List<Material>
         {
-            new(1, "Вода", "Обычная не дистиллированная"),
-            new(4, "Цемент QuaXin", "Цемент марки QuaXin"),
-            new(5, "Арматура 4", "Арматура диаметром 4 мм"),
-            new(5, "Арматура 8", "Арматура диаметром 8 мм"),
-            new(5, "Арматура 12", "Арматура диаметром 12 мм"),
-            new(3, "Щебень 6", "Щебенка с камнями диаметром до 12 мм")
-        };
-    }
-
-    
-
-    static IEnumerable<ProductPrice> GetPreconfiguredProductPrices()
-    {
-        return new List<ProductPrice>
-        {
-            new(1, DateTime.Now, 10000),
-            new(2, DateTime.Now, 100000)
-        };
-    }
-
-    static IEnumerable<ProductCheckPoint> GetPreconfiguredProductCheckPoints()
-    {
-        return new List<ProductCheckPoint>
-        {
-            new ProductCheckPoint(DateTime.Now.AddDays(-5), 1, 50)
-        };
-    }
-
-    static IEnumerable<MaterialCheckPoint> GetPreconfiguredMaterialCheckPoints()
-    {
-        return new List<MaterialCheckPoint>
-        {
-            new MaterialCheckPoint(DateTime.Now.AddDays(-5), 1, 50000)
+            new(1, "Вода", Unit.Liter, 1000),
+            new(4, "Цемент", Unit.Kilogram, 1000),
+            new(5, "Арматура 4", Unit.Kilogram, 1000),
+            new(5, "Арматура 8", Unit.Kilogram, 1000),
+            new(5, "Арматура 12", Unit.Kilogram, 1000),
+            new(3, "Щебень 6", Unit.Kilogram, 1000)
         };
     }
 
@@ -258,7 +200,17 @@ public class ProductsContextSeed
     {
         return new List<Customer>
         {
-            new Customer("Абдувахоб Холиков", "+998905001020", "Посредник", "abduvakhob_kholikov@gmail.com", "Рекламный банер Тойтепа", "Мужчина в возрасте, ездит на жентре черной, ценит качество, готов переплачивать за качество. Для начало сообщил, что закажет Кольца Стеновые в комплекте до 200 штук в общем")
+            new Customer(
+                "Абдувахоб Холиков",
+                "+998905001020",
+                CustomerPosition.Manager,
+                "abduvakhob_kholikov@gmail.com", 
+                true,
+                "3092939190239901239",
+                "Martur Fompak International",
+                FindOutThrough.ThroughPartnets,
+                "Мужчина в возрасте ездит на ласети номер 01АА302ОА"
+                ),
         };
     }
 

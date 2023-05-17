@@ -8,9 +8,9 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 {
     public void Configure(EntityTypeBuilder<Order> builder)
     {
-        builder.Property(o => o.Id)
-            .UseHiLo("order_product_hilo")
-            .IsRequired();
+        builder.ToTable("Orders");
+
+        builder.HasKey(o => o.Id);
 
         builder.Property(o => o.TotalAmount)
             .IsRequired(true)

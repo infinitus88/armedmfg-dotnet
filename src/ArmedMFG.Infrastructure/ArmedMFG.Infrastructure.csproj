@@ -15,5 +15,6 @@
 		<ProjectReference Include="..\ArmedMFG.ApplicationCore\ArmedMFG.ApplicationCore.csproj" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Folder Include="Data\Queries\" />
 	</ItemGroup>
 </Project>

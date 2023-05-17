@@ -1,4 +1,5 @@
 ﻿using System;
+using Ardalis.GuardClauses;
 using ArmedMFG.ApplicationCore.Interfaces;
 
 namespace ArmedMFG.ApplicationCore.Entities.PaymentRecordAggregate;
@@ -21,6 +22,36 @@ public class PaymentRecord : BaseEntity, IAggregateRoot
         Description = description;
         ReferenceId = referenceId;
         Amount = amount;
+    }
+
+    public void UpdateDetails(PaymentRecordDetails details)
+    {
+        Guard.Against.Default(details.PayedDate, nameof(details.PayedDate));
+        Guard.Against.Zero(details.ReferenceId, nameof(details.ReferenceId));
+        Guard.Against.Negative(details.Amount, nameof(details.Amount));
+
+        PayedDate = details.PayedDate;
+        ReferenceId = details.ReferenceId;
+        Amount = details.Amount;
+        Description = details.Description;
+    }
+
+    public readonly record struct PaymentRecordDetails
+    {
+        public DateTime PayedDate { get; init; }
+        public int ReferenceId { get; init; }
+        public PaymentMethod PaymentMethod { get; init; }
+        public decimal Amount { get; init; }
+        public string? Description { get; init; }
+
+        public PaymentRecordDetails(DateTime payedDate, int referenceId, PaymentMethod paymentMethod, decimal amount, string? description) : this()
+        {
+            PayedDate = payedDate;
+            ReferenceId = referenceId;
+            PaymentMethod = paymentMethod;
+            Amount = amount;
+            Description = description;
+        }
     }
 }
 

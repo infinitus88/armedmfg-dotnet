@@ -10,10 +10,6 @@ public class MaterialCategoryConfiguration : IEntityTypeConfiguration<MaterialCa
     {
         builder.HasKey(mc => mc.Id);
 
-        builder.Property(mc => mc.Id)
-            .UseHiLo("material_category_hilo")
-            .IsRequired();
-
         builder.Property(mc => mc.Name)
             .IsRequired()
             .HasMaxLength(100);

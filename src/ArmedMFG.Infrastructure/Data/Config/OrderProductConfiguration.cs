@@ -12,7 +12,7 @@ public class OrderProductConfiguration : IEntityTypeConfiguration<OrderProduct>
             .UseHiLo("order_product_hilo")
             .IsRequired();
         
-        builder.Property(op => op.Price)
+        builder.Property(op => op.UnitPrice)
             .IsRequired(true)
             .HasColumnType("decimal(18,2)");
     }

@@ -1,4 +1,4 @@
-﻿using ArmedMFG.ApplicationCore.Entities.MaterialTypeAggregate;
+﻿using ArmedMFG.ApplicationCore.Entities.MaterialAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,14 +8,12 @@ public class MaterialSupplyConfiguration : IEntityTypeConfiguration<MaterialSupp
 {
     public void Configure(EntityTypeBuilder<MaterialSupply> builder)
     {
-        builder.Property(ms => ms.Id)
-            .UseHiLo("material_supply_hilo")
-            .IsRequired();
+        builder.HasKey(ms => ms.Id);
 
         builder.Property(ms => ms.Amount)
             .IsRequired(true);
         
-        builder.Property(ms => ms.Price)
+        builder.Property(ms => ms.TotalPrice)
             .IsRequired(true)
             .HasColumnType("decimal(18,2)");
     }

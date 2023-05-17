@@ -10,10 +10,6 @@ public class ProductCategoryConfiguration : IEntityTypeConfiguration<ProductCate
     {
         builder.HasKey(pc => pc.Id);
 
-        builder.Property(pc => pc.Id)
-            .UseHiLo("product_category_hilo")
-            .IsRequired();
-
         builder.Property(pc => pc.Name)
             .IsRequired()
             .HasMaxLength(100);

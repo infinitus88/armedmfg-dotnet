@@ -8,9 +8,8 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 {
     public void Configure(EntityTypeBuilder<Employee> builder)
     {
-        builder.Property(e => e.Id)
-            .UseHiLo("employee_hilo")
-            .IsRequired();
+        builder.ToTable("Employees");
+        builder.HasKey(e => e.Id);
     }
 
 }

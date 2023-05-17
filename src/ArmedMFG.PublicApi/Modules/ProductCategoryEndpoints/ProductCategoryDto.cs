@@ -1,0 +1,7 @@
+﻿namespace ArmedMFG.PublicApi.Modules.ProductCategoryEndpoints;
+
+public class ProductCategoryDto
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+}

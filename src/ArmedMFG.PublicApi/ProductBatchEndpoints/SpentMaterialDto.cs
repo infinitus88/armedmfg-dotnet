@@ -1,8 +1,0 @@
-﻿namespace ArmedMFG.PublicApi.ProductBatchEndpoints;
-
-public class SpentMaterialDto
-{
-    public int Id { get; set; }
-    public int MaterialTypeId { get; set; }
-    public double Amount { get; set; }
-}

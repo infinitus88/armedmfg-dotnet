@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ardalis.GuardClauses;
-using ArmedMFG.ApplicationCore.Entities.CustomerOrganizationAggregate;
+using ArmedMFG.ApplicationCore.Entities.CustomerAggregate;
 using ArmedMFG.ApplicationCore.Interfaces;
 
 namespace ArmedMFG.ApplicationCore.Entities.OrderAggregate;
@@ -43,7 +43,7 @@ public class Order : BaseEntity, IAggregateRoot
 
         foreach (var shipmentProduct in shipmentProducts)
         {
-            partialShipment.AddShipmentProduct(shipmentProduct.ProductTypeId, shipmentProduct.Quantity);
+            partialShipment.AddShipmentProduct(shipmentProduct.ProductId, shipmentProduct.Quantity);
         }
     }
     
@@ -84,14 +84,16 @@ public class Order : BaseEntity, IAggregateRoot
     {
         public DateTime OrderedDate { get; }
         public DateTime RequiredDate { get; }
+        public DateTime FinishDate { get; }
         public int CustomerId { get; }
         public string Description { get; }
 
-        public OrderDetails(int customerId, DateTime orderedDate, DateTime requiredDate, string description)
+        public OrderDetails(int customerId, DateTime orderedDate, DateTime requiredDate, DateTime finishDate, string description)
         {
             CustomerId = customerId;
             OrderedDate = orderedDate;
             RequiredDate = requiredDate;
+            FinishDate = finishDate;
             Description = description;
         }
     }
